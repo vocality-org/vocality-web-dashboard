@@ -4,6 +4,9 @@ $palettes: (
         blue: #0c003f,
         pink: #ff3f60,
     ),
+    discord: (
+        purple: #7289da,
+    ),
 );
 
 @function clr($p, $c: 'default') {
