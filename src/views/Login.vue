@@ -12,12 +12,11 @@
             </ul>
         </div>
         <div class="content">
-            <h1 class="title">Dashboard</h1>
-            <p>
-                Sed sit hic quae aut maxime at commodi aperiam. Ullam ut aliquam rerum vel quasi mollitia sunt doloribus. Nemo
-                quia odit ipsam qui.
+            <h1 class="content__title">Dashboard</h1>
+            <p class="content__text">
+                For you to be able to control the Vocality Bot from our Dashboard you need to login with your Discord account.
             </p>
-            <button class="discord"><img src="@/assets/discord.svg" alt="discord" height="48" /></button>
+            <button class="content__discord"><img src="@/assets/discord.svg" alt="discord" height="48" /></button>
         </div>
 
         <svg viewBox="0 0 1920 1080" fill="none" class="bg" preserveAspectRatio="none">
@@ -141,7 +140,7 @@ export default class Login extends Vue {}
     @include mq(sm) {
         padding: 0 150px;
     }
-    .title {
+    &__title {
         --title-size: 55px;
         @include mq(sm) {
             --title-size: 90px;
@@ -167,7 +166,7 @@ export default class Login extends Vue {}
             }
         }
     }
-    p {
+    &__text {
         font-size: 19px;
         max-width: 700px;
         opacity: 0.7;
@@ -176,7 +175,7 @@ export default class Login extends Vue {}
             font-size: 24px;
         }
     }
-    .discord {
+    &__discord {
         background-color: clr(discord, purple);
         border-radius: 4px;
         display: flex;
