@@ -1,25 +1,27 @@
 <template>
-    <div>
-        DASHBOARD
-    </div>
+    <v-app>
+        <router-view></router-view>
+    </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AuthState } from '@/store';
+import { DiscordState } from '@/store';
 
 @Component({
     async beforeRouteEnter(to, from, next) {
         const code = to.query['code'];
-        console.log(AuthState.hasPermission);
 
         if (code && !AuthState.hasPermission) {
             await AuthState.discordAuth(to.query['code'].toString());
-            console.log(AuthState);
         }
 
         if (AuthState.hasPermission) {
+            if (!DiscordState.hasAccountData) {
+                await DiscordState.fetchAccount();
+            }
             next();
             return;
         } else {

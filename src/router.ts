@@ -24,6 +24,14 @@ export default new Router({
             component: function() {
                 return import('@/dashboard/Dashboard.vue');
             },
+            children: [
+                {
+                    path: 't',
+                    component: () => {
+                        return import('@/dashboard/components/UserArea.vue');
+                    },
+                },
+            ],
         },
     ],
 });
