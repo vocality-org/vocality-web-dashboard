@@ -1,8 +1,9 @@
-import { IAuthState, Auth } from './modules/auth';
 import Vue from 'vue';
-import Vuex, { Payload, Store } from 'vuex';
+import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 import { getModule } from 'vuex-module-decorators';
+
+import { IAuthState, Auth } from './modules/auth';
 
 interface IRootState {
     auth: IAuthState;

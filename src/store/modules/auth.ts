@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { Module, VuexModule, Mutation, Action, MutationAction, getModule } from 'vuex-module-decorators';
-const qs = require('querystring');
-import store from '@/store';
+import { Module, VuexModule, MutationAction } from 'vuex-module-decorators';
 import interceptorsSetup from '@/interceptors/tokenBearer';
+
+const qs = require('querystring');
 
 interface DiscordTokenData {
     access_token: string;
@@ -19,7 +19,6 @@ export interface IAuthState {
 @Module({
     name: 'auth',
     namespaced: true,
-    store,
 })
 export class Auth extends VuexModule implements IAuthState {
     tokenData: DiscordTokenData | null = null;
