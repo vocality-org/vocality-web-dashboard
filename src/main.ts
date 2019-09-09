@@ -5,8 +5,8 @@ import store from '@/store';
 import vuetify from '@/plugins/vuetify';
 import './registerServiceWorker';
 
-import interceptorsSetup from '@/interceptors/tokenBearer';
-interceptorsSetup();
+import { setupInterceptorTokenBearer } from '@/interceptors/tokenBearer';
+setupInterceptorTokenBearer();
 
 Vue.config.productionTip = false;
 

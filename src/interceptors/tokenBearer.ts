@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AuthState } from '@/store';
 
-export default function setup(passedToken?: string) {
+export function setupInterceptorTokenBearer(passedToken?: string) {
     axios.interceptors.request.use(
         function(config) {
             let token = passedToken;

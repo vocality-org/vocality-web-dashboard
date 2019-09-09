@@ -1,16 +1,8 @@
 import axios from 'axios';
-import { Module, VuexModule, MutationAction } from 'vuex-module-decorators';
-import interceptorsSetup from '@/interceptors/tokenBearer';
+import { Module, VuexModule, MutationAction, Mutation } from 'vuex-module-decorators';
+import { setupInterceptorTokenBearer } from '@/interceptors/tokenBearer';
 
 const qs = require('querystring');
-
-interface DiscordTokenData {
-    access_token: string;
-    refresh_token: string;
-    expires_in: number;
-    token_type: string;
-    scrope: string;
-}
 
 export interface IAuthState {
     tokenData: DiscordTokenData | null;
@@ -23,8 +15,8 @@ export interface IAuthState {
 export class Auth extends VuexModule implements IAuthState {
     tokenData: DiscordTokenData | null = null;
 
-    get hasPermission() {
-        return this.tokenData !== null ? true : false;
+    get hasPermission(): boolean {
+        return this.tokenData !== null;
     }
 
     get token() {
@@ -35,8 +27,8 @@ export class Auth extends VuexModule implements IAuthState {
     async discordAuth(code: string) {
         const reqBody = {
             code: code,
-            client_id: '619738847294521344',
-            client_secret: 'ghuep7m740BQxdQ0Vb_myIOz780I2HZn',
+            client_id: process.env.VUE_APP_DISCORD_CLIENT_ID,
+            client_secret: process.env.VUE_APP_DISCORD_CLIENT_SECRET,
             scope: 'identify guilds',
             grant_type: 'authorization_code',
             redirect_uri: `${window.location.origin}/dashboard`,
@@ -49,11 +41,25 @@ export class Auth extends VuexModule implements IAuthState {
                 },
             })
             .then(response => {
-                interceptorsSetup(response.data.access_token);
+                setupInterceptorTokenBearer(response.data.access_token);
                 return { tokenData: response.data };
             })
             .catch(err => {
+                console.log(err);
                 return { tokenData: null };
             });
     }
+
+    @Mutation
+    logout() {
+        this.tokenData = null;
+    }
+}
+
+interface DiscordTokenData {
+    access_token: string;
+    refresh_token: string;
+    expires_in: number;
+    token_type: string;
+    scrope: string;
 }
