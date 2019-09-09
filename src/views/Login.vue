@@ -19,6 +19,28 @@
             <a class="content__discord" :href="redirectURL"><img src="@/assets/discord.svg" alt="discord" height="48"/></a>
         </div>
 
+        <transition name="fade">
+            <div v-if="errorMessage" class="alert-container">
+                <div class="alert">
+                    <div class="icon-container">
+                        <svg width="24" height="24" viewBox="0 0 24 24" class="alert__icon">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                        </svg>
+                    </div>
+                    {{ errorMessage }}
+                    <div style="flex: 1 0 auto;"></div>
+                    <svg @click="errorMessage = ''" style="cursor: pointer" width="24" height="24" viewBox="0 0 24 24">
+                        <path
+                            fill="#919191"
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                        />
+                        <path d="M0 0h24v24H0z" fill="none" />
+                    </svg>
+                </div>
+            </div>
+        </transition>
+
         <svg viewBox="0 0 1920 1080" fill="none" class="bg" preserveAspectRatio="none">
             <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
                 <rect width="100%" height="100%" fill="#fff" />
@@ -83,12 +105,29 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 
-@Component({})
+@Component({
+    async beforeRouteEnter(to, from, next) {
+        if (to.query.redirectFrom) {
+            if (to.query.code) {
+                next(vm => {
+                    vm.$data.errorMessage = 'There was a problem validating your authentication code';
+                });
+            } else {
+                next(vm => {
+                    vm.$data.errorMessage = 'Please login with discord to use the dashboard';
+                });
+            }
+        }
+        next();
+    },
+})
 export default class Login extends Vue {
     redirectURL =
         process.env.NODE_ENV === 'development'
             ? 'https://discordapp.com/api/oauth2/authorize?client_id=619738847294521344&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdashboard&response_type=code&scope=identify%20guilds'
             : 'https://discordapp.com/api/oauth2/authorize?client_id=619738847294521344&redirect_uri=https%3A%2F%2Fvocality-web-dashboard.kaindl745.now.sh%2Fdashboard&response_type=code&scope=identify%20guilds';
+
+    errorMessage = '';
 }
 </script>
 
@@ -196,5 +235,47 @@ export default class Login extends Vue {
             box-shadow: none;
         }
     }
+}
+.alert-container {
+    position: absolute;
+    z-index: 2;
+    bottom: 16px;
+    width: 100%;
+    padding: 0 20px;
+    .alert {
+        display: flex;
+        align-items: center;
+        max-width: 500px;
+        margin: 0 auto;
+        border: 1px solid #f85050;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #f85050;
+        font-size: 16px;
+        padding: 10px 15px;
+        .icon-container {
+            background-color: #f8505065;
+            border-radius: 50%;
+            min-height: 38px;
+            min-width: 38px;
+            margin-right: 13px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &__icon {
+            position: relative;
+            fill: #f85050;
+        }
+    }
+}
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 300ms, transform 300ms ease;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+    transform: translateY(50px);
 }
 </style>

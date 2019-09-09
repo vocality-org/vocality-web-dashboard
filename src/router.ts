@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from '@/store/vuex';
+import store from '@/store';
 
 import Login from '@/views/Login.vue';
 
@@ -14,34 +14,15 @@ export default new Router({
             path: '/',
             alias: '/login',
             name: 'login',
-            component: Login,
             meta: { title: 'Login - Vocality Dashboard' },
+            component: Login,
         },
         {
             path: '/dashboard',
             name: 'dashboard',
+            meta: { title: 'Vocality Dashboard' },
             component: function() {
                 return import('@/dashboard/Dashboard.vue');
-            },
-            meta: { title: 'Vocality Dashboard' },
-            async beforeEnter(to, from, next) {
-                if (!to.query['code']) {
-                    next({ path: '/login' });
-                }
-                try {
-                    if (store.getters['auth/hasPermission']) {
-                        next();
-                    } else {
-                        await store.dispatch('auth/discordAuth', to.query['code']);
-                        if (store.getters['auth/hasPermission']) {
-                            next();
-                        } else {
-                            next('/login');
-                        }
-                    }
-                } catch (e) {
-                    next({ path: '/login' });
-                }
             },
         },
     ],

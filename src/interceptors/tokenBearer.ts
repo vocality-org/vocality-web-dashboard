@@ -1,12 +1,12 @@
 import axios from 'axios';
-import store from '@/store/vuex';
+import { AuthState } from '@/store';
 
 export default function setup(passedToken?: string) {
     axios.interceptors.request.use(
         function(config) {
             let token = passedToken;
             if (!passedToken) {
-                token = store.state.auth.token;
+                token = AuthState.token;
             }
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;

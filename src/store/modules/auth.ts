@@ -1,12 +1,27 @@
-import { Module, VuexModule, Mutation, Action, MutationAction } from 'vuex-module-decorators';
 import axios from 'axios';
-import interceptorsSetup from '@/interceptors/tokenBearer';
+import { Module, VuexModule, Mutation, Action, MutationAction, getModule } from 'vuex-module-decorators';
 const qs = require('querystring');
+import store from '@/store';
+import interceptorsSetup from '@/interceptors/tokenBearer';
+
+interface DiscordTokenData {
+    access_token: string;
+    refresh_token: string;
+    expires_in: number;
+    token_type: string;
+    scrope: string;
+}
+
+export interface IAuthState {
+    tokenData: DiscordTokenData | null;
+}
 
 @Module({
+    name: 'auth',
     namespaced: true,
+    store,
 })
-export class AuthState extends VuexModule {
+export class Auth extends VuexModule implements IAuthState {
     tokenData: DiscordTokenData | null = null;
 
     get hasPermission() {
@@ -39,17 +54,7 @@ export class AuthState extends VuexModule {
                 return { tokenData: response.data };
             })
             .catch(err => {
-                console.log(err);
-
                 return { tokenData: null };
             });
     }
-}
-
-interface DiscordTokenData {
-    access_token: string;
-    refresh_token: string;
-    expires_in: number;
-    token_type: string;
-    scrope: string;
 }
