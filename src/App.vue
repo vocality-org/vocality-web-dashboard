@@ -1,18 +1,12 @@
 <template>
-    <router-view></router-view>
+    <div>
+        <router-view></router-view>
+    </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import Component from 'vue-class-component';
 
-import HelloWorld from './components/HelloWorld.vue';
-
-@Component({
-    components: {
-        HelloWorld,
-    },
-})
 export default class App extends Vue {}
 </script>
 
@@ -20,6 +14,6 @@ export default class App extends Vue {}
 html {
     font-family: 'Roboto', sans-serif;
     font-weight: normal;
-    overflow: auto !important;
+    overflow: auto !important; // @vuetify FeelsWeirdMan
 }
 </style>

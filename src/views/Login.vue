@@ -16,7 +16,7 @@
             <p class="content__text">
                 For you to be able to control the Vocality Bot from our Dashboard you need to login with your Discord account.
             </p>
-            <button class="content__discord"><img src="@/assets/discord.svg" alt="discord" height="48" /></button>
+            <a class="content__discord" :href="redirectURL"><img src="@/assets/discord.svg" alt="discord" height="48"/></a>
         </div>
 
         <svg viewBox="0 0 1920 1080" fill="none" class="bg" preserveAspectRatio="none">
@@ -84,7 +84,12 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 
 @Component({})
-export default class Login extends Vue {}
+export default class Login extends Vue {
+    redirectURL =
+        process.env.NODE_ENV === 'development'
+            ? 'https://discordapp.com/api/oauth2/authorize?client_id=619738847294521344&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdashboard&response_type=code&scope=identify%20guilds'
+            : 'https://discordapp.com/api/oauth2/authorize?client_id=619738847294521344&redirect_uri=https%3A%2F%2Fvocality-web-dashboard.kaindl745.now.sh%2Fdashboard&response_type=code&scope=identify%20guilds';
+}
 </script>
 
 <style lang="scss" scoped>
@@ -182,7 +187,7 @@ export default class Login extends Vue {}
         justify-content: center;
         align-items: center;
         padding: 5px 35px;
-
+        width: 190px;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
         &:hover,
         &:focus {
