@@ -28,7 +28,7 @@ export class Auth extends VuexModule implements IAuthState {
         const reqBody = {
             code: code,
             client_id: process.env.VUE_APP_DISCORD_CLIENT_ID,
-            client_secret: process.env.VUE_APP_DISCORD_CLIENT_SECRET,
+            client_secret: process.env.VUE_APP_DISCORD_CLIENT_SECRET, // potential source of error right here
             scope: 'identify guilds',
             grant_type: 'authorization_code',
             redirect_uri: `${window.location.origin}/dashboard`,

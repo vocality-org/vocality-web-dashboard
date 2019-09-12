@@ -2,7 +2,7 @@
     <div class="login">
         <div class="nav">
             <div class="nav__logo">
-                <img src="@/assets/logo.svg" alt="logo" height="48" />
+                <img src="@/assets/vocality/logo.svg" alt="logo" height="48" />
             </div>
             <div style="flex: 1 0 auto"></div>
             <ul>
@@ -16,7 +16,9 @@
             <p class="content__text">
                 For you to be able to control the Vocality Bot from our Dashboard you need to login with your Discord account.
             </p>
-            <a class="content__discord" :href="redirectURL"><img src="@/assets/discord.svg" alt="discord" height="48"/></a>
+            <a class="content__discord" :href="redirectURL"
+                ><img src="@/assets/icons/discord-text.svg" alt="discord" height="48"
+            /></a>
         </div>
 
         <transition name="fade">
