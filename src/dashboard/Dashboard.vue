@@ -1,5 +1,13 @@
 <template>
     <v-app>
+        <v-app-bar>
+            <div class="flex-grow-1"></div>
+            <UserArea />
+        </v-app-bar>
+
+        <AppBar />
+        <GuildBar />
+
         <router-view></router-view>
     </v-app>
 </template>
@@ -7,8 +15,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AuthState } from '@/store';
-import { DiscordState } from '@/store';
+import { AuthState, DiscordState } from '@/store';
+import AppBar from './components/AppBar.vue';
+import UserArea from './components/UserArea.vue';
+import GuildBar from './components/GuildBar.vue';
 
 @Component({
     async beforeRouteEnter(to, from, next) {
@@ -33,6 +43,11 @@ import { DiscordState } from '@/store';
                 },
             });
         }
+    },
+    components: {
+        AppBar,
+        UserArea,
+        GuildBar,
     },
 })
 export default class Dashboard extends Vue {}

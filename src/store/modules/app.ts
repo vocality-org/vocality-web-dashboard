@@ -8,6 +8,19 @@ class GuildBarState {
         this.isOpen = false;
         this.activeGuildId = '';
     }
+
+    @Mutation
+    open() {
+        this.isOpen = true;
+    }
+    @Mutation
+    close() {
+        this.isOpen = false;
+    }
+    @Mutation
+    setActiveGuildId(id: string) {
+        this.activeGuildId = id;
+    }
 }
 
 export interface IAppState {
@@ -20,13 +33,4 @@ export interface IAppState {
 })
 export class App extends VuexModule implements IAppState {
     guildBar = new GuildBarState();
-
-    @Mutation
-    setGuildBar(state: boolean) {
-        this.guildBar.isOpen = state;
-    }
-    @Mutation
-    setActiveGuildId(id: string) {
-        this.guildBar.activeGuildId = id;
-    }
 }

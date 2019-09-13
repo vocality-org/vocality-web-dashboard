@@ -37,11 +37,10 @@ import { AppState } from '@/store';
     computed: {
         isOpen: {
             get() {
-                return true;
                 return AppState.guildBar.isOpen;
             },
             set(state) {
-                AppState.setGuildBar(state);
+                state ? AppState.guildBar.open() : AppState.guildBar.close();
             },
         },
     },
@@ -71,7 +70,7 @@ export default class GuildBar extends Vue {
     ];
 
     setActiveGuildId(id: string) {
-        AppState.setActiveGuildId(id);
+        AppState.guildBar.setActiveGuildId(id);
     }
 
     isActive(id: string) {
