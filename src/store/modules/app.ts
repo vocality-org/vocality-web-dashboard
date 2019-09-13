@@ -23,8 +23,27 @@ class GuildBarState {
     }
 }
 
+class QueueBarState {
+    isOpen: boolean;
+
+    constructor() {
+        this.isOpen = false;
+    }
+
+    @Mutation
+    open() {
+        this.isOpen = true;
+    }
+
+    @Mutation
+    close() {
+        this.isOpen = false;
+    }
+}
+
 export interface IAppState {
     guildBar: GuildBarState;
+    queueBar: QueueBarState;
 }
 
 @Module({
@@ -33,4 +52,5 @@ export interface IAppState {
 })
 export class App extends VuexModule implements IAppState {
     guildBar = new GuildBarState();
+    queueBar = new QueueBarState();
 }

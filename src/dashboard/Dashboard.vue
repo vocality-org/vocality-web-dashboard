@@ -1,14 +1,17 @@
 <template>
     <v-app>
-        <v-app-bar>
+        <v-app-bar app clipped-right>
             <div class="flex-grow-1"></div>
             <UserArea />
         </v-app-bar>
 
+        <QueueBar />
         <AppBar />
         <GuildBar />
 
-        <router-view></router-view>
+        <v-content>
+            <router-view></router-view>
+        </v-content>
     </v-app>
 </template>
 
@@ -16,9 +19,11 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AuthState, DiscordState } from '@/store';
+
 import AppBar from './components/AppBar.vue';
 import UserArea from './components/UserArea.vue';
 import GuildBar from './components/GuildBar.vue';
+import QueueBar from './components/QueueBar.vue';
 
 @Component({
     async beforeRouteEnter(to, from, next) {
@@ -48,6 +53,7 @@ import GuildBar from './components/GuildBar.vue';
         AppBar,
         UserArea,
         GuildBar,
+        QueueBar,
     },
 })
 export default class Dashboard extends Vue {}
