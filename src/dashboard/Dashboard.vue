@@ -7,7 +7,6 @@
         <GuildDrawer />
 
         <v-content>
-            c
             <router-view></router-view>
         </v-content>
 

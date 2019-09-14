@@ -1,13 +1,6 @@
 <template>
     <div>
-        <v-navigation-drawer
-            app
-            v-model="isOpen"
-            :mini-variant="this.$vuetify.lgAndUp"
-            mini-variant-width="64"
-            :expand-on-hover="this.$vuetify.lgAndUp"
-            :permanent="this.$vuetify.lgAndUp"
-        >
+        <v-navigation-drawer app v-model="isOpen" :expand-on-hover="$vuetify.breakpoint.lgAndUp" mini-variant-width="64">
             <v-list-item>
                 <v-list-item-avatar>
                     <v-img src="@/assets/vocality/logo.svg"></v-img>
@@ -59,6 +52,9 @@ import { mdiMagnify, mdiStar, mdiRadio, mdiPlaylistPlay } from '@mdi/js';
     computed: {
         isOpen: {
             get() {
+                if (this.$vuetify.breakpoint.lgAndUp) {
+                    return true;
+                }
                 return AppState.appDrawer.isOpen;
             },
             set(state) {
