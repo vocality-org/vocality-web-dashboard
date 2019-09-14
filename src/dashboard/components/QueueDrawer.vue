@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-navigation-drawer v-model="isOpen" right app floating clipped> </v-navigation-drawer>
+        <v-navigation-drawer v-model="isOpen" right app floating width="300"> </v-navigation-drawer>
     </div>
 </template>
 
@@ -21,7 +21,7 @@ import { AppState } from '@/store';
         },
     },
 })
-export default class QueueBar extends Vue {}
+export default class QueueDrawer extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

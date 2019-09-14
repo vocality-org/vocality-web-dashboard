@@ -49,7 +49,7 @@ import { AppState } from '@/store';
 import { mdiMagnify, mdiStar, mdiRadio, mdiPlaylistPlay } from '@mdi/js';
 
 @Component({})
-export default class AppBar extends Vue {
+export default class AppDrawer extends Vue {
     searchIcon = mdiMagnify;
     favoriteIcon = mdiStar;
     playlistIcon = mdiPlaylistPlay;

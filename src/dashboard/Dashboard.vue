@@ -1,17 +1,19 @@
 <template>
     <v-app>
-        <v-app-bar app clipped-right>
+        <v-app-bar app class="elevation-0" color="transparent">
             <div class="flex-grow-1"></div>
             <UserArea />
         </v-app-bar>
 
-        <QueueBar />
-        <AppBar />
-        <GuildBar />
+        <QueueDrawer />
+        <AppDrawer />
+        <GuildDrawer />
 
         <v-content>
             <router-view></router-view>
         </v-content>
+
+        <MusicBar />
     </v-app>
 </template>
 
@@ -20,10 +22,11 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AuthState, DiscordState } from '@/store';
 
-import AppBar from './components/AppBar.vue';
+import AppDrawer from './components/AppDrawer.vue';
 import UserArea from './components/UserArea.vue';
-import GuildBar from './components/GuildBar.vue';
-import QueueBar from './components/QueueBar.vue';
+import GuildDrawer from './components/GuildDrawer.vue';
+import QueueDrawer from './components/QueueDrawer.vue';
+import MusicBar from './components/MusicBar.vue';
 
 @Component({
     async beforeRouteEnter(to, from, next) {
@@ -50,10 +53,11 @@ import QueueBar from './components/QueueBar.vue';
         }
     },
     components: {
-        AppBar,
+        AppDrawer,
         UserArea,
-        GuildBar,
-        QueueBar,
+        GuildDrawer,
+        QueueDrawer,
+        MusicBar,
     },
 })
 export default class Dashboard extends Vue {}

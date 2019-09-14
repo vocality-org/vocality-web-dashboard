@@ -45,7 +45,7 @@ import { AppState } from '@/store';
         },
     },
 })
-export default class GuildBar extends Vue {
+export default class GuildDrawer extends Vue {
     guilds = [
         {
             id: '2135f43f13',

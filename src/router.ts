@@ -26,9 +26,7 @@ export default new Router({
             children: [
                 {
                     path: 't',
-                    component: () => {
-                        return import('@/dashboard/components/GuildBar.vue');
-                    },
+                    component: () => {},
                 },
             ],
         },
