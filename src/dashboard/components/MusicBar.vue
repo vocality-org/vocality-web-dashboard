@@ -1,5 +1,7 @@
 <template>
-    <v-bottom-navigation app fixed> </v-bottom-navigation>
+    <v-bottom-navigation app fixed>
+        s
+    </v-bottom-navigation>
 </template>
 
 <script lang="ts">

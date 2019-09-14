@@ -2,12 +2,10 @@
     <div>
         <v-menu offset-y="">
             <template v-slot:activator="{ on }">
-                <v-btn v-on="on" color="transparent" elevation="0" style="height: 52px">
-                    <v-avatar size="38" class="mr-3">
+                <v-btn fab icon v-on="on" elevation="0" ripple>
+                    <v-avatar size="26">
                         <img :src="discordAvatar" alt="avatar" />
                     </v-avatar>
-                    {{ username }}
-                    <v-icon>{{ mdiMenuDown }}</v-icon>
                 </v-btn>
             </template>
             <v-list>

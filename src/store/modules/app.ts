@@ -1,6 +1,23 @@
 import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
 
-class GuildBarState {
+class AppDrawer {
+    isOpen: boolean;
+
+    constructor() {
+        this.isOpen = false;
+    }
+
+    @Mutation
+    open() {
+        this.isOpen = true;
+    }
+    @Mutation
+    close() {
+        this.isOpen = false;
+    }
+}
+
+class GuildDrawerState {
     isOpen: boolean;
     activeGuildId: string;
 
@@ -23,7 +40,7 @@ class GuildBarState {
     }
 }
 
-class QueueBarState {
+class QueueDrawerState {
     isOpen: boolean;
 
     constructor() {
@@ -42,8 +59,9 @@ class QueueBarState {
 }
 
 export interface IAppState {
-    guildBar: GuildBarState;
-    queueBar: QueueBarState;
+    appDrawer: AppDrawer;
+    guildDrawer: GuildDrawerState;
+    queueDrawer: QueueDrawerState;
 }
 
 @Module({
@@ -51,6 +69,7 @@ export interface IAppState {
     namespaced: true,
 })
 export class App extends VuexModule implements IAppState {
-    guildBar = new GuildBarState();
-    queueBar = new QueueBarState();
+    appDrawer = new AppDrawer();
+    guildDrawer = new GuildDrawerState();
+    queueDrawer = new QueueDrawerState();
 }

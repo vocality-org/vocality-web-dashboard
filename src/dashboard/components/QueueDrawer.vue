@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-navigation-drawer v-model="isOpen" right app floating width="300"> </v-navigation-drawer>
+        <v-navigation-drawer v-model="isOpen" right app floating width="300" stateless> </v-navigation-drawer>
     </div>
 </template>
 
@@ -13,10 +13,10 @@ import { AppState } from '@/store';
     computed: {
         isOpen: {
             get() {
-                return AppState.queueBar.isOpen;
+                return AppState.queueDrawer.isOpen;
             },
             set(state) {
-                state ? AppState.queueBar.open() : AppState.queueBar.close();
+                state ? AppState.queueDrawer.open() : AppState.queueDrawer.close();
             },
         },
     },

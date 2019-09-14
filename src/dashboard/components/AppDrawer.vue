@@ -1,6 +1,13 @@
 <template>
     <div>
-        <v-navigation-drawer app expand-on-hover mini-variant-width="64">
+        <v-navigation-drawer
+            app
+            v-model="isOpen"
+            :mini-variant="this.$vuetify.lgAndUp"
+            mini-variant-width="64"
+            :expand-on-hover="this.$vuetify.lgAndUp"
+            :permanent="this.$vuetify.lgAndUp"
+        >
             <v-list-item>
                 <v-list-item-avatar>
                     <v-img src="@/assets/vocality/logo.svg"></v-img>
@@ -48,7 +55,18 @@ import Component from 'vue-class-component';
 import { AppState } from '@/store';
 import { mdiMagnify, mdiStar, mdiRadio, mdiPlaylistPlay } from '@mdi/js';
 
-@Component({})
+@Component({
+    computed: {
+        isOpen: {
+            get() {
+                return AppState.appDrawer.isOpen;
+            },
+            set(state) {
+                state ? AppState.appDrawer.open() : AppState.appDrawer.close();
+            },
+        },
+    },
+})
 export default class AppDrawer extends Vue {
     searchIcon = mdiMagnify;
     favoriteIcon = mdiStar;
@@ -56,7 +74,7 @@ export default class AppDrawer extends Vue {
     radioIcon = mdiRadio;
 
     openGuildsBar() {
-        AppState.guildBar.open();
+        AppState.guildDrawer.open();
     }
 }
 </script>

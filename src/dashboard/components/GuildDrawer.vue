@@ -1,6 +1,6 @@
 <template>
     <div class="guild-bar">
-        <v-navigation-drawer v-model="isOpen" floating mini-variant mini-variant-width="64" absolute temporary>
+        <v-navigation-drawer v-model="isOpen" floating mini-variant mini-variant-width="64" app temporary>
             <v-list-item>
                 <v-list-item-avatar>
                     <v-img src="@/assets/icons/discord.svg"></v-img>
@@ -37,10 +37,10 @@ import { AppState } from '@/store';
     computed: {
         isOpen: {
             get() {
-                return AppState.guildBar.isOpen;
+                return AppState.guildDrawer.isOpen;
             },
             set(state) {
-                state ? AppState.guildBar.open() : AppState.guildBar.close();
+                state ? AppState.guildDrawer.open() : AppState.guildDrawer.close();
             },
         },
     },
@@ -70,11 +70,12 @@ export default class GuildDrawer extends Vue {
     ];
 
     setActiveGuildId(id: string) {
-        AppState.guildBar.setActiveGuildId(id);
+        AppState.guildDrawer.close();
+        AppState.guildDrawer.setActiveGuildId(id);
     }
 
     isActive(id: string) {
-        return id === AppState.guildBar.activeGuildId;
+        return id === AppState.guildDrawer.activeGuildId;
     }
 }
 </script>

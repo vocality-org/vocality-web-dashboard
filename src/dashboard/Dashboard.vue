@@ -1,15 +1,13 @@
 <template>
     <v-app>
-        <v-app-bar app class="elevation-0" color="transparent">
-            <div class="flex-grow-1"></div>
-            <UserArea />
-        </v-app-bar>
+        <AppBar />
 
         <QueueDrawer />
         <AppDrawer />
         <GuildDrawer />
 
         <v-content>
+            c
             <router-view></router-view>
         </v-content>
 
@@ -22,8 +20,8 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AuthState, DiscordState } from '@/store';
 
+import AppBar from './components/AppBar.vue';
 import AppDrawer from './components/AppDrawer.vue';
-import UserArea from './components/UserArea.vue';
 import GuildDrawer from './components/GuildDrawer.vue';
 import QueueDrawer from './components/QueueDrawer.vue';
 import MusicBar from './components/MusicBar.vue';
@@ -53,8 +51,8 @@ import MusicBar from './components/MusicBar.vue';
         }
     },
     components: {
+        AppBar,
         AppDrawer,
-        UserArea,
         GuildDrawer,
         QueueDrawer,
         MusicBar,
