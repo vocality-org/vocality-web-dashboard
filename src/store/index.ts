@@ -6,11 +6,13 @@ import { getModule } from 'vuex-module-decorators';
 import { IAppState, App } from './modules/app';
 import { IAuthState, Auth } from './modules/auth';
 import { IDiscordState, Discord } from './modules/discord';
+import { IMusicState, Music } from './modules/music';
 
 interface IRootState {
     app: IAppState;
     auth: IAuthState;
     discord: IDiscordState;
+    music: IMusicState;
 }
 
 Vue.use(Vuex);
@@ -25,6 +27,7 @@ const store = new Vuex.Store<IRootState>({
         app: App,
         auth: Auth,
         discord: Discord,
+        music: Music,
     },
     plugins: [vuexLocal.plugin],
 });
@@ -32,5 +35,6 @@ const store = new Vuex.Store<IRootState>({
 export const AppState = getModule(App, store);
 export const AuthState = getModule(Auth, store);
 export const DiscordState = getModule(Discord, store);
+export const MusicState = getModule(Music, store);
 
 export default store;
