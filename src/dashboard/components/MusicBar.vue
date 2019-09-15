@@ -19,7 +19,7 @@
                     <v-icon v-else class="mx-2 ico-btn" @click="mute()">{{ volumeIcon }}</v-icon>
                 </div>
             </div>
-            <div class="next-song song-container">
+            <div class="next-song song-container" @click="openQueueDrawer()">
                 <img class="song-img" src="https://i1.sndcdn.com/artworks-000097107321-1mn0be-t500x500.jpg" height="32" />
                 <span class="subtitle" style="margin-top: 1px;">Up Next</span>
                 <span class="song-title">Will Sparks - Ah Yeah So What (feat. Wiley & Elen Levon) [OUT NOW]</span>
@@ -33,7 +33,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { mdiPlay, mdiSkipNext, mdiSkipPrevious, mdiVolumeHigh, mdiVolumeOff, mdiReplay, mdiPause } from '@mdi/js';
 import { mapState, mapGetters } from 'vuex';
-import { MusicState } from '../../store';
+import { MusicState, AppState } from '@/store';
 
 @Component({
     computed: {
@@ -64,6 +64,10 @@ export default class MusicBar extends Vue {
 
     unmute() {
         MusicState.unmute();
+    }
+
+    openQueueDrawer() {
+        AppState.queueDrawer.open();
     }
 }
 </script>
