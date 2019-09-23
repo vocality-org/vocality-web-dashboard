@@ -1,11 +1,15 @@
 <template>
     <v-bottom-navigation app>
         <div class="music-bar">
+            <div class="playback-bar">
+                <v-progress-linear value="33" height="2" background-color="#595959"></v-progress-linear>
+            </div>
             <div class="current-song song-container" v-if="$vuetify.breakpoint.mdAndUp">
                 <img class="song-img" src="https://i1.sndcdn.com/artworks-000576266747-svvc65-t500x500.jpg" height="32" />
                 <span class="song-title">Will Sparks - Egypt</span>
                 <span class="subtitle" style="margin-bottom: 1px;">requested by boolean</span>
             </div>
+            <span class="caption" style="margin-top: 2px">1:00</span>
             <div class="controls" :class="{ 'center-on-sm': $vuetify.breakpoint.smAndDown }">
                 <v-icon class="mx-2 ico-btn" :class="{ 'ico-btn-active': isLooping }" @click="switchLooping()">
                     {{ loopIcon }}
@@ -19,6 +23,7 @@
                     <v-icon v-else class="mx-2 ico-btn" @click="mute()">{{ volumeIcon }}</v-icon>
                 </div>
             </div>
+            <span class="caption" style="margin-top: 2px">3:00</span>
             <div class="next-song song-container" @click="openQueueDrawer()" v-if="$vuetify.breakpoint.mdAndUp">
                 <img class="song-img" src="https://i1.sndcdn.com/artworks-000097107321-1mn0be-t500x500.jpg" height="32" />
                 <span class="subtitle" style="margin-top: 1px;">Up Next</span>
@@ -96,6 +101,7 @@ export default class MusicBar extends Vue {
     align-items: center;
     width: 100%;
     padding: 12px 16px;
+    margin-top: 2px; // progress bar
 }
 
 .song-container {
@@ -173,5 +179,23 @@ export default class MusicBar extends Vue {
 
 .center-on-sm {
     margin: 0 auto !important;
+}
+
+.playback-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    .bar {
+        position: absolute;
+        top: 0;
+        height: 1.5px;
+    }
+
+    .progress {
+        background-color: clr(brand, cyan);
+        width: 50%;
+    }
 }
 </style>
