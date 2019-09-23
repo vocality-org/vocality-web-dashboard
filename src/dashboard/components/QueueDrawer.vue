@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-navigation-drawer v-model="isOpen" right app floating width="300" stateless>
+        <v-navigation-drawer v-model="isOpen" right app floating :width="width" stateless>
             <div class="list-container">
                 <div class="header">
                     <h1 class="title">In Queue</h1>
@@ -48,6 +48,9 @@ import { mdiArrowRight, mdiPlaylistRemove } from '@mdi/js';
             set(state) {
                 state ? AppState.queueDrawer.open() : AppState.queueDrawer.close();
             },
+        },
+        width() {
+            return this.$vuetify.breakpoint.mdAndUp ? 300 : 200;
         },
     },
 })

@@ -25,8 +25,11 @@ export default new Router({
             },
             children: [
                 {
-                    path: 't',
-                    component: () => {},
+                    path: 'search',
+                    name: 'search',
+                    component: () => {
+                        return import('@/dashboard/views/Search.vue');
+                    },
                 },
             ],
         },

@@ -1,15 +1,15 @@
 <template>
     <v-bottom-navigation app>
         <div class="music-bar">
-            <div class="current-song song-container">
+            <div class="current-song song-container" v-if="$vuetify.breakpoint.mdAndUp">
                 <img class="song-img" src="https://i1.sndcdn.com/artworks-000576266747-svvc65-t500x500.jpg" height="32" />
                 <span class="song-title">Will Sparks - Egypt</span>
                 <span class="subtitle" style="margin-bottom: 1px;">requested by boolean</span>
             </div>
-            <div class="controls">
-                <v-icon class="mx-2 ico-btn" :class="{ 'ico-btn-active': isLooping }" @click="switchLooping()">{{
-                    loopIcon
-                }}</v-icon>
+            <div class="controls" :class="{ 'center-on-sm': $vuetify.breakpoint.smAndDown }">
+                <v-icon class="mx-2 ico-btn" :class="{ 'ico-btn-active': isLooping }" @click="switchLooping()">
+                    {{ loopIcon }}
+                </v-icon>
                 <v-icon class="mx-2 ico-btn">{{ previousIcon }}</v-icon>
                 <v-icon v-if="isPlaying" class="mx-2 ico-btn" @click="setPlaying(false)">{{ pauseIcon }}</v-icon>
                 <v-icon v-else class="mx-2 ico-btn" @click="setPlaying(true)">{{ playIcon }}</v-icon>
@@ -19,10 +19,13 @@
                     <v-icon v-else class="mx-2 ico-btn" @click="mute()">{{ volumeIcon }}</v-icon>
                 </div>
             </div>
-            <div class="next-song song-container" @click="openQueueDrawer()">
+            <div class="next-song song-container" @click="openQueueDrawer()" v-if="$vuetify.breakpoint.mdAndUp">
                 <img class="song-img" src="https://i1.sndcdn.com/artworks-000097107321-1mn0be-t500x500.jpg" height="32" />
                 <span class="subtitle" style="margin-top: 1px;">Up Next</span>
                 <span class="song-title">Will Sparks - Ah Yeah So What (feat. Wiley & Elen Levon) [OUT NOW]</span>
+            </div>
+            <div v-else>
+                <v-icon class="ico-btn" @click="openQueueDrawer()">{{ queue }}</v-icon>
             </div>
         </div>
     </v-bottom-navigation>
@@ -31,7 +34,16 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { mdiPlay, mdiSkipNext, mdiSkipPrevious, mdiVolumeHigh, mdiVolumeOff, mdiReplay, mdiPause } from '@mdi/js';
+import {
+    mdiPlay,
+    mdiSkipNext,
+    mdiSkipPrevious,
+    mdiVolumeHigh,
+    mdiVolumeOff,
+    mdiReplay,
+    mdiPause,
+    mdiPlaylistMusic,
+} from '@mdi/js';
 import { mapState, mapGetters } from 'vuex';
 import { MusicState, AppState } from '@/store';
 
@@ -49,6 +61,7 @@ export default class MusicBar extends Vue {
     previousIcon = mdiSkipPrevious;
     volumeIcon = mdiVolumeHigh;
     mutedIcon = mdiVolumeOff;
+    queue = mdiPlaylistMusic;
 
     setPlaying(state: boolean) {
         state ? MusicState.play() : MusicState.pause();
@@ -156,5 +169,9 @@ export default class MusicBar extends Vue {
     &-active {
         fill: clr(brand, cyan);
     }
+}
+
+.center-on-sm {
+    margin: 0 auto !important;
 }
 </style>
