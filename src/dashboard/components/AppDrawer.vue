@@ -19,17 +19,17 @@
                     </v-list-item-icon>
                     <v-list-item-title>Favorites</v-list-item-title>
                 </v-list-item>
+                <v-list-item link @click="openQueueDrawer()">
+                    <v-list-item-icon>
+                        <v-icon>{{ queueIcon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Music Queue</v-list-item-title>
+                </v-list-item>
                 <v-list-item link>
                     <v-list-item-icon>
                         <v-icon>{{ playlistIcon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>Playlists</v-list-item-title>
-                </v-list-item>
-                <v-list-item link>
-                    <v-list-item-icon>
-                        <v-icon>{{ radioIcon }}</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>Radio</v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="openGuildsBar()">
                     <v-list-item-icon>
@@ -46,7 +46,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AppState } from '@/store';
-import { mdiMagnify, mdiStar, mdiRadio, mdiPlaylistPlay } from '@mdi/js';
+import { mdiMagnify, mdiStar, mdiPlaylistMusic, mdiPlaylistPlay } from '@mdi/js';
 
 @Component({
     computed: {
@@ -67,10 +67,18 @@ export default class AppDrawer extends Vue {
     searchIcon = mdiMagnify;
     favoriteIcon = mdiStar;
     playlistIcon = mdiPlaylistPlay;
-    radioIcon = mdiRadio;
+    queueIcon = mdiPlaylistMusic;
 
     openGuildsBar() {
         AppState.guildDrawer.open();
+    }
+
+    openQueueDrawer() {
+        if (AppState.queueDrawer.isOpen) {
+            AppState.queueDrawer.close();
+        } else {
+            AppState.queueDrawer.open();
+        }
     }
 }
 </script>
