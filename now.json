@@ -1,8 +1,0 @@
-{
-    "env": {
-        "VUE_APP_DISCORD_CLIENT_ID": "619738847294521344",
-        "VUE_APP_DISCORD_CLIENT_SECRET": "ghuep7m740BQxdQ0Vb_myIOz780I2HZn",
-        "VUE_APP_DISCORD_REDIRECT_URL": "@discord-redirect-url",
-        "VUE_APP_SOCKET_URL": "https://bass-bot-app.herokuapp.com/io"
-    }
-}
