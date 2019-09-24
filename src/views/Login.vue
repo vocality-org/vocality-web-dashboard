@@ -124,7 +124,7 @@ import Component from 'vue-class-component';
     },
 })
 export default class Login extends Vue {
-    redirectURL = process.env.VUE_APP_DISCORD_REDIRECT_URL;
+    redirectURL = process.env.VUE_APP_DISCORD_AUTH_URL;
     errorMessage = '';
 }
 </script>
