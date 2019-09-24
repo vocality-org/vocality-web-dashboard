@@ -1,8 +1,8 @@
 {
     "env": {
-        "DISCORD_CLIENT_ID": "@discord_client_id",
-        "DISCORD_CLIENT_SECRET": "@discord_client_secret",
-        "DASHBOARD_URL": "@dashboard_url",
-        "SOCKET_URL": "@socket_url"
+        "VUE_APP_DISCORD_CLIENT_ID": "619738847294521344",
+        "VUE_APP_DISCORD_CLIENT_SECRET": "ghuep7m740BQxdQ0Vb_myIOz780I2HZn",
+        "VUE_APP_DISCORD_REDIRECT_URL": "https://vocality-web-dashboard.kaindl745.now.sh/dashboard",
+        "VUE_APP_SOCKET_URL": "https://bass-bot-app.herokuapp.com/io"
     }
 }

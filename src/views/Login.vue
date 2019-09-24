@@ -124,11 +124,7 @@ import Component from 'vue-class-component';
     },
 })
 export default class Login extends Vue {
-    redirectURL =
-        process.env.NODE_ENV === 'development'
-            ? 'https://discordapp.com/api/oauth2/authorize?client_id=619738847294521344&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fdashboard&response_type=code&scope=identify%20guilds'
-            : 'https://discordapp.com/api/oauth2/authorize?client_id=619738847294521344&redirect_uri=https%3A%2F%2Fvocality-web-dashboard.kaindl745.now.sh%2Fdashboard&response_type=code&scope=identify%20guilds';
-
+    redirectURL = process.env.VUE_APP_DISCORD_REDIRECT_URL;
     errorMessage = '';
 }
 </script>

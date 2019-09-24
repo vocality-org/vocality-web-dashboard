@@ -27,11 +27,11 @@ export class Auth extends VuexModule implements IAuthState {
     async discordAuth(code: string) {
         const reqBody = {
             code: code,
-            client_id: '619738847294521344',
-            client_secret: 'ghuep7m740BQxdQ0Vb_myIOz780I2HZn',
+            client_id: process.env.VUE_APP_DISCORD_CLIENT_ID,
+            client_secret: process.env.VUE_APP_DISCORD_CLIENT_SECRET,
+            redirect_uri: process.env.VUE_APP_DISCORD_REDIRECT_URL,
             scope: 'identify guilds',
             grant_type: 'authorization_code',
-            redirect_uri: `${window.location.origin}/dashboard`,
         };
 
         return await axios
