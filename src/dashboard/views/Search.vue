@@ -4,6 +4,7 @@
             <div class="search">
                 s
             </div>
+            <v-text-field label="Label"></v-text-field>
         </div>
     </div>
 </template>
@@ -16,7 +17,6 @@ import { mdiMagnify } from '@mdi/js';
 @Component({})
 export default class Search extends Vue {
     searchIcon = mdiMagnify;
-    dropdownFont = ['Arial', 'Calibri', 'Courier', 'Verdana'];
 }
 </script>
 
