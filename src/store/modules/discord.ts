@@ -14,7 +14,6 @@ export interface IDiscordState {
 })
 export class Discord extends VuexModule implements IDiscordState {
     account: Account | null = null;
-    avatarUrl: string = '';
 
     get hasAccountData() {
         return this.account !== null;
@@ -25,11 +24,16 @@ export class Discord extends VuexModule implements IDiscordState {
     }
 
     get avatar() {
-        let type = '.png';
-        if (this.account!.avatar.startsWith('_a')) {
-            type = '.gif';
+        let type = 'png';
+        // get default avatar
+        if (!this.account!.avatar) {
+            return `${baseResourceUrl}/embed/avatars/${this.account!.discriminator % 5}.${type}`;
         }
-        return `${baseResourceUrl}/avatars/${this.account!.id}/${this.account!.avatar}${type}`;
+        // get gif avatar
+        if (this.account!.avatar.startsWith('_a')) {
+            type = 'gif';
+        }
+        return `${baseResourceUrl}/avatars/${this.account!.id}/${this.account!.avatar}.${type}`;
     }
 
     @MutationAction({ mutate: ['account'] })
