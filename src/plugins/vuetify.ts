@@ -1,15 +1,7 @@
 import Vue from 'vue';
-import Vuetify, { VTextField } from 'vuetify/lib';
-import { Ripple } from 'vuetify/lib/directives';
+import Vuetify from 'vuetify/lib';
 
-Vue.use(Vuetify, {
-    components: {
-        VTextField,
-    },
-    directives: {
-        Ripple,
-    },
-});
+Vue.use(Vuetify);
 
 export default new Vuetify({
     theme: {

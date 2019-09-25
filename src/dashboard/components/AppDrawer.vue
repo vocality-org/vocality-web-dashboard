@@ -7,25 +7,25 @@
                 </v-list-item-avatar>
             </v-list-item>
             <v-list nav dense>
-                <v-list-item link>
+                <v-list-item link @click="navigateTo('search')">
                     <v-list-item-icon>
                         <v-icon>{{ searchIcon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>Search</v-list-item-title>
                 </v-list-item>
-                <v-list-item link>
+                <v-list-item link @click="navigateTo('favorites')">
                     <v-list-item-icon>
                         <v-icon>{{ favoriteIcon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>Favorites</v-list-item-title>
                 </v-list-item>
-                <v-list-item link @click="openQueueDrawer()">
+                <v-list-item link @click="toggleQueueDrawer()">
                     <v-list-item-icon>
                         <v-icon>{{ queueIcon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>Music Queue</v-list-item-title>
                 </v-list-item>
-                <v-list-item link>
+                <v-list-item link @click="navigateTo('playlists')">
                     <v-list-item-icon>
                         <v-icon>{{ playlistIcon }}</v-icon>
                     </v-list-item-icon>
@@ -73,12 +73,16 @@ export default class AppDrawer extends Vue {
         AppState.guildDrawer.open();
     }
 
-    openQueueDrawer() {
+    toggleQueueDrawer() {
         if (AppState.queueDrawer.isOpen) {
             AppState.queueDrawer.close();
         } else {
             AppState.queueDrawer.open();
         }
+    }
+
+    navigateTo(path: string) {
+        this.$router.push({ name: path });
     }
 }
 </script>

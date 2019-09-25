@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-
 import Login from '@/views/Login.vue';
+import About from '@/views/About.vue';
+import Dashboard from '@/dashboard/Dashboard.vue';
 
 Vue.use(Router);
 
@@ -20,9 +21,7 @@ export default new Router({
             path: '/dashboard',
             name: 'dashboard',
             meta: { title: 'Vocality Dashboard' },
-            component: function() {
-                return import('@/dashboard/Dashboard.vue');
-            },
+            component: Dashboard,
             children: [
                 {
                     path: 'search',
@@ -30,6 +29,11 @@ export default new Router({
                     component: () => {
                         return import('@/dashboard/views/Search.vue');
                     },
+                },
+                {
+                    path: 'about',
+                    name: 'about1',
+                    component: About,
                 },
             ],
         },

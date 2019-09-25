@@ -2,13 +2,7 @@
     <div>
         <div class="container">
             <div class="search">
-                <v-text-field label="sd"></v-text-field>
-                <v-overflow-btn
-                    class="my-2"
-                    :items="dropdownFont"
-                    label="Overflow Btn"
-                    target="#dropdown-example-1"
-                ></v-overflow-btn>
+                s
             </div>
         </div>
     </div>
@@ -17,14 +11,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { VTextField } from 'vuetify/lib';
 import { mdiMagnify } from '@mdi/js';
 
-@Component({
-    components: {
-        VTextField,
-    },
-})
+@Component({})
 export default class Search extends Vue {
     searchIcon = mdiMagnify;
     dropdownFont = ['Arial', 'Calibri', 'Courier', 'Verdana'];

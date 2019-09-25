@@ -8,7 +8,7 @@
             :class="{ 'stick-to-drawer': appDrawerOpen && $vuetify.breakpoint.mdAndDown }"
             class="elevation-0"
         >
-            <v-app-bar-nav-icon @click="openAppDrawer()" :hidden="!$vuetify.breakpoint.mdAndDown">
+            <v-app-bar-nav-icon @click="openAppDrawer()" :class="{ hidden: !$vuetify.breakpoint.mdAndDown }">
                 <v-icon>{{ navigationIcon }}</v-icon>
             </v-app-bar-nav-icon>
             <div class="flex-grow-1"></div>
@@ -51,5 +51,8 @@ v-app-bar {
 }
 .stick-to-drawer {
     transform: translateX(256px) !important;
+}
+.hidden {
+    display: none;
 }
 </style>
