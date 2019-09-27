@@ -24,6 +24,7 @@ export default new Router({
                 {
                     path: 'search',
                     name: 'search',
+                    meta: { title: 'Search - Vocality Dashboard' },
                     component: () => import('@/dashboard/views/Search.vue'),
                 },
             ],
