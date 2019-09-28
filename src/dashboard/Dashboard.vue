@@ -50,7 +50,7 @@ import MusicBar from './components/MusicBar.vue';
         }
     },
     mounted() {
-        this.$socket.client.io.opts.query = { discordKey: AuthState.token };
+        this.$socket.client.io.opts.query = { discordKey: AuthState.token, userId: DiscordState.userId };
         this.$socket.client.open();
     },
     components: {

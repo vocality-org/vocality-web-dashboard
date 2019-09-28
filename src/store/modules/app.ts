@@ -11,6 +11,7 @@ class AppDrawer {
     open() {
         this.isOpen = true;
     }
+
     @Mutation
     close() {
         this.isOpen = false;
@@ -30,10 +31,12 @@ class GuildDrawerState {
     open() {
         this.isOpen = true;
     }
+
     @Mutation
     close() {
         this.isOpen = false;
     }
+
     @Mutation
     setActiveGuildId(id: string) {
         this.activeGuildId = id;

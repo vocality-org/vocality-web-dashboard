@@ -1,3 +1,4 @@
+import { BotState } from './../index';
 import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
 import axios from 'axios';
 
@@ -6,6 +7,7 @@ const baseResourceUrl = 'https://cdn.discordapp.com';
 
 export interface IDiscordState {
     account: Account | null;
+    guilds: Guild[];
 }
 
 @Module({
@@ -14,6 +16,7 @@ export interface IDiscordState {
 })
 export class Discord extends VuexModule implements IDiscordState {
     account: Account | null = null;
+    guilds = [];
 
     get hasAccountData() {
         return this.account !== null;
@@ -21,6 +24,10 @@ export class Discord extends VuexModule implements IDiscordState {
 
     get username() {
         return this.account ? this.account.username : undefined;
+    }
+
+    get userId() {
+        return this.account ? this.account.id : undefined;
     }
 
     get avatar() {
@@ -49,16 +56,78 @@ export class Discord extends VuexModule implements IDiscordState {
             });
     }
 
+    @Action
+    async fetchBotGuilds(botId: string) {
+        const botGuilds: Guild[] = [];
+
+        const userGuilds = await axios
+            .get<Guild[]>(`${baseUrl}/users/@me/guilds`)
+            .then(response => {
+                return response.data;
+            })
+            .catch(err => {
+                console.log(err);
+                return null;
+            });
+
+        if (!userGuilds) return;
+
+        userGuilds.forEach(async guild => {
+            await axios
+                .get<GuildMember[]>(`${baseUrl}/guilds/${guild.id}/members`)
+                .then(response => {
+                    console.log(response);
+                    response.data.forEach(member => {
+                        if (member.user.id === botId) {
+                            botGuilds.push(guild);
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    return null;
+                });
+        });
+
+        // if icon is null acronym of name is displayed (e.g. "My Server" = "MY")
+        userGuilds.forEach(guild => {
+            if (!guild.icon) {
+                guild.nameIcon = guild.name.match(/\b\w/g)!.join('');
+            }
+        });
+    }
+
     @Mutation
     logout() {
         this.account = null;
     }
 }
 
+/**
+ * Discord user data
+ * https://discordapp.com/developers/docs/resources/user#user-object-example-user
+ */
 interface Account {
+    id: string;
     username: string;
     locale: string;
     avatar: string;
-    id: number;
     discriminator: number;
+}
+
+/**
+ * https://discordapp.com/developers/docs/resources/guild#guild-object
+ */
+interface Guild {
+    id: string;
+    name: string;
+    icon: string;
+    nameIcon?: string;
+}
+
+/**
+ * https://discordapp.com/developers/docs/resources/guild#guild-member-object
+ */
+interface GuildMember {
+    user: Account;
 }
