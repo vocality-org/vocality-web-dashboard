@@ -1,12 +1,12 @@
 <template>
     <div>
         <v-navigation-drawer app v-model="isOpen" :expand-on-hover="$vuetify.breakpoint.lgAndUp" mini-variant-width="64">
-            <v-list-item>
-                <v-list-item-avatar>
-                    <v-img src="@/assets/vocality/logo.svg"></v-img>
-                </v-list-item-avatar>
-            </v-list-item>
             <v-list nav dense>
+                <v-list-item class="logo-item">
+                    <v-list-item-avatar @click="navigateTo('search')">
+                        <v-img class="logo" src="@/assets/vocality/logo.svg"></v-img>
+                    </v-list-item-avatar>
+                </v-list-item>
                 <v-list-item link @click="navigateTo('search')">
                     <v-list-item-icon>
                         <v-icon>{{ searchIcon }}</v-icon>
@@ -70,6 +70,7 @@ export default class AppDrawer extends Vue {
     queueIcon = mdiPlaylistMusic;
 
     openGuildsBar() {
+        AppState.appDrawer.close();
         AppState.guildDrawer.open();
     }
 
@@ -86,3 +87,17 @@ export default class AppDrawer extends Vue {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.logo-item {
+    display: flex;
+    justify-content: center;
+}
+.logo {
+    transition: transform 100ms ease;
+    &:hover {
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+}
+</style>

@@ -25,4 +25,14 @@ export class BotSocket extends VuexModule implements IBotSocketState {
     socket_botid(message: string) {
         this.context.commit('setBotId', message);
     }
+
+    @Action
+    socket_currentQueue(message: any) {
+        console.log(message);
+    }
+
+    @Action
+    socket_currentSong(message: any) {
+        console.log(message);
+    }
 }

@@ -9,7 +9,7 @@
 
             <div class="divider"></div>
 
-            <v-list dense>
+            <v-list dense v-if="guilds">
                 <v-list-item
                     v-for="guild in guilds"
                     :key="guild.id"
@@ -23,6 +23,10 @@
                     <v-list-item-content>{{ guild.name }}</v-list-item-content>
                 </v-list-item>
             </v-list>
+
+            <div else class="loading-container">
+                <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            </div>
         </v-navigation-drawer>
     </div>
 </template>
@@ -30,7 +34,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { AppState } from '@/store';
 
 @Component({
@@ -43,38 +47,20 @@ import { AppState } from '@/store';
                 state ? AppState.guildDrawer.open() : AppState.guildDrawer.close();
             },
         },
+        ...mapState('discord', ['guilds']),
+    },
+    mounted() {
+        this.$socket.client.emit('currentGuild', { guildId: '326751462136741899' });
     },
 })
 export default class GuildDrawer extends Vue {
-    guilds = [
-        {
-            id: '2135f43f13',
-            imgUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
-            name: 'Guild1',
-        },
-        {
-            id: '34t34g3',
-            imgUrl: 'https://randomuser.me/api/portraits/women/2.jpg',
-            name: 'Guild1',
-        },
-        {
-            id: '23r21234ff',
-            imgUrl: 'https://randomuser.me/api/portraits/men/3.jpg',
-            name: 'Guild1',
-        },
-        {
-            id: '34kn32423',
-            imgUrl: 'https://randomuser.me/api/portraits/women/4.jpg',
-            name: 'Guild1',
-        },
-    ];
-
     setActiveGuildId(id: string) {
         AppState.guildDrawer.close();
         AppState.guildDrawer.setActiveGuildId(id);
+        this.$socket.client.emit('currentGuild', { guildId: id });
     }
 
-    isActive(id: string) {
+    isActive(id: string): boolean {
         return id === AppState.guildDrawer.activeGuildId;
     }
 }
@@ -119,5 +105,10 @@ export default class GuildDrawer extends Vue {
         left: -4px;
         transition: height 200ms ease;
     }
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
 }
 </style>

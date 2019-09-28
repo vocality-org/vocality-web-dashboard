@@ -8,6 +8,7 @@ const baseResourceUrl = 'https://cdn.discordapp.com';
 export interface IDiscordState {
     account: Account | null;
     userGuilds: Guild[];
+    guilds: Guild[];
 }
 
 @Module({
@@ -17,6 +18,7 @@ export interface IDiscordState {
 export class Discord extends VuexModule implements IDiscordState {
     account: Account | null = null;
     userGuilds: Guild[] = [];
+    guilds: Guild[] = [];
 
     get hasAccountData() {
         return this.account !== null;
@@ -68,9 +70,11 @@ export class Discord extends VuexModule implements IDiscordState {
                 return [];
             });
 
-        // if icon is null acronym of name is displayed (e.g. "My Server" = "MY")
+        // if icon is null, acronym of name is displayed (e.g. "Server 2" = "S2")
         userGuilds.forEach(guild => {
-            if (!guild.icon) {
+            if (guild.iconHash) {
+                guild.iconUrl = `${baseResourceUrl}/${guild.id}/${guild.iconHash}.png`;
+            } else {
                 guild.nameIcon = guild.name.match(/\b\w/g)!.join('');
             }
         });
@@ -102,7 +106,8 @@ interface Account {
 interface Guild {
     id: string;
     name: string;
-    icon: string;
+    iconHash: string;
+    iconUrl?: string;
     nameIcon?: string;
 }
 
