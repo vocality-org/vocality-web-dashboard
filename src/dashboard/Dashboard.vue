@@ -52,6 +52,8 @@ import MusicBar from './components/MusicBar.vue';
     mounted() {
         this.$socket.client.io.opts.query = { discordKey: AuthState.token, userId: DiscordState.userId };
         this.$socket.client.open();
+        DiscordState.fetchUserGuilds();
+        this.$socket.client.emit('userGuilds', DiscordState.userGuilds.map(g => g.id));
     },
     components: {
         AppBar,

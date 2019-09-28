@@ -24,6 +24,5 @@ export class BotSocket extends VuexModule implements IBotSocketState {
     @Action
     socket_botid(message: string) {
         this.context.commit('setBotId', message);
-        DiscordState.fetchBotGuilds(message);
     }
 }

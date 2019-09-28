@@ -7,7 +7,7 @@ const baseResourceUrl = 'https://cdn.discordapp.com';
 
 export interface IDiscordState {
     account: Account | null;
-    guilds: Guild[];
+    userGuilds: Guild[];
 }
 
 @Module({
@@ -16,7 +16,7 @@ export interface IDiscordState {
 })
 export class Discord extends VuexModule implements IDiscordState {
     account: Account | null = null;
-    guilds = [];
+    userGuilds: Guild[] = [];
 
     get hasAccountData() {
         return this.account !== null;
@@ -56,10 +56,8 @@ export class Discord extends VuexModule implements IDiscordState {
             });
     }
 
-    @Action
-    async fetchBotGuilds(botId: string) {
-        const botGuilds: Guild[] = [];
-
+    @MutationAction({ mutate: ['userGuilds'] })
+    async fetchUserGuilds() {
         const userGuilds = await axios
             .get<Guild[]>(`${baseUrl}/users/@me/guilds`)
             .then(response => {
@@ -67,27 +65,8 @@ export class Discord extends VuexModule implements IDiscordState {
             })
             .catch(err => {
                 console.log(err);
-                return null;
+                return [];
             });
-
-        if (!userGuilds) return;
-
-        userGuilds.forEach(async guild => {
-            await axios
-                .get<GuildMember[]>(`${baseUrl}/guilds/${guild.id}/members`)
-                .then(response => {
-                    console.log(response);
-                    response.data.forEach(member => {
-                        if (member.user.id === botId) {
-                            botGuilds.push(guild);
-                        }
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
-                    return null;
-                });
-        });
 
         // if icon is null acronym of name is displayed (e.g. "My Server" = "MY")
         userGuilds.forEach(guild => {
@@ -95,6 +74,8 @@ export class Discord extends VuexModule implements IDiscordState {
                 guild.nameIcon = guild.name.match(/\b\w/g)!.join('');
             }
         });
+
+        return { userGuilds: userGuilds };
     }
 
     @Mutation
