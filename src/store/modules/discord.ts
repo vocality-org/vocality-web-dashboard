@@ -6,7 +6,7 @@ const baseUrl = 'https://discordapp.com/api';
 const baseResourceUrl = 'https://cdn.discordapp.com';
 
 export interface IDiscordState {
-    account: Account | null;
+    account: Account | undefined;
     userGuilds: Guild[];
     guilds: Guild[];
 }
@@ -16,12 +16,12 @@ export interface IDiscordState {
     namespaced: true,
 })
 export class Discord extends VuexModule implements IDiscordState {
-    account: Account | null = null;
+    account: Account | undefined = undefined;
     userGuilds: Guild[] = [];
     guilds: Guild[] = [];
 
     get hasAccountData() {
-        return this.account !== null;
+        return this.account !== undefined;
     }
 
     get username() {
@@ -45,6 +45,11 @@ export class Discord extends VuexModule implements IDiscordState {
         return `${baseResourceUrl}/avatars/${this.account!.id}/${this.account!.avatar}.${type}`;
     }
 
+    @Mutation
+    setBotGuildsWithId(botGuildIds: string[]) {
+        this.guilds = this.userGuilds.filter(g => botGuildIds.includes(g.id));
+    }
+
     @MutationAction({ mutate: ['account'] })
     async fetchAccount() {
         return await axios
@@ -54,7 +59,7 @@ export class Discord extends VuexModule implements IDiscordState {
             })
             .catch(err => {
                 console.log(err);
-                return { account: null };
+                return { account: undefined };
             });
     }
 
@@ -70,12 +75,12 @@ export class Discord extends VuexModule implements IDiscordState {
                 return [];
             });
 
-        // if icon is null, acronym of name is displayed (e.g. "Server 2" = "S2")
+        // if icon is null, acronym of name is displayed
         userGuilds.forEach(guild => {
-            if (guild.iconHash) {
-                guild.iconUrl = `${baseResourceUrl}/${guild.id}/${guild.iconHash}.png`;
+            if (guild.icon) {
+                guild.iconUrl = `${baseResourceUrl}/icons/${guild.id}/${guild.icon}.png`;
             } else {
-                guild.nameIcon = guild.name.match(/\b\w/g)!.join('');
+                guild.nameIcon = guild.name.match(/\b[\w(\S)]/g)!.join('');
             }
         });
 
@@ -84,7 +89,7 @@ export class Discord extends VuexModule implements IDiscordState {
 
     @Mutation
     logout() {
-        this.account = null;
+        this.account = undefined;
     }
 }
 
@@ -106,14 +111,7 @@ interface Account {
 interface Guild {
     id: string;
     name: string;
-    iconHash: string;
+    icon: string;
     iconUrl?: string;
     nameIcon?: string;
-}
-
-/**
- * https://discordapp.com/developers/docs/resources/guild#guild-member-object
- */
-interface GuildMember {
-    user: Account;
 }

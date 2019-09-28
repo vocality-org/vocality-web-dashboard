@@ -4,6 +4,9 @@ export interface IMusicState {
     isPlaying: boolean;
     volume: number;
     isLooping: boolean;
+    lastSong: Song | undefined;
+    currentSong: Song | undefined;
+    queue: Song[];
 }
 
 @Module({
@@ -11,13 +14,32 @@ export interface IMusicState {
     namespaced: true,
 })
 export class Music extends VuexModule implements IMusicState {
-    isPlaying = false;
     private lastVolume = 0;
     volume = 0;
+    isPlaying = false;
     isLooping = false;
+    lastSong: Song | undefined = undefined;
+    currentSong: Song | undefined = undefined;
+    queue: Song[] = [];
 
     get isMuted() {
         return this.volume === 0;
+    }
+
+    get nextUpSong(): Song | undefined {
+        if (this.queue.length >= 1) {
+            return this.queue[1];
+        } else {
+            return undefined;
+        }
+    }
+
+    get songCurrentTime(): number | undefined {
+        return this.currentSong ? this.currentSong.currentTimeMs / 1000 : undefined;
+    }
+
+    get songMaxTime(): number | undefined {
+        return this.currentSong ? this.currentSong.maxTimeMs / 1000 : undefined;
     }
 
     @Mutation
@@ -39,7 +61,7 @@ export class Music extends VuexModule implements IMusicState {
     @Mutation
     unmute() {
         if (this.lastVolume === 0) {
-            this.volume = 100; //! probably bad but needed to test
+            this.volume = 100;
         } else {
             this.volume = this.lastVolume;
         }
@@ -58,4 +80,40 @@ export class Music extends VuexModule implements IMusicState {
     switchLooping() {
         this.isLooping = !this.isLooping;
     }
+
+    @Mutation
+    setCurrentSong(song: Song) {
+        this.currentSong = song;
+    }
+
+    @Mutation
+    setQueue(queue: Song[]) {
+        this.queue = queue;
+    }
+
+    @Mutation
+    removeFromQueueAt(index: number) {
+        this.queue.splice(index, 1);
+    }
+
+    @Mutation
+    nextSong() {
+        this.lastSong = this.currentSong;
+        if (this.queue.length > 0) {
+            this.currentSong = this.queue.shift()!;
+        }
+    }
+
+    @Mutation
+    addToQueue(song: Song) {
+        this.queue.push(song);
+    }
+}
+
+export interface Song {
+    title: string;
+    thumbnailUrl: string;
+    requestedBy: string;
+    maxTimeMs: number;
+    currentTimeMs: number;
 }

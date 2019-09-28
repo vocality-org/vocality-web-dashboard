@@ -1,38 +1,29 @@
 import { DiscordState } from '@/store';
+import { MusicState } from './../index';
 import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
-import axios from 'axios';
 
-export interface IBotSocketState {
-    /**
-     * The Bots Discord user ID
-     */
-    botId: string;
-}
+export interface IBotSocketState {}
 
 @Module({
     name: 'botSocket',
     namespaced: true,
 })
 export class BotSocket extends VuexModule implements IBotSocketState {
-    botId = '';
-
-    @Mutation
-    setBotId(id: string) {
-        this.botId = id;
-    }
-
     @Action
-    socket_botid(message: string) {
-        this.context.commit('setBotId', message);
+    socket_botGuilds(message: string[]) {
+        console.log(message);
+        DiscordState.setBotGuildsWithId(message);
     }
 
     @Action
     socket_currentQueue(message: any) {
         console.log(message);
+        MusicState.setQueue(message);
     }
 
     @Action
     socket_currentSong(message: any) {
         console.log(message);
+        MusicState.setCurrentSong(message);
     }
 }

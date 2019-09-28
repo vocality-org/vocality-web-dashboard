@@ -2,9 +2,8 @@
     <div>
         <div class="container">
             <div class="search">
-                s
+                <v-text-field label="Label"></v-text-field>
             </div>
-            <v-text-field label="Label"></v-text-field>
         </div>
     </div>
 </template>

@@ -12,22 +12,23 @@
 
                 <v-divider></v-divider>
 
-                <v-list>
-                    <v-list-item style="padding: 0;" class="list-item">
-                        <div class="current-song song-container">
-                            <img
-                                class="song-img"
-                                src="https://i1.sndcdn.com/artworks-000576266747-svvc65-t500x500.jpg"
-                                height="32"
-                            />
-                            <span class="song-title">Will Sparks - Egypt</span>
-                            <span class="subtitle" style="margin-bottom: 1px;">requested by boolean</span>
-                            <v-btn fab small color="transparent" class="elevation-0 remove-ico">
+                <v-list v-if="queue.length">
+                    <v-list-item v-for="(song, index) in queue" :key="song.title" class="list-item">
+                        <div class="song-container">
+                            <img class="song-img" :src="song.thumbnailUrl" height="32" />
+                            <span class="song-title">{{ song.title }}</span>
+                            <span class="subtitle" style="margin-bottom: 1px;">requested by {{ song.requestedBy }}</span>
+                            <v-btn fab small color="transparent" class="elevation-0 remove-ico" @click="removeSong(index)">
                                 <v-icon>{{ remove }}</v-icon>
                             </v-btn>
                         </div>
                     </v-list-item>
                 </v-list>
+
+                <div v-else class="no-queue mt-4 pt-4">
+                    <span class="body-2">There is nohing in queue</span>
+                    <v-btn small color="primary" class="mt-3" @click="$router.push({ name: 'search' })">Add a song</v-btn>
+                </div>
             </div>
         </v-navigation-drawer>
     </div>
@@ -36,8 +37,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AppState } from '@/store';
+import { AppState, MusicState } from '@/store';
 import { mdiArrowRight, mdiPlaylistRemove } from '@mdi/js';
+import { mapState } from 'vuex';
 
 @Component({
     computed: {
@@ -52,6 +54,7 @@ import { mdiArrowRight, mdiPlaylistRemove } from '@mdi/js';
         width() {
             return this.$vuetify.breakpoint.mdAndUp ? 300 : 200;
         },
+        ...mapState('music', ['queue']),
     },
 })
 export default class QueueDrawer extends Vue {
@@ -60,6 +63,10 @@ export default class QueueDrawer extends Vue {
 
     closeDrawer() {
         AppState.queueDrawer.close();
+    }
+
+    removeSong(index: number) {
+        MusicState.removeFromQueueAt(index);
     }
 }
 </script>
@@ -72,12 +79,14 @@ export default class QueueDrawer extends Vue {
         justify-content: space-between;
         .title {
             font-weight: normal;
+            margin-top: 4px;
         }
         .back-btn {
-            margin-top: -8px;
+            margin-top: -2px;
         }
     }
     .list-item {
+        padding: 0;
         &:hover {
             background-color: rgba(255, 255, 255, 0.2);
             .song-title::after,
@@ -148,5 +157,11 @@ export default class QueueDrawer extends Vue {
         left: -4px;
         display: none;
     }
+}
+
+.no-queue {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 </style>

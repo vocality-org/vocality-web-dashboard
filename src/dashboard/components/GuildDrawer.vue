@@ -9,7 +9,7 @@
 
             <div class="divider"></div>
 
-            <v-list dense v-if="guilds">
+            <v-list dense v-if="guilds.length">
                 <v-list-item
                     v-for="guild in guilds"
                     :key="guild.id"
@@ -17,15 +17,36 @@
                     @click="setActiveGuildId(guild.id)"
                     link
                 >
-                    <v-list-item-avatar>
-                        <v-img :src="guild.imgUrl"></v-img>
+                    <v-list-item-avatar v-if="guild.iconUrl">
+                        <v-img :src="guild.iconUrl"></v-img>
+                    </v-list-item-avatar>
+                    <v-list-item-avatar v-else class="name-icon">
+                        <span>{{ guild.nameIcon }}</span>
                     </v-list-item-avatar>
                     <v-list-item-content>{{ guild.name }}</v-list-item-content>
                 </v-list-item>
             </v-list>
 
-            <div else class="loading-container">
+            <div v-if="!guilds.length && loading" class="loading-container mt-4">
                 <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            </div>
+
+            <div v-if="!guilds.length && !loading" class="timeout-container mt-2">
+                <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                            v-on="on"
+                            fab
+                            color="transparent"
+                            class="elevation-0"
+                            href="https://discordapp.com/api/oauth2/authorize?client_id=589595189631385602&permissions=3164224&scope=bot"
+                            target="__blank"
+                        >
+                            <v-icon>{{ commentAdd }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Add Vocality to your Discord Server</span>
+                </v-tooltip>
             </div>
         </v-navigation-drawer>
     </div>
@@ -36,6 +57,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { mapState, mapGetters } from 'vuex';
 import { AppState } from '@/store';
+import { mdiCommentPlusOutline } from '@mdi/js';
 
 @Component({
     computed: {
@@ -50,10 +72,15 @@ import { AppState } from '@/store';
         ...mapState('discord', ['guilds']),
     },
     mounted() {
-        this.$socket.client.emit('currentGuild', { guildId: '326751462136741899' });
+        setTimeout(() => {
+            this.$data.loading = false;
+        }, 60000);
     },
 })
 export default class GuildDrawer extends Vue {
+    commentAdd = mdiCommentPlusOutline;
+    loading = true;
+
     setActiveGuildId(id: string) {
         AppState.guildDrawer.close();
         AppState.guildDrawer.setActiveGuildId(id);
@@ -70,9 +97,9 @@ export default class GuildDrawer extends Vue {
 .divider {
     width: 50%;
     height: 5px;
-    background-color: #b2b2b2;
+    background-color: #b2b2b25b;
     border-radius: 2.5px;
-    margin: 8px auto;
+    margin: auto;
 }
 
 .inactive {
@@ -107,7 +134,16 @@ export default class GuildDrawer extends Vue {
     }
 }
 
+.name-icon {
+    background-color: #686868;
+}
+
 .loading-container {
+    display: flex;
+    justify-content: center;
+}
+
+.timeout-container {
     display: flex;
     justify-content: center;
 }

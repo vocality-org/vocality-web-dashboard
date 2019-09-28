@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-menu offset-y="">
+        <v-menu offset-y left>
             <template v-slot:activator="{ on }">
                 <v-btn fab icon v-on="on" elevation="0" ripple>
                     <v-avatar size="26">
@@ -10,16 +10,20 @@
             </template>
             <v-list>
                 <v-list-item @click="logout()">
-                    <v-list-item-title>
+                    <v-list-item-icon>
                         <v-icon class="mr-2">{{ mdiSettings }}</v-icon>
-                        Settings
-                    </v-list-item-title>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Settings</v-list-item-title>
+                    </v-list-item-content>
                 </v-list-item>
                 <v-list-item @click="logout()">
-                    <v-list-item-title>
+                    <v-list-item-icon>
                         <v-icon class="mr-2">{{ mdiLogout }}</v-icon>
-                        Log Out
-                    </v-list-item-title>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>Logoout</v-list-item-title>
+                    </v-list-item-content>
                 </v-list-item>
             </v-list>
         </v-menu>

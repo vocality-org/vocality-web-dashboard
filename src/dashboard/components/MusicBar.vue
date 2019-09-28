@@ -4,12 +4,17 @@
             <div class="playback-bar">
                 <v-progress-linear value="33" height="2" background-color="#595959"></v-progress-linear>
             </div>
-            <div class="current-song song-container" v-if="$vuetify.breakpoint.mdAndUp">
-                <img class="song-img" src="https://i1.sndcdn.com/artworks-000576266747-svvc65-t500x500.jpg" height="32" />
-                <span class="song-title">Will Sparks - Egypt</span>
-                <span class="subtitle" style="margin-bottom: 1px;">requested by boolean</span>
+            <div v-if="currentSong && $vuetify.breakpoint.mdAndUp" class="current-song song-container">
+                <img class="song-img" :src="nextUp.thumbnailUrl" height="32" />
+                <span class="song-title">{{ currentSong.title }}</span>
+                <span class="subtitle" style="margin-bottom: 1px;">requested by {{ currentSong.requestedBy }}</span>
             </div>
-            <span class="caption" style="margin-top: 2px">1:00</span>
+            <div v-else>
+                <div class="song-placeholder" style="margin-left: 38px"></div>
+            </div>
+
+            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{ formatTime(songCurrentTime) }}</span>
+
             <div class="controls" :class="{ 'center-on-sm': $vuetify.breakpoint.smAndDown }">
                 <v-icon class="mx-2 ico-btn" :class="{ 'ico-btn-active': isLooping }" @click="switchLooping()">
                     {{ loopIcon }}
@@ -23,14 +28,16 @@
                     <v-icon v-else class="mx-2 ico-btn" @click="mute()">{{ volumeIcon }}</v-icon>
                 </div>
             </div>
-            <span class="caption" style="margin-top: 2px">3:00</span>
-            <div class="next-song song-container" @click="openQueueDrawer()" v-if="$vuetify.breakpoint.mdAndUp">
-                <img class="song-img" src="https://i1.sndcdn.com/artworks-000097107321-1mn0be-t500x500.jpg" height="32" />
+
+            <span v-if="songMaxTime" class="caption" style="margin-top: 2px">{{ formatTime(songMaxTime) }}</span>
+
+            <div v-if="nextUpSong && $vuetify.breakpoint.mdAndUp" class="next-song song-container" @click="openQueueDrawer()">
+                <img class="song-img" :src="nextUp.thumbnailUrl" height="32" />
                 <span class="subtitle" style="margin-top: 1px;">Up Next</span>
-                <span class="song-title">Will Sparks - Ah Yeah So What (feat. Wiley & Elen Levon) [OUT NOW]</span>
+                <span class="song-title">{{ nextUpSong.title }}</span>
             </div>
             <div v-else>
-                <v-icon class="ico-btn" @click="openQueueDrawer()">{{ queue }}</v-icon>
+                <div class="song-placeholder"></div>
             </div>
         </div>
     </v-bottom-navigation>
@@ -39,23 +46,14 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import {
-    mdiPlay,
-    mdiSkipNext,
-    mdiSkipPrevious,
-    mdiVolumeHigh,
-    mdiVolumeOff,
-    mdiReplay,
-    mdiPause,
-    mdiPlaylistMusic,
-} from '@mdi/js';
+import { mdiPlay, mdiSkipNext, mdiSkipPrevious, mdiVolumeHigh, mdiVolumeOff, mdiReplay, mdiPause } from '@mdi/js';
 import { mapState, mapGetters } from 'vuex';
 import { MusicState, AppState } from '@/store';
 
 @Component({
     computed: {
-        ...mapGetters('music', ['isMuted']),
-        ...mapState('music', ['isPlaying', 'isLooping']),
+        ...mapGetters('music', ['isMuted', 'nextUpSong', 'songCurrentTime', 'songMaxTime']),
+        ...mapState('music', ['isPlaying', 'isLooping', 'currentSong']),
     },
 })
 export default class MusicBar extends Vue {
@@ -66,7 +64,6 @@ export default class MusicBar extends Vue {
     previousIcon = mdiSkipPrevious;
     volumeIcon = mdiVolumeHigh;
     mutedIcon = mdiVolumeOff;
-    queue = mdiPlaylistMusic;
 
     setPlaying(state: boolean) {
         state ? MusicState.play() : MusicState.pause();
@@ -86,6 +83,12 @@ export default class MusicBar extends Vue {
 
     openQueueDrawer() {
         AppState.queueDrawer.open();
+    }
+
+    formatTime(s: number): string {
+        const t = new Date(0);
+        t.setSeconds(s);
+        return `${t.getMinutes()}:${t.getSeconds()}`;
     }
 }
 </script>
@@ -196,6 +199,35 @@ export default class MusicBar extends Vue {
     .progress {
         background-color: clr(brand, cyan);
         width: 50%;
+    }
+}
+
+.song-placeholder {
+    $color: rgba(255, 255, 255, 0.164);
+    height: 11px;
+    width: 200px;
+    border-radius: 4px;
+    background-color: $color;
+    position: relative;
+    margin-bottom: 14px;
+    &::after {
+        content: '';
+        height: 7px;
+        width: 150px;
+        border-radius: 4px;
+        background-color: $color;
+        position: absolute;
+        top: 18px;
+    }
+    &::before {
+        content: '';
+        height: 32px;
+        width: 32px;
+        border-radius: 4px;
+        background-color: $color;
+        position: absolute;
+        left: -38px;
+        top: -3px;
     }
 }
 </style>
