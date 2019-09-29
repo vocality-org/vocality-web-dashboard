@@ -33,6 +33,7 @@ export class Discord extends VuexModule implements IDiscordState {
     }
 
     get avatar() {
+        if (!this.account) return undefined;
         let type = 'png';
         // get default avatar
         if (!this.account!.avatar) {

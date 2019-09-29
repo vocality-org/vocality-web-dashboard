@@ -84,7 +84,7 @@ export default class GuildDrawer extends Vue {
     setActiveGuildId(id: string) {
         AppState.guildDrawer.close();
         AppState.guildDrawer.setActiveGuildId(id);
-        this.$socket.client.emit('currentGuild', { guildId: id });
+        this.$socket.client.emit('currentGuild', id);
     }
 
     isActive(id: string): boolean {

@@ -43,6 +43,11 @@ export class Music extends VuexModule implements IMusicState {
     }
 
     @Mutation
+    increaseCurrentSongTime(seconds: number) {
+        this.currentSong!.currentTimeMs += 1000;
+    }
+
+    @Mutation
     pause() {
         this.isPlaying = false;
     }

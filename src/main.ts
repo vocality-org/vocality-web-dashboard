@@ -20,6 +20,9 @@ new Vue({
         connect() {
             console.log('socket connected');
         },
+        disconnect() {
+            console.log('socket disconnected');
+        },
     },
     render: h => h(App),
 }).$mount('#app');

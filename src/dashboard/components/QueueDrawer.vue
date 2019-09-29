@@ -25,9 +25,10 @@
                     </v-list-item>
                 </v-list>
 
-                <div v-else class="no-queue mt-4 pt-4">
+                <div v-else class="no-queue mt-4 pt-3">
                     <span class="body-2">There is nohing in queue</span>
-                    <v-btn small color="primary" class="mt-3" @click="$router.push({ name: 'search' })">Add a song</v-btn>
+                    <v-btn color="primary" class="mt-3" @click="$router.push({ name: 'search' })">Add a song</v-btn>
+                    <div class="placeholder-container"><div v-for="i in 5" :key="i" class="song-placeholder"></div></div>
                 </div>
             </div>
         </v-navigation-drawer>
@@ -163,5 +164,43 @@ export default class QueueDrawer extends Vue {
     display: flex;
     align-items: center;
     flex-direction: column;
+    position: relative;
+    .placeholder-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+    }
+    .song-placeholder {
+        $color: rgba(255, 255, 255, 0.13);
+        height: 11px;
+        width: calc(100% - 72px);
+        border-radius: 4px;
+        background-color: $color;
+        position: relative;
+        left: 56px;
+        top: 8px;
+        margin-bottom: 32px;
+        &::after {
+            content: '';
+            height: 7px;
+            width: 150px;
+            border-radius: 4px;
+            background-color: $color;
+            position: absolute;
+            top: 18px;
+        }
+        &::before {
+            content: '';
+            height: 32px;
+            width: 32px;
+            border-radius: 4px;
+            background-color: $color;
+            position: absolute;
+            left: -38px;
+            top: -3px;
+        }
+    }
 }
 </style>

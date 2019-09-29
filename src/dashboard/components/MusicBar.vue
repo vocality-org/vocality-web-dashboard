@@ -2,14 +2,14 @@
     <v-bottom-navigation app>
         <div class="music-bar">
             <div class="playback-bar">
-                <v-progress-linear value="33" height="2" background-color="#595959"></v-progress-linear>
+                <v-progress-linear :value="songCurrentTime" height="2" background-color="#595959"></v-progress-linear>
             </div>
             <div v-if="currentSong && $vuetify.breakpoint.mdAndUp" class="current-song song-container">
                 <img class="song-img" :src="nextUp.thumbnailUrl" height="32" />
                 <span class="song-title">{{ currentSong.title }}</span>
                 <span class="subtitle" style="margin-bottom: 1px;">requested by {{ currentSong.requestedBy }}</span>
             </div>
-            <div v-else>
+            <div v-if="!currentSong && $vuetify.breakpoint.mdAndUp">
                 <div class="song-placeholder" style="margin-left: 38px"></div>
             </div>
 
@@ -36,7 +36,7 @@
                 <span class="subtitle" style="margin-top: 1px;">Up Next</span>
                 <span class="song-title">{{ nextUpSong.title }}</span>
             </div>
-            <div v-else>
+            <div v-if="!nextUpSong && $vuetify.breakpoint.mdAndUp">
                 <div class="song-placeholder"></div>
             </div>
         </div>
@@ -53,7 +53,7 @@ import { MusicState, AppState } from '@/store';
 @Component({
     computed: {
         ...mapGetters('music', ['isMuted', 'nextUpSong', 'songCurrentTime', 'songMaxTime']),
-        ...mapState('music', ['isPlaying', 'isLooping', 'currentSong']),
+        ...mapState('music', ['isPlaying', 'isLooping']),
     },
 })
 export default class MusicBar extends Vue {
@@ -64,6 +64,11 @@ export default class MusicBar extends Vue {
     previousIcon = mdiSkipPrevious;
     volumeIcon = mdiVolumeHigh;
     mutedIcon = mdiVolumeOff;
+    progress = 0;
+
+    get currentSong() {
+        return MusicState.currentSong;
+    }
 
     setPlaying(state: boolean) {
         state ? MusicState.play() : MusicState.pause();
@@ -89,6 +94,18 @@ export default class MusicBar extends Vue {
         const t = new Date(0);
         t.setSeconds(s);
         return `${t.getMinutes()}:${t.getSeconds()}`;
+    }
+
+    updateProgress() {
+        if (this.currentSong) {
+            MusicState.increaseCurrentSongTime(1);
+        }
+    }
+
+    created() {
+        setInterval(() => {
+            this.updateProgress();
+        }, 1000);
     }
 }
 </script>

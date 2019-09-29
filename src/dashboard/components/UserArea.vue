@@ -9,7 +9,7 @@
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item @click="logout()">
+                <v-list-item @click="settings()">
                     <v-list-item-icon>
                         <v-icon class="mr-2">{{ mdiSettings }}</v-icon>
                     </v-list-item-icon>
@@ -22,7 +22,7 @@
                         <v-icon class="mr-2">{{ mdiLogout }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                        <v-list-item-title>Logoout</v-list-item-title>
+                        <v-list-item-title>Logout</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -51,9 +51,12 @@ export default class UserArea extends Vue {
     mdiLogout = mdiLogoutVariant;
     mdiSettings = mdiSettings;
 
+    settings() {}
+
     logout() {
         AuthState.logout();
         DiscordState.logout();
+        this.$socket.client.close();
         this.$router.push('/login');
     }
 }
