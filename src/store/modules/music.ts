@@ -4,8 +4,8 @@ export interface IMusicState {
     isPlaying: boolean;
     volume: number;
     isLooping: boolean;
-    lastSong: Song | undefined;
-    currentSong: Song | undefined;
+    lastSong: Song | null;
+    currentSong: Song | null;
     queue: Song[];
 }
 
@@ -18,33 +18,33 @@ export class Music extends VuexModule implements IMusicState {
     volume = 0;
     isPlaying = false;
     isLooping = false;
-    lastSong: Song | undefined = undefined;
-    currentSong: Song | undefined = undefined;
+    lastSong: Song | null = null;
+    currentSong: Song | null = null;
     queue: Song[] = [];
 
     get isMuted() {
         return this.volume === 0;
     }
 
-    get nextUpSong(): Song | undefined {
+    get nextUpSong(): Song | null {
         if (this.queue.length >= 1) {
             return this.queue[1];
         } else {
-            return undefined;
+            return null;
         }
     }
 
-    get songCurrentTime(): number | undefined {
-        return this.currentSong ? this.currentSong.currentTimeMs / 1000 : undefined;
+    get songCurrentTime(): number | null {
+        return this.currentSong ? this.currentSong.current_time_ms / 1000 : null;
     }
 
-    get songMaxTime(): number | undefined {
-        return this.currentSong ? this.currentSong.maxTimeMs / 1000 : undefined;
+    get songMaxTime(): number | null {
+        return this.currentSong ? this.currentSong.max_time_ms / 1000 : null;
     }
 
     @Mutation
     increaseCurrentSongTime(seconds: number) {
-        this.currentSong!.currentTimeMs += 1000;
+        this.currentSong!.current_time_ms += 1000;
     }
 
     @Mutation
@@ -117,8 +117,8 @@ export class Music extends VuexModule implements IMusicState {
 
 export interface Song {
     title: string;
-    thumbnailUrl: string;
-    requestedBy: string;
-    maxTimeMs: number;
-    currentTimeMs: number;
+    thumbnail_url: string;
+    requested_by: string;
+    max_time_ms: number;
+    current_time_ms: number;
 }

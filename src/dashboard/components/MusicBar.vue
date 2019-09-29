@@ -2,12 +2,16 @@
     <v-bottom-navigation app>
         <div class="music-bar">
             <div class="playback-bar">
-                <v-progress-linear :value="songCurrentTime" height="2" background-color="#595959"></v-progress-linear>
+                <v-progress-linear
+                    :value="(songCurrentTime / songMaxTime) * 100"
+                    height="2"
+                    background-color="#595959"
+                ></v-progress-linear>
             </div>
             <div v-if="currentSong && $vuetify.breakpoint.mdAndUp" class="current-song song-container">
-                <img class="song-img" :src="nextUp.thumbnailUrl" height="32" />
+                <img class="song-img" :src="currentSong.thumbnail_url" height="32" width="32" />
                 <span class="song-title">{{ currentSong.title }}</span>
-                <span class="subtitle" style="margin-bottom: 1px;">requested by {{ currentSong.requestedBy }}</span>
+                <span class="subtitle" style="margin-bottom: 1px;">requested by {{ currentSong.requested_by }}</span>
             </div>
             <div v-if="!currentSong && $vuetify.breakpoint.mdAndUp">
                 <div class="song-placeholder" style="margin-left: 38px"></div>
@@ -32,7 +36,7 @@
             <span v-if="songMaxTime" class="caption" style="margin-top: 2px">{{ formatTime(songMaxTime) }}</span>
 
             <div v-if="nextUpSong && $vuetify.breakpoint.mdAndUp" class="next-song song-container" @click="openQueueDrawer()">
-                <img class="song-img" :src="nextUp.thumbnailUrl" height="32" />
+                <img class="song-img" :src="nextUpSong.thumbnail_url" height="32" width="32" />
                 <span class="subtitle" style="margin-top: 1px;">Up Next</span>
                 <span class="song-title">{{ nextUpSong.title }}</span>
             </div>
@@ -91,19 +95,21 @@ export default class MusicBar extends Vue {
     }
 
     formatTime(s: number): string {
-        const t = new Date(0);
+        const t = new Date('0');
         t.setSeconds(s);
-        return `
-            ${t.getHours() > 0 ? t.getHours() : ''}
-            :
-            ${t.getMinutes() < 10 ? '0' : ''}${t.getMinutes()}
-            :
-            ${t.getSeconds() < 10 ? '0' : ''}${t.getSeconds()}
-        `;
+        return [
+            t.getHours() > 0 ? t.getHours() : '',
+            t.getHours() ? ':' : '',
+            t.getMinutes() < 10 ? '0' : '',
+            t.getMinutes(),
+            ':',
+            t.getSeconds() < 10 ? '0' : '',
+            t.getSeconds(),
+        ].join('');
     }
 
     updateProgress() {
-        if (this.currentSong) {
+        if (this.currentSong && this.currentSong.current_time_ms < this.currentSong.max_time_ms) {
             MusicState.increaseCurrentSongTime(1);
         }
     }

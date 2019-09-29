@@ -13,14 +13,17 @@
                 <v-divider></v-divider>
 
                 <v-list v-if="queue.length">
-                    <v-list-item v-for="(song, index) in queue" :key="song.title" class="list-item">
-                        <div class="song-container">
-                            <img class="song-img" :src="song.thumbnailUrl" height="32" />
+                    <v-list-item v-for="(song, index) in queue" :key="index" class="list-item">
+                        <div class="song-container" @hover="hoverIndex = index">
+                            <img class="song-img" :src="song.thumbnail_url" height="32" width="32" />
                             <span class="song-title">{{ song.title }}</span>
-                            <span class="subtitle" style="margin-bottom: 1px;">requested by {{ song.requestedBy }}</span>
+                            <span class="subtitle" style="margin-bottom: 1px;">requested by {{ song.requested_by }}</span>
                             <v-btn fab small color="transparent" class="elevation-0 remove-ico" @click="removeSong(index)">
                                 <v-icon>{{ remove }}</v-icon>
                             </v-btn>
+                            <div class="time-container">
+                                <span>{{ formatTime(song.max_time_ms) }}</span>
+                            </div>
                         </div>
                     </v-list-item>
                 </v-list>
@@ -61,6 +64,7 @@ import { mapState } from 'vuex';
 export default class QueueDrawer extends Vue {
     arrowRight = mdiArrowRight;
     remove = mdiPlaylistRemove;
+    hoverIndex = -1;
 
     closeDrawer() {
         AppState.queueDrawer.close();
@@ -68,6 +72,20 @@ export default class QueueDrawer extends Vue {
 
     removeSong(index: number) {
         MusicState.removeFromQueueAt(index);
+    }
+
+    formatTime(s: number): string {
+        const t = new Date('0');
+        t.setSeconds(s / 1000);
+        return [
+            t.getHours() > 0 ? t.getHours() : '',
+            t.getHours() ? ':' : '',
+            t.getHours() && t.getMinutes() < 10 ? '0' : '',
+            t.getMinutes(),
+            ':',
+            t.getSeconds() < 10 ? '0' : '',
+            t.getSeconds(),
+        ].join('');
     }
 }
 </script>
@@ -96,6 +114,9 @@ export default class QueueDrawer extends Vue {
             }
             .remove-ico {
                 display: initial;
+            }
+            .time-container {
+                display: none;
             }
         }
     }
@@ -157,6 +178,17 @@ export default class QueueDrawer extends Vue {
         top: -4px;
         left: -4px;
         display: none;
+    }
+    .time-container {
+        font-size: 11px;
+        line-height: 11px;
+        font-weight: 300;
+        opacity: 0.7;
+        grid-column: 3;
+        grid-row: span 2;
+        position: absolute;
+        bottom: 0;
+        right: 16px;
     }
 }
 

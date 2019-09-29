@@ -56,7 +56,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { mapState, mapGetters } from 'vuex';
-import { AppState } from '@/store';
+import { AppState, DiscordState } from '@/store';
 import { mdiCommentPlusOutline } from '@mdi/js';
 
 @Component({
@@ -83,12 +83,18 @@ export default class GuildDrawer extends Vue {
 
     setActiveGuildId(id: string) {
         AppState.guildDrawer.close();
-        AppState.guildDrawer.setActiveGuildId(id);
+        DiscordState.setCurrentGuildId(id);
         this.$socket.client.emit('currentGuild', id);
     }
 
     isActive(id: string): boolean {
-        return id === AppState.guildDrawer.activeGuildId;
+        return id === DiscordState.currentGuildId;
+    }
+
+    created() {
+        if (DiscordState.currentGuildId) {
+            this.$socket.client.emit('currentGuild', DiscordState.currentGuildId);
+        }
     }
 }
 </script>

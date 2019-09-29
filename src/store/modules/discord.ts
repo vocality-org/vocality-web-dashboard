@@ -6,9 +6,10 @@ const baseUrl = 'https://discordapp.com/api';
 const baseResourceUrl = 'https://cdn.discordapp.com';
 
 export interface IDiscordState {
-    account: Account | undefined;
+    account: Account | null;
     userGuilds: Guild[];
     guilds: Guild[];
+    currentGuildId: string;
 }
 
 @Module({
@@ -16,24 +17,25 @@ export interface IDiscordState {
     namespaced: true,
 })
 export class Discord extends VuexModule implements IDiscordState {
-    account: Account | undefined = undefined;
+    account: Account | null = null;
     userGuilds: Guild[] = [];
     guilds: Guild[] = [];
+    currentGuildId = '';
 
     get hasAccountData() {
-        return this.account !== undefined;
+        return this.account !== null;
     }
 
     get username() {
-        return this.account ? this.account.username : undefined;
+        return this.account ? this.account.username : null;
     }
 
     get userId() {
-        return this.account ? this.account.id : undefined;
+        return this.account ? this.account.id : null;
     }
 
     get avatar() {
-        if (!this.account) return undefined;
+        if (!this.account) return null;
         let type = 'png';
         // get default avatar
         if (!this.account!.avatar) {
@@ -44,6 +46,11 @@ export class Discord extends VuexModule implements IDiscordState {
             type = 'gif';
         }
         return `${baseResourceUrl}/avatars/${this.account!.id}/${this.account!.avatar}.${type}`;
+    }
+
+    @Mutation
+    setCurrentGuildId(id: string) {
+        this.currentGuildId = id;
     }
 
     @Mutation
@@ -60,7 +67,7 @@ export class Discord extends VuexModule implements IDiscordState {
             })
             .catch(err => {
                 console.log(err);
-                return { account: undefined };
+                return { account: null };
             });
     }
 
@@ -90,7 +97,7 @@ export class Discord extends VuexModule implements IDiscordState {
 
     @Mutation
     logout() {
-        this.account = undefined;
+        this.account = null;
     }
 }
 

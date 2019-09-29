@@ -20,11 +20,9 @@ class AppDrawer {
 
 class GuildDrawerState {
     isOpen: boolean;
-    activeGuildId: string;
 
     constructor() {
         this.isOpen = false;
-        this.activeGuildId = '';
     }
 
     @Mutation
@@ -35,11 +33,6 @@ class GuildDrawerState {
     @Mutation
     close() {
         this.isOpen = false;
-    }
-
-    @Mutation
-    setActiveGuildId(id: string) {
-        this.activeGuildId = id;
     }
 }
 
