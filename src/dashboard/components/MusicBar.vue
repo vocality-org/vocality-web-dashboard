@@ -93,7 +93,13 @@ export default class MusicBar extends Vue {
     formatTime(s: number): string {
         const t = new Date(0);
         t.setSeconds(s);
-        return `${t.getMinutes()}:${t.getSeconds()}`;
+        return `
+            ${t.getHours() > 0 ? t.getHours() : ''}
+            :
+            ${t.getMinutes() < 10 ? '0' : ''}${t.getMinutes()}
+            :
+            ${t.getSeconds() < 10 ? '0' : ''}${t.getSeconds()}
+        `;
     }
 
     updateProgress() {
