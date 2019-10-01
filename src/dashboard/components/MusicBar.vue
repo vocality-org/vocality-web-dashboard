@@ -68,7 +68,7 @@ export default class MusicBar extends Vue {
     previousIcon = mdiSkipPrevious;
     volumeIcon = mdiVolumeHigh;
     mutedIcon = mdiVolumeOff;
-    progress = 0;
+    progress = 0.0;
 
     get currentSong() {
         return MusicState.currentSong;
