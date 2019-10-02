@@ -106,9 +106,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { AuthState } from '../store';
 
 @Component({
     async beforeRouteEnter(to, from, next) {
+        if (AuthState.hasPermission) {
+            next('dashboard');
+        }
         if (to.query.redirectFrom) {
             if (to.query.code) {
                 next(vm => {
