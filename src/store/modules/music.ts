@@ -9,6 +9,14 @@ export interface IMusicState {
     queue: Song[];
 }
 
+export interface Song {
+    title: string;
+    thumbnail_url: string;
+    requested_by: string;
+    max_time_ms: number;
+    current_time_ms: number;
+}
+
 @Module({
     name: 'music',
     namespaced: true,
@@ -28,17 +36,25 @@ export class Music extends VuexModule implements IMusicState {
 
     get nextUpSong(): Song | null {
         if (this.queue.length >= 1) {
-            return this.queue[1];
+            return this.queue[0];
         } else {
             return null;
         }
     }
 
-    get songCurrentTime(): number | null {
+    get queueDuration() {
+        let duration_ms = 0;
+        if (this.queue) {
+            this.queue.forEach(s => (duration_ms += s.max_time_ms));
+        }
+        return msTimeToDisplayString(duration_ms);
+    }
+
+    get currentSongTimeSeconds(): number | null {
         return this.currentSong ? this.currentSong.current_time_ms / 1000 : null;
     }
 
-    get songMaxTime(): number | null {
+    get currentSongMaxTimeSeconds(): number | null {
         return this.currentSong ? this.currentSong.max_time_ms / 1000 : null;
     }
 
@@ -115,10 +131,22 @@ export class Music extends VuexModule implements IMusicState {
     }
 }
 
-export interface Song {
-    title: string;
-    thumbnail_url: string;
-    requested_by: string;
-    max_time_ms: number;
-    current_time_ms: number;
+/**
+ * Converts given ms to a HH:mm:ss string
+ *
+ * @private
+ * @param {number} ms Time to convert in milliseconds
+ */
+function msTimeToDisplayString(ms: number) {
+    const t = new Date('0');
+    t.setMilliseconds(ms);
+    return [
+        t.getHours() > 0 ? t.getHours() : '',
+        t.getHours() ? ':' : '',
+        t.getHours() && t.getMinutes() < 10 ? '0' : '',
+        t.getMinutes(),
+        t.getMinutes() ? ':' : '',
+        t.getMinutes() && t.getSeconds() < 10 ? '0' : '',
+        t.getSeconds(),
+    ].join('');
 }

@@ -2,6 +2,7 @@
     <v-app>
         <AppBar />
 
+        <QueueDrawerHandle />
         <QueueDrawer />
         <AppDrawer />
         <GuildDrawer />
@@ -23,6 +24,7 @@ import AppBar from './components/AppBar.vue';
 import AppDrawer from './components/AppDrawer.vue';
 import GuildDrawer from './components/GuildDrawer.vue';
 import QueueDrawer from './components/QueueDrawer.vue';
+import QueueDrawerHandle from './components/QueueDrawerHandle.vue';
 import MusicBar from './components/MusicBar.vue';
 
 @Component({
@@ -60,6 +62,7 @@ import MusicBar from './components/MusicBar.vue';
         AppDrawer,
         GuildDrawer,
         QueueDrawer,
+        QueueDrawerHandle,
         MusicBar,
     },
 })

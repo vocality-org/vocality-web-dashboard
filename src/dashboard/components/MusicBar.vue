@@ -3,7 +3,7 @@
         <div class="music-bar">
             <div class="playback-bar">
                 <v-progress-linear
-                    :value="(songCurrentTime / songMaxTime) * 100"
+                    :value="(currentSongTimeSeconds / currentSongMaxTimeSeconds) * 100"
                     height="2"
                     background-color="#595959"
                 ></v-progress-linear>
@@ -17,7 +17,7 @@
                 <div class="song-placeholder" style="margin-left: 38px"></div>
             </div>
 
-            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{ formatTime(songCurrentTime) }}</span>
+            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{ formatTime(currentSongTimeSeconds) }}</span>
 
             <div class="controls" :class="{ 'center-on-sm': $vuetify.breakpoint.smAndDown }">
                 <v-icon class="mx-2 ico-btn" :class="{ 'ico-btn-active': isLooping }" @click="switchLooping()">
@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <span v-if="songMaxTime" class="caption" style="margin-top: 2px">{{ formatTime(songMaxTime) }}</span>
+            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{ formatTime(currentSongMaxTimeSeconds) }}</span>
 
             <div v-if="nextUpSong && $vuetify.breakpoint.mdAndUp" class="next-song song-container" @click="openQueueDrawer()">
                 <img class="song-img" :src="nextUpSong.thumbnail_url" height="32" width="32" />
@@ -56,7 +56,7 @@ import { MusicState, AppState } from '@/store';
 
 @Component({
     computed: {
-        ...mapGetters('music', ['isMuted', 'nextUpSong', 'songCurrentTime', 'songMaxTime']),
+        ...mapGetters('music', ['isMuted', 'nextUpSong', 'currentSongTimeSeconds', 'currentSongMaxTimeSeconds']),
         ...mapState('music', ['isPlaying', 'isLooping']),
     },
 })

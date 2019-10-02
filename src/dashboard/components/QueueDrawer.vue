@@ -42,7 +42,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AppState, MusicState } from '@/store';
-import { mdiArrowRight, mdiPlaylistRemove } from '@mdi/js';
+import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic } from '@mdi/js';
 import { mapState } from 'vuex';
 
 @Component({
@@ -64,6 +64,7 @@ import { mapState } from 'vuex';
 export default class QueueDrawer extends Vue {
     arrowRight = mdiArrowRight;
     remove = mdiPlaylistRemove;
+    queueIcon = mdiPlaylistMusic;
     hoverIndex = -1;
 
     closeDrawer() {
