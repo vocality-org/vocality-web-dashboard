@@ -13,6 +13,12 @@
                     </v-list-item-icon>
                     <v-list-item-title>Search</v-list-item-title>
                 </v-list-item>
+                <v-list-item link @click="openUrlModal()">
+                    <v-list-item-icon>
+                        <v-icon>{{ urlIcon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Play URL</v-list-item-title>
+                </v-list-item>
                 <v-list-item link @click="navigateTo('favorites')">
                     <v-list-item-icon>
                         <v-icon>{{ favoriteIcon }}</v-icon>
@@ -46,7 +52,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AppState } from '@/store';
-import { mdiMagnify, mdiStar, mdiPlaylistMusic, mdiPlaylistPlay } from '@mdi/js';
+import { mdiMagnify, mdiCodeTags, mdiStar, mdiPlaylistMusic, mdiPlaylistPlay } from '@mdi/js';
 
 @Component({
     computed: {
@@ -65,6 +71,7 @@ import { mdiMagnify, mdiStar, mdiPlaylistMusic, mdiPlaylistPlay } from '@mdi/js'
 })
 export default class AppDrawer extends Vue {
     searchIcon = mdiMagnify;
+    urlIcon = mdiCodeTags;
     favoriteIcon = mdiStar;
     playlistIcon = mdiPlaylistPlay;
     queueIcon = mdiPlaylistMusic;
@@ -84,6 +91,10 @@ export default class AppDrawer extends Vue {
 
     navigateTo(path: string) {
         this.$router.push({ name: path });
+    }
+
+    openUrlModal() {
+        AppState.playUrlModal.open();
     }
 }
 </script>

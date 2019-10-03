@@ -2,7 +2,23 @@
     <div>
         <div class="container">
             <div class="search">
-                <v-text-field label="Label"></v-text-field>
+                <v-text-field hide-details="" solo :prepend-inner-icon="searchIcon" label="Search for a song"></v-text-field>
+                <div class="row api-select">
+                    <v-checkbox
+                        class="mx-4"
+                        :on-icon="youtubeIcon"
+                        label="YouTube"
+                        color="#ff0000"
+                        v-model="ytState"
+                    ></v-checkbox>
+                    <v-checkbox
+                        class="mx-4"
+                        :on-icon="soundcloudIcon"
+                        label="SoundCloud"
+                        color="#f95738"
+                        v-model="scState"
+                    ></v-checkbox>
+                </div>
             </div>
         </div>
     </div>
@@ -11,11 +27,33 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { mdiMagnify } from '@mdi/js';
+import { mdiMagnify, mdiYoutube, mdiSoundcloud } from '@mdi/js';
+import { AppState } from '../../store';
 
-@Component({})
+@Component({
+    computed: {
+        ytState: {
+            get() {
+                return AppState.isYoutubeSearchActive;
+            },
+            set(state: boolean) {
+                AppState.changeYoutubeSearchState(state);
+            },
+        },
+        scState: {
+            get() {
+                return AppState.isSoundcloudSearchActive;
+            },
+            set(state: boolean) {
+                AppState.changeSoundcloudSearchState(state);
+            },
+        },
+    },
+})
 export default class Search extends Vue {
     searchIcon = mdiMagnify;
+    youtubeIcon = mdiYoutube;
+    soundcloudIcon = mdiSoundcloud;
 }
 </script>
 

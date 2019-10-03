@@ -1,11 +1,7 @@
 import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
 
-class AppDrawer {
-    isOpen: boolean;
-
-    constructor() {
-        this.isOpen = false;
-    }
+class ToggleableState {
+    isOpen = false;
 
     @Mutation
     open() {
@@ -18,46 +14,21 @@ class AppDrawer {
     }
 }
 
-class GuildDrawerState {
-    isOpen: boolean;
+class AppDrawerState extends ToggleableState {}
 
-    constructor() {
-        this.isOpen = false;
-    }
+class GuildDrawerState extends ToggleableState {}
 
-    @Mutation
-    open() {
-        this.isOpen = true;
-    }
+class QueueDrawerState extends ToggleableState {}
 
-    @Mutation
-    close() {
-        this.isOpen = false;
-    }
-}
-
-class QueueDrawerState {
-    isOpen: boolean;
-
-    constructor() {
-        this.isOpen = false;
-    }
-
-    @Mutation
-    open() {
-        this.isOpen = true;
-    }
-
-    @Mutation
-    close() {
-        this.isOpen = false;
-    }
-}
+class PlayUrlModalState extends ToggleableState {}
 
 export interface IAppState {
-    appDrawer: AppDrawer;
+    appDrawer: AppDrawerState;
     guildDrawer: GuildDrawerState;
     queueDrawer: QueueDrawerState;
+    playUrlModal: PlayUrlModalState;
+    isYoutubeSearchActive: boolean;
+    isSoundcloudSearchActive: boolean;
 }
 
 @Module({
@@ -65,7 +36,21 @@ export interface IAppState {
     namespaced: true,
 })
 export class App extends VuexModule implements IAppState {
-    appDrawer = new AppDrawer();
+    appDrawer = new AppDrawerState();
     guildDrawer = new GuildDrawerState();
     queueDrawer = new QueueDrawerState();
+    playUrlModal = new PlayUrlModalState();
+
+    isYoutubeSearchActive = true;
+    isSoundcloudSearchActive = true;
+
+    @Mutation
+    changeYoutubeSearchState(state: boolean) {
+        this.isYoutubeSearchActive = state;
+    }
+
+    @Mutation
+    changeSoundcloudSearchState(state: boolean) {
+        this.isSoundcloudSearchActive = state;
+    }
 }

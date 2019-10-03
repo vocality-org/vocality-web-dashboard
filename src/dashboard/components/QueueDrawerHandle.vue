@@ -55,8 +55,8 @@ export default class QeueDrawerHandle extends Vue {
 .footer-card {
     position: absolute;
     z-index: 1;
+    top: 0;
     right: 0;
-    top: 54px;
     display: flex;
     align-items: center;
     padding: 4px 16px 4px 4px;
@@ -66,5 +66,8 @@ export default class QeueDrawerHandle extends Vue {
     border-top-left-radius: 24px;
     border-bottom-left-radius: 24px;
     transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    @include mq(sm) {
+        top: 54px + 32px;
+    }
 }
 </style>

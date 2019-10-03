@@ -8,6 +8,7 @@
         <GuildDrawer />
 
         <v-content>
+            <PlayUrlModal />
             <router-view></router-view>
         </v-content>
 
@@ -26,6 +27,7 @@ import GuildDrawer from './components/GuildDrawer.vue';
 import QueueDrawer from './components/QueueDrawer.vue';
 import QueueDrawerHandle from './components/QueueDrawerHandle.vue';
 import MusicBar from './components/MusicBar.vue';
+import PlayUrlModal from './components/PlayUrlModal.vue';
 
 @Component({
     async beforeRouteEnter(to, from, next) {
@@ -64,6 +66,7 @@ import MusicBar from './components/MusicBar.vue';
         QueueDrawer,
         QueueDrawerHandle,
         MusicBar,
+        PlayUrlModal,
     },
 })
 export default class Dashboard extends Vue {}
