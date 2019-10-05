@@ -1,6 +1,5 @@
-import { DiscordState } from '@/store';
-import { MusicState } from './../index';
 import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
+import { DiscordState, MusicState } from '@/store';
 import { Song } from './music';
 
 export interface IBotSocketState {}
@@ -17,9 +16,9 @@ export class BotSocket extends VuexModule implements IBotSocketState {
     }
 
     @Action
-    socket_currentQueue(message: Song[]) {
+    socket_currentQueue(message: any) {
         console.log('socket event: currentQueue', message);
-        MusicState.setQueue(message);
+        MusicState.setQueue(toSongArray(message));
     }
 
     @Action
@@ -27,4 +26,18 @@ export class BotSocket extends VuexModule implements IBotSocketState {
         console.log('socket event: currentSong', message);
         MusicState.setCurrentSong(message);
     }
+}
+
+function toSongArray(message: any): Song[] {
+    const songs = new Array<Song>();
+    message.forEach((s: any) => {
+        songs.push({
+            title: s.title,
+            thumbnail_url: s.thumbnail_url,
+            requested_by: s.requested_by,
+            current_time_ms: 0,
+            max_time_ms: s.length_ms,
+        });
+    });
+    return songs;
 }

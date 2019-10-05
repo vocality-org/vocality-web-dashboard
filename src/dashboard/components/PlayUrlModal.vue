@@ -3,7 +3,7 @@
         <v-card class="pa-4">
             <v-card-title>Play per URL</v-card-title>
             <v-card-text>
-                <v-text-field label="Enter Url" v-model="inputValue" :error-messages="inputErrors">
+                <v-text-field autofocus label="Enter Url" v-model="inputValue" :error-messages="inputErrors">
                     <template v-slot:append>
                         <v-tooltip top>
                             <template v-slot:activator="{ on }">
@@ -35,7 +35,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AppState } from '@/store';
+import { AppState, DiscordState } from '@/store';
 import { mdiContentPaste } from '@mdi/js';
 
 @Component({
@@ -58,9 +58,18 @@ export default class PlayUrlModal extends Vue {
     submitUrl() {
         if (this.inputValue === '') {
             this.inputErrors.push('URL is required');
-        }
-        if (!this.inputValue.match('((https)|(http)):\/\/')) {
+        } else if (!this.inputValue.match('((https)|(http)):\/\/')) {
             this.inputErrors.push("This doesn't look like an url");
+        } else {
+            AppState.playUrlModal.close();
+            this.$socket.client.emit('command', {
+                name: 'play',
+                args: [this.inputValue],
+                messageData: {
+                    guildId: DiscordState.currentGuildId,
+                },
+            });
+            this.inputValue = '';
         }
     }
 
