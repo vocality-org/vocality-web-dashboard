@@ -1,29 +1,14 @@
-# app
+# vocality-web-dashboard
 
-## Project setup
-```
-npm install
-```
+## Setup
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+> npm install
 
-### Compiles and minifies for production
+Make sure to have a `.env.local` file in your root directory with the following variables set
+
 ```
-npm run build
+VUE_APP_DISCORD_CLIENT_ID=[client_id]
+VUE_APP_DISCORD_CLIENT_SECRET=[client_secret]
 ```
 
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+> npm start
