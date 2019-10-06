@@ -23,6 +23,7 @@
     },
     "devDependencies": {
         "@mdi/js": "^4.4.95",
+        "@types/gapi": "0.0.39",
         "@vue/cli-plugin-eslint": "^3.11.0",
         "@vue/cli-plugin-pwa": "^3.11.0",
         "@vue/cli-plugin-typescript": "^3.11.0",

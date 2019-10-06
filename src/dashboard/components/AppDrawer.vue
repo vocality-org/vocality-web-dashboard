@@ -19,17 +19,17 @@
                     </v-list-item-icon>
                     <v-list-item-title>Play URL</v-list-item-title>
                 </v-list-item>
-                <v-list-item link @click="navigateTo('favorites')">
-                    <v-list-item-icon>
-                        <v-icon>{{ favoriteIcon }}</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>Favorites</v-list-item-title>
-                </v-list-item>
                 <v-list-item link @click="toggleQueueDrawer()">
                     <v-list-item-icon>
                         <v-icon>{{ queueIcon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>Music Queue</v-list-item-title>
+                </v-list-item>
+                <v-list-item link @click="navigateTo('favorites')">
+                    <v-list-item-icon>
+                        <v-icon>{{ favoriteIcon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Favorites</v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="navigateTo('playlists')">
                     <v-list-item-icon>

@@ -11,6 +11,7 @@ export interface IMusicState {
 
 export interface Song {
     title: string;
+    url: string;
     thumbnail_url: string;
     requested_by: string;
     max_time_ms: number;

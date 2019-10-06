@@ -19,7 +19,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AuthState, DiscordState } from '@/store';
+import { AuthState, DiscordState, YouTubeState } from '@/store';
 
 import AppBar from './components/AppBar.vue';
 import AppDrawer from './components/AppDrawer.vue';
@@ -53,12 +53,6 @@ import PlayUrlModal from './components/PlayUrlModal.vue';
             });
         }
     },
-    mounted() {
-        this.$socket.client.io.opts.query = { discordKey: AuthState.token, userId: DiscordState.userId };
-        this.$socket.client.open();
-        DiscordState.fetchUserGuilds();
-        this.$socket.client.emit('userGuilds', DiscordState.userGuilds.map(g => g.id));
-    },
     components: {
         AppBar,
         AppDrawer,
@@ -69,5 +63,26 @@ import PlayUrlModal from './components/PlayUrlModal.vue';
         PlayUrlModal,
     },
 })
-export default class Dashboard extends Vue {}
+export default class Dashboard extends Vue {
+    mounted() {
+        this.connectToSocket();
+        this.getBotGuilds();
+        this.initYoutube();
+    }
+
+    connectToSocket() {
+        this.$socket.client.io.opts.query = { discordKey: AuthState.token, userId: DiscordState.userId };
+        this.$socket.client.open();
+    }
+
+    getBotGuilds() {
+        DiscordState.fetchUserGuilds();
+        this.$socket.client.emit('userGuilds', DiscordState.userGuilds.map(g => g.id));
+    }
+
+    async initYoutube() {
+        await YouTubeState.setup();
+        YouTubeState.search('kollegah bossaura');
+    }
+}
 </script>

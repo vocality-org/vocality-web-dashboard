@@ -32,6 +32,7 @@ function toSongArray(message: any): Song[] {
     const songs = new Array<Song>();
     message.forEach((s: any) => {
         songs.push({
+            url: s.url,
             title: s.title,
             thumbnail_url: s.thumbnail_url,
             requested_by: s.requested_by,
