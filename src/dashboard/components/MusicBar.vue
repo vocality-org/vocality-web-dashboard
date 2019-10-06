@@ -27,10 +27,24 @@
                 <v-icon v-if="isPlaying" class="mx-2 ico-btn" @click="setPlaying(false)">{{ pauseIcon }}</v-icon>
                 <v-icon v-else class="mx-2 ico-btn" @click="setPlaying(true)">{{ playIcon }}</v-icon>
                 <v-icon class="mx-2 ico-btn">{{ skipIcon }}</v-icon>
-                <div class="volume">
-                    <v-icon v-if="isMuted" class="mx-2 ico-btn" @click="unmute()">{{ mutedIcon }}</v-icon>
-                    <v-icon v-else class="mx-2 ico-btn" @click="mute()">{{ volumeIcon }}</v-icon>
-                </div>
+                <v-menu
+                    top
+                    offset-y
+                    open-on-hover
+                    nudge-top="4"
+                    transition="slide-y-reverse-transition"
+                    :close-on-content-click="false"
+                >
+                    <template v-slot:activator="{ on }">
+                        <div v-on="on" class="volume">
+                            <v-icon v-if="isMuted" class="mx-2 ico-btn" @click="unmute()">{{ mutedIcon }}</v-icon>
+                            <v-icon v-else class="mx-2 ico-btn" @click="mute()">{{ volumeIcon }}</v-icon>
+                        </div>
+                    </template>
+                    <v-card class="volume-slider">
+                        <v-slider class="my-2" v-model="volume" vertical></v-slider>
+                    </v-card>
+                </v-menu>
             </div>
 
             <span v-if="currentSong" class="caption" style="margin-top: 2px">{{ formatTime(currentSongMaxTimeSeconds) }}</span>
@@ -56,6 +70,14 @@ import { MusicState, AppState } from '@/store';
 
 @Component({
     computed: {
+        volume: {
+            get() {
+                return MusicState.volume;
+            },
+            set(value: number) {
+                MusicState.setVolume(value);
+            },
+        },
         ...mapGetters('music', ['isMuted', 'nextUpSong', 'currentSongTimeSeconds', 'currentSongMaxTimeSeconds']),
         ...mapState('music', ['isPlaying', 'isLooping']),
     },
@@ -127,6 +149,11 @@ export default class MusicBar extends Vue {
     display: inline;
     position: relative;
 }
+
+.volume-slider {
+    overflow: hidden;
+}
+
 .music-bar {
     display: flex;
     justify-content: space-between;
