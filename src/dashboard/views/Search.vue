@@ -2,7 +2,14 @@
     <div>
         <div class="container">
             <div class="search">
-                <v-text-field hide-details="" solo :prepend-inner-icon="searchIcon" label="Search for a song"></v-text-field>
+                <v-text-field
+                    v-model="searchInputValue"
+                    solo
+                    hide-details
+                    :prepend-inner-icon="searchIcon"
+                    label="Search for a song"
+                    @change="inputChanged(value)"
+                ></v-text-field>
                 <div class="row api-select">
                     <v-checkbox
                         class="mx-4"
@@ -28,7 +35,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { mdiMagnify, mdiYoutube, mdiSoundcloud } from '@mdi/js';
-import { AppState } from '../../store';
+import { AppState, YouTubeState } from '@/store';
+import { debounce } from 'debounce';
 
 @Component({
     computed: {
@@ -54,6 +62,19 @@ export default class Search extends Vue {
     searchIcon = mdiMagnify;
     youtubeIcon = mdiYoutube;
     soundcloudIcon = mdiSoundcloud;
+    searchInputValue = '';
+    isLoadingResults = false;
+
+    ytResults = [];
+
+    inputChanged(value: string) {
+        this.isLoadingResults = true;
+        debounce(() => {
+            this.isLoadingResults = false;
+            //YouTubeState.search(value)
+            console.log('value');
+        }, 1000);
+    }
 }
 </script>
 

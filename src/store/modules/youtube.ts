@@ -55,6 +55,8 @@ export class YouTube extends VuexModule implements IYouTubeState {
 
     @Mutation
     setResultDurationForId(id: string, duration: string) {
+        console.log(id);
+
         this.results.find(result => {
             result.id === id;
         })!.duration = duration;
@@ -153,6 +155,8 @@ export class YouTube extends VuexModule implements IYouTubeState {
 
         request.execute((result: any) => {
             result.items.forEach((item: any) => {
+                console.log(item);
+
                 this.setResultDurationForId(item.id, item.contentDetails.duration);
             });
         });
