@@ -8,7 +8,7 @@
                     hide-details
                     :prepend-inner-icon="searchIcon"
                     label="Search for a song"
-                    @change="inputChanged(value)"
+                    @input="debounceInput($event)"
                 ></v-text-field>
                 <div class="row api-select">
                     <v-checkbox
@@ -27,6 +27,14 @@
                     ></v-checkbox>
                 </div>
             </div>
+            <div class="results">
+                <v-row v-if="ytResults.length === 0 && searchInputValue" justify="center" class="pt-5">
+                    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                </v-row>
+                <div v-else class="mt-5">
+                    <SearchResultItem :youtubeResult="ytResults[0]" />
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -36,7 +44,9 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { mdiMagnify, mdiYoutube, mdiSoundcloud } from '@mdi/js';
 import { AppState, YouTubeState } from '@/store';
+import { Song } from '@/store/modules/music';
 import { debounce } from 'debounce';
+import SearchResultItem from '@/dashboard/components/SearchResultItem.vue';
 
 @Component({
     computed: {
@@ -57,23 +67,35 @@ import { debounce } from 'debounce';
             },
         },
     },
+    components: {
+        SearchResultItem,
+    },
 })
 export default class Search extends Vue {
     searchIcon = mdiMagnify;
     youtubeIcon = mdiYoutube;
     soundcloudIcon = mdiSoundcloud;
+
     searchInputValue = '';
-    isLoadingResults = false;
+    ytResults: Song[] = [];
 
-    ytResults = [];
+    debounceInput = debounce((event: string) => {
+        if (event) {
+            this.ytResults.push({
+                title: 'Will Sparks - Egypt',
+                url:
+                    'https://images.unsplash.com/photo-1508138221679-760a23a2285b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
+                thumbnail_url:
+                    'https://images.unsplash.com/photo-1508138221679-760a23a2285b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
+                requested_by: '',
+                max_time_ms: 320000,
+                current_time_ms: 0,
+            });
+        }
+    }, 500);
 
-    inputChanged(value: string) {
-        this.isLoadingResults = true;
-        debounce(() => {
-            this.isLoadingResults = false;
-            //YouTubeState.search(value)
-            console.log('value');
-        }, 1000);
+    submitInput(value: string) {
+        YouTubeState.search(value);
     }
 }
 </script>
