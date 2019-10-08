@@ -82,7 +82,6 @@ export default class Dashboard extends Vue {
 
     async initYoutube() {
         await YouTubeState.setup();
-        YouTubeState.search('kollegah bossaura');
     }
 }
 </script>

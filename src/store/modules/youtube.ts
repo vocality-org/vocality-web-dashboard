@@ -55,11 +55,12 @@ export class YouTube extends VuexModule implements IYouTubeState {
 
     @Mutation
     setResultDurationForId(id: string, duration: string) {
-        console.log(id);
-
-        this.results.find(result => {
+        const result = this.results.find(result => {
             result.id === id;
-        })!.duration = duration;
+        });
+        if (result) {
+            result.duration = duration;
+        }
     }
 
     @MutationAction({ mutate: ['isLoaded'] })
@@ -111,8 +112,8 @@ export class YouTube extends VuexModule implements IYouTubeState {
         });
 
         request.execute((result: any) => {
-            this.setNextPageToken(result.nextPageToken);
             console.log(result);
+            this.setNextPageToken(result.nextPageToken);
             this.setSearchResults(parseSnippetResults(result.items));
             this.loadDurations();
         });
@@ -154,9 +155,8 @@ export class YouTube extends VuexModule implements IYouTubeState {
         });
 
         request.execute((result: any) => {
+            console.log(result);
             result.items.forEach((item: any) => {
-                console.log(item);
-
                 this.setResultDurationForId(item.id, item.contentDetails.duration);
             });
         });
@@ -188,6 +188,7 @@ function parseSnippetResults(items: any[]): SearchResult[] {
  * `PT1H10M33S`
  */
 function parseYtDuration(duration: string): number {
+    if (!duration) return 0;
     return duration
         .match(/\d+/g)!
         .reverse()
