@@ -19,6 +19,7 @@
                         v-model="ytState"
                     ></v-checkbox>
                     <v-checkbox
+                        disabled
                         class="mx-4"
                         :on-icon="soundcloudIcon"
                         label="SoundCloud"
@@ -28,11 +29,18 @@
                 </div>
             </div>
             <div class="results">
-                <v-row v-if="ytResults.length === 0 && searchInputValue" justify="center" class="pt-5">
+                <v-row v-if="resultsAsSong.length === 0 && searchInputValue" justify="center" class="pt-5">
                     <v-progress-circular indeterminate color="primary"></v-progress-circular>
                 </v-row>
-                <div v-else class="mt-5">
-                    <SearchResultItem :youtubeResult="ytResults[0]" />
+                <div v-if="resultsAsSong.length > 0" class="scroll-container mt-5">
+                    <div v-if="ytState">
+                        <div v-for="yt in resultsAsSong" :key="yt.id" class="my-3">
+                            <SearchResultItem :youtubeResult="yt" @play="onPlaySong(yt)" />
+                        </div>
+                    </div>
+                    <v-row justify="center">
+                        <v-btn @click="loadMore()" text small>Load more</v-btn>
+                    </v-row>
                 </div>
             </div>
         </div>
@@ -42,10 +50,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { mdiMagnify, mdiYoutube, mdiSoundcloud } from '@mdi/js';
-import { AppState, YouTubeState } from '@/store';
-import { Song } from '@/store/modules/music';
 import { debounce } from 'debounce';
+import { mapGetters } from 'vuex';
+import { AppState, YouTubeState, DiscordState } from '@/store';
+import { Song } from '@/store/modules/music';
+import { mdiMagnify, mdiYoutube, mdiSoundcloud } from '@mdi/js';
+
 import SearchResultItem from '@/dashboard/components/SearchResultItem.vue';
 
 @Component({
@@ -66,6 +76,7 @@ import SearchResultItem from '@/dashboard/components/SearchResultItem.vue';
                 AppState.changeSoundcloudSearchState(state);
             },
         },
+        ...mapGetters('youtube', ['resultsAsSong']),
     },
     components: {
         SearchResultItem,
@@ -77,25 +88,33 @@ export default class Search extends Vue {
     soundcloudIcon = mdiSoundcloud;
 
     searchInputValue = '';
-    ytResults: Song[] = [];
 
     debounceInput = debounce((event: string) => {
         if (event) {
-            this.ytResults.push({
-                title: 'Will Sparks - Egypt',
-                url:
-                    'https://images.unsplash.com/photo-1508138221679-760a23a2285b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
-                thumbnail_url:
-                    'https://images.unsplash.com/photo-1508138221679-760a23a2285b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
-                requested_by: '',
-                max_time_ms: 320000,
-                current_time_ms: 0,
-            });
+            this.submitInput(event);
         }
-    }, 500);
+    }, 600);
+
+    loadMore() {
+        if (AppState.isYoutubeSearchActive) {
+            YouTubeState.loadNextPage();
+        }
+    }
 
     submitInput(value: string) {
-        YouTubeState.search(value);
+        if (AppState.isYoutubeSearchActive) {
+            YouTubeState.search(value);
+        }
+    }
+
+    onPlaySong(song: Song) {
+        this.$socket.client.emit('command', {
+            name: 'play',
+            args: [song.url],
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
     }
 }
 </script>
@@ -104,8 +123,21 @@ export default class Search extends Vue {
 .container {
     max-width: 720px;
     padding: 32px, 64px;
-    @include mq(sm) {
-        padding: 32px 128px;
+}
+
+.api-select {
+    max-width: 696px;
+    margin: auto;
+}
+
+.scroll-container {
+    height: calc(100vh - 300px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: 0;
+    &::-webkit-scrollbar {
+        display: none;
     }
 }
 </style>

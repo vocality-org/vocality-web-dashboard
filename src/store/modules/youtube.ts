@@ -16,6 +16,8 @@ export interface IYouTubeState {
     results: SearchResult[];
 }
 
+let currentPageIds: string[] = [];
+
 @Module({
     name: 'youtube',
     namespaced: true,
@@ -54,12 +56,13 @@ export class YouTube extends VuexModule implements IYouTubeState {
     }
 
     @Mutation
-    setResultDurationForId(id: string, duration: string) {
+    setResultDurationForId(obj: { id: string; duration: string }) {
         const result = this.results.find(result => {
-            result.id === id;
+            return result.id === obj.id;
         });
+
         if (result) {
-            result.duration = duration;
+            result.duration = obj.duration;
         }
     }
 
@@ -113,6 +116,7 @@ export class YouTube extends VuexModule implements IYouTubeState {
 
         request.execute((result: any) => {
             console.log(result);
+            currentPageIds = result.items.map((i: any) => i.id.videoId);
             this.setNextPageToken(result.nextPageToken);
             this.setSearchResults(parseSnippetResults(result.items));
             this.loadDurations();
@@ -125,15 +129,18 @@ export class YouTube extends VuexModule implements IYouTubeState {
     @Action
     loadNextPage() {
         const request = (gapi.client as any).youtube.search.list({
-            part: 'contentDetails',
+            part: 'snippet',
             type: 'video',
             maxResults: 10,
             pageToken: this.nextPageToken,
         });
 
         request.execute((result: any) => {
+            console.log(result);
+            currentPageIds = result.items.map((i: any) => i.id.videoId);
             this.setNextPageToken(result.nextPageToken);
             this.addSearchResults(parseSnippetResults(result.items));
+            this.loadDurations();
         });
     }
 
@@ -150,14 +157,14 @@ export class YouTube extends VuexModule implements IYouTubeState {
     loadDurations() {
         const request = (gapi.client as any).youtube.videos.list({
             part: 'id, contentDetails',
-            id: this.results.map(r => r.id).join(','),
+            id: currentPageIds.join(','),
             maxResults: this.results.length,
         });
 
         request.execute((result: any) => {
             console.log(result);
             result.items.forEach((item: any) => {
-                this.setResultDurationForId(item.id, item.contentDetails.duration);
+                this.setResultDurationForId({ id: item.id, duration: item.contentDetails.duration });
             });
         });
     }
@@ -189,7 +196,14 @@ function parseSnippetResults(items: any[]): SearchResult[] {
  */
 function parseYtDuration(duration: string): number {
     if (!duration) return 0;
-    return duration
+    let withTrailingZeros = duration;
+    if (!duration.includes('M')) {
+        withTrailingZeros = duration + '0M';
+    }
+    if (!duration.includes('S')) {
+        withTrailingZeros = duration + '0S';
+    }
+    return withTrailingZeros
         .match(/\d+/g)!
         .reverse()
         .map(string => parseInt(string))

@@ -145,7 +145,7 @@ function msTimeToDisplayString(ms: number) {
         t.getHours() > 0 ? t.getHours() : '',
         t.getHours() ? ':' : '',
         t.getHours() && t.getMinutes() < 10 ? '0' : '',
-        t.getMinutes(),
+        t.getMinutes() > 0 ? t.getMinutes() : '',
         t.getMinutes() ? ':' : '',
         t.getMinutes() && t.getSeconds() < 10 ? '0' : '',
         t.getSeconds(),

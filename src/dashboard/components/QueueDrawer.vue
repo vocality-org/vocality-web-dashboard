@@ -82,9 +82,9 @@ export default class QueueDrawer extends Vue {
             t.getHours() > 0 ? t.getHours() : '',
             t.getHours() ? ':' : '',
             t.getHours() && t.getMinutes() < 10 ? '0' : '',
-            t.getMinutes(),
-            ':',
-            t.getSeconds() < 10 ? '0' : '',
+            t.getMinutes() > 0 ? t.getMinutes() : '',
+            t.getMinutes() ? ':' : '',
+            t.getMinutes() && t.getSeconds() < 10 ? '0' : '',
             t.getSeconds(),
         ].join('');
     }
