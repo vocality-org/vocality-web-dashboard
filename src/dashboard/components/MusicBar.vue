@@ -55,7 +55,7 @@
                 <span class="song-title">{{ nextUpSong.title }}</span>
             </div>
             <div v-if="!nextUpSong && $vuetify.breakpoint.mdAndUp">
-                <div class="song-placeholder"></div>
+                <div style="left: -205px" class="song-placeholder"></div>
             </div>
         </div>
     </v-bottom-navigation>
@@ -260,30 +260,45 @@ export default class MusicBar extends Vue {
 
 .song-placeholder {
     $color: rgba(255, 255, 255, 0.164);
-    height: 11px;
-    width: 200px;
+    left: -42px;
+    height: 32px;
+    width: 32px;
     border-radius: 4px;
     background-color: $color;
     position: relative;
-    margin-bottom: 14px;
+
     &::after {
         content: '';
+        position: absolute;
         height: 7px;
+        left: 38px;
         width: 150px;
         border-radius: 4px;
         background-color: $color;
-        position: absolute;
         top: 18px;
+        transform-origin: left;
+        animation: 300ms ease-in 0s 1 slideInOnLoad;
     }
     &::before {
         content: '';
-        height: 32px;
-        width: 32px;
+        position: absolute;
+        height: 11px;
+        left: 38px;
+        width: 200px;
+        margin-bottom: 14px;
         border-radius: 4px;
         background-color: $color;
-        position: absolute;
-        left: -38px;
-        top: -3px;
+        transform-origin: left;
+        animation: 300ms ease-in 0s 1 slideInOnLoad;
+    }
+}
+
+@keyframes slideInOnLoad {
+    0% {
+        transform: scaleX(0.5);
+    }
+    100% {
+        transform: scaleX(1);
     }
 }
 </style>
