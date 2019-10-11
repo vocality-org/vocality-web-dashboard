@@ -8,6 +8,7 @@ import { IAuthState, Auth } from './modules/auth';
 import { IBotSocketState, BotSocket } from './modules/bot-socket';
 import { IDiscordState, Discord } from './modules/discord';
 import { IMusicState, Music } from './modules/music';
+import { IPersistentUserData, PersistentUserData } from './modules/persistent-user-data';
 import { IYouTubeState, YouTube } from './modules/youtube';
 
 interface IRootState {
@@ -16,6 +17,7 @@ interface IRootState {
     botSocket: IBotSocketState;
     discord: IDiscordState;
     music: IMusicState;
+    persistentUserData: IPersistentUserData;
     youtube: IYouTubeState;
 }
 
@@ -23,7 +25,7 @@ Vue.use(Vuex);
 
 const vuexLocal = new VuexPersistence<IRootState>({
     storage: window.localStorage,
-    modules: ['auth', 'discord'],
+    modules: ['auth', 'discord', 'persistentUserData'],
 });
 
 const store = new Vuex.Store<IRootState>({
@@ -33,6 +35,7 @@ const store = new Vuex.Store<IRootState>({
         botSocket: BotSocket,
         discord: Discord,
         music: Music,
+        persistentUserData: PersistentUserData,
         youtube: YouTube,
     },
     plugins: [vuexLocal.plugin],
@@ -43,6 +46,7 @@ export const AuthState = getModule(Auth, store);
 export const BotSocketState = getModule(BotSocket, store);
 export const DiscordState = getModule(Discord, store);
 export const MusicState = getModule(Music, store);
+export const PersistentUserDataState = getModule(PersistentUserData, store);
 export const YouTubeState = getModule(YouTube, store);
 
 export default store;
