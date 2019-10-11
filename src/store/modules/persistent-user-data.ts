@@ -1,7 +1,7 @@
 import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
 import { Song } from './music';
 
-interface Playlist {
+export interface Playlist {
     id: number;
     name: string;
     songs: Song[];

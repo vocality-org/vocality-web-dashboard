@@ -27,6 +27,18 @@ export default new Router({
                     meta: { title: 'Search - Vocality Dashboard' },
                     component: () => import('@/dashboard/views/Search.vue'),
                 },
+                {
+                    path: 'playlists',
+                    name: 'playlists',
+                    meta: { title: 'Playlists - Vocality Dashboard' },
+                    component: () => import('@/dashboard/views/Playlists.vue'),
+                },
+                {
+                    path: 'favourites',
+                    name: 'favourites',
+                    meta: { title: 'Favourites - Vocality Dashboard' },
+                    component: () => import('@/dashboard/views/Favourites.vue'),
+                },
             ],
         },
     ],
