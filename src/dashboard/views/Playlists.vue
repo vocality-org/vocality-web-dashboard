@@ -1,7 +1,15 @@
 <template>
     <div>
-        <v-container class="px-10">
-            <PlaylistItem :playlist="p" @play="startPlaylist()" />
+        <v-container class="grid px-10">
+            <PlaylistItem
+                v-for="playlist in 10"
+                :key="playlist"
+                :playlist="p"
+                @play="startPlaylist(p)"
+                @edit="editPlaylist(p)"
+                class="grid-item py-5 px-2"
+            />
+            <PlaylistItem isAdd="true" class="grid-item py-5 px-2" />
         </v-container>
     </div>
 </template>
@@ -12,10 +20,14 @@ import Component from 'vue-class-component';
 import PlaylistItem from '@/dashboard/components/PlaylistItem.vue';
 import { Playlist } from '@/store/modules/persistent-user-data';
 import { DiscordState } from '@/store';
+import { mapState } from 'vuex';
 
 @Component({
     components: {
         PlaylistItem,
+    },
+    computed: {
+        ...mapState('persistentUserData', ['playlists']),
     },
 })
 export default class Playlists extends Vue {
@@ -74,7 +86,28 @@ export default class Playlists extends Vue {
     startPlaylist(playlist: Playlist) {
         // for each? Pepega
     }
+
+    editPlaylist(playlist: Playlists) {
+        // navigate to /:id or /:name
+    }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    @include mq(sm) {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    @include mq(md) {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    @include mq(lg) {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+    .grid-item {
+        justify-self: center;
+    }
+}
+</style>
