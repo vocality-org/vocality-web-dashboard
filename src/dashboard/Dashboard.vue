@@ -8,7 +8,9 @@
         <GuildDrawer />
 
         <v-content>
+            <GlobalAlert :message="alertMessage" @close="alertMessage = ''" />
             <PlayUrlModal />
+            <CreatePlaylistModal />
             <router-view></router-view>
         </v-content>
 
@@ -19,20 +21,24 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { Route } from 'vue-router/types/router';
 import { AuthState, DiscordState, YouTubeState } from '@/store';
 
 import AppBar from './components/AppBar.vue';
 import AppDrawer from './components/AppDrawer.vue';
+import CreatePlaylistModal from './components/CreatePlaylistModal.vue';
+import GlobalAlert from './components/GlobalAlert.vue';
 import GuildDrawer from './components/GuildDrawer.vue';
 import QueueDrawer from './components/QueueDrawer.vue';
 import QueueDrawerHandle from './components/QueueDrawerHandle.vue';
 import MusicBar from './components/MusicBar.vue';
 import PlayUrlModal from './components/PlayUrlModal.vue';
 
+Component.registerHooks(['beforeRouteUpdate']);
+
 @Component({
     async beforeRouteEnter(to, from, next) {
         const code = to.query['code'];
-
         if (code && !AuthState.hasPermission) {
             await AuthState.discordAuth(to.query['code'].toString());
         }
@@ -56,6 +62,8 @@ import PlayUrlModal from './components/PlayUrlModal.vue';
     components: {
         AppBar,
         AppDrawer,
+        CreatePlaylistModal,
+        GlobalAlert,
         GuildDrawer,
         QueueDrawer,
         QueueDrawerHandle,
@@ -64,6 +72,8 @@ import PlayUrlModal from './components/PlayUrlModal.vue';
     },
 })
 export default class Dashboard extends Vue {
+    alertMessage = '';
+
     mounted() {
         this.connectToSocket();
         this.getBotGuilds();
@@ -82,6 +92,16 @@ export default class Dashboard extends Vue {
 
     async initYoutube() {
         await YouTubeState.setup();
+    }
+
+    beforeRouteUpdate(to: Route, from: Route, next: any) {
+        if (from.query.redirectFrom === 'editPlaylist') {
+            this.alertMessage = 'You dont have this playlist';
+            setTimeout(() => {
+                //this.alertMessage = '';
+            }, 3000);
+        }
+        next();
     }
 }
 </script>

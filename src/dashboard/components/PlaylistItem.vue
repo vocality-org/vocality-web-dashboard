@@ -2,7 +2,7 @@
     <div :style="{ minWidth: cardWidth + 'px' }">
         <div v-if="!isAdd" class="playlist">
             <v-hover v-slot:default="{ hover }">
-                <v-card class="image-grid">
+                <v-card :width="cardWidth" :height="cardWidth" class="image-grid">
                     <img
                         v-for="(song, index) in playlist.songs.slice(0, 4)"
                         :key="index"
@@ -12,14 +12,13 @@
                         alt="playlist song thumbnail"
                         class="image"
                     />
-                    <div v-if="playlist.songs.length < 4">
-                        <div
-                            class="image-placeholder"
-                            v-for="n in 4 - playlist.songs.length"
-                            :key="n + (playlist.songs.length - 1)"
-                        >
-                            ?
-                        </div>
+                    <div
+                        v-for="n in 4 - playlist.songs.length"
+                        :key="n + (playlist.songs.length - 1)"
+                        class="image-placeholder"
+                        :class="`image-placeholder__${n}`"
+                    >
+                        <span>?</span>
                     </div>
                     <transition name="fade">
                         <div v-if="hover" class="popover">
@@ -37,7 +36,7 @@
                                         <v-icon>{{ editIcon }}</v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Add and remove songs</span>
+                                <span>Edit Playlist</span>
                             </v-tooltip>
                         </div>
                     </transition>
@@ -109,8 +108,21 @@ export default class PlaylistItem extends Vue {
         width: 100%;
         height: 100%;
         font-size: 32px;
-        line-height: 100px;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &__1 {
+            background-color: #252525;
+        }
+        &__2 {
+            background-color: #505050;
+        }
+        &__3 {
+            background-color: #505050;
+        }
+        &__4 {
+            background-color: #313131;
+        }
     }
 }
 .playlist-name {

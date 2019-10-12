@@ -20,8 +20,14 @@ export class PersistentUserData extends VuexModule implements IPersistentUserDat
     playlists: Playlist[] = [];
     favourites: Song[] = [];
 
+    get getPlaylistById() {
+        return (id: number) => {
+            return this.playlists.find(p => p.id === id);
+        };
+    }
+
     @Mutation
-    addNewPlaylist(playlist: Playlist) {
+    createNewPlaylist(playlist: Playlist) {
         if (this.playlists.length > 1) {
             playlist.id = this.playlists[this.playlists.length - 1].id++;
         } else {

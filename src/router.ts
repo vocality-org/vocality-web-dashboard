@@ -34,7 +34,7 @@ export default new Router({
                     component: () => import('@/dashboard/views/Playlists.vue'),
                 },
                 {
-                    path: 'playlists/:name',
+                    path: 'playlists/:id_name',
                     name: 'editPlaylist',
                     component: () => import('@/dashboard/views/EditPlaylist.vue'),
                 },
