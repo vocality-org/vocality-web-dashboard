@@ -65,6 +65,7 @@ export default class CreatePlaylistModal extends Vue {
                 id: -1,
                 songs: [],
             });
+            this.resetForm();
             return true;
         }
         return false;

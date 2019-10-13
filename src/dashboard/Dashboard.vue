@@ -98,8 +98,8 @@ export default class Dashboard extends Vue {
         if (from.query.redirectFrom === 'editPlaylist') {
             this.alertMessage = 'You dont have this playlist';
             setTimeout(() => {
-                //this.alertMessage = '';
-            }, 3000);
+                this.alertMessage = '';
+            }, 5000);
         }
         next();
     }
