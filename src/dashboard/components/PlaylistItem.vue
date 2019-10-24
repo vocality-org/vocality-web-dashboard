@@ -84,12 +84,6 @@ export default class PlaylistItem extends Vue {
 
     @Emit('new')
     emitNewPlaylist() {}
-
-    getThumbnailFromIndex(index: number) {
-        if (this.playlist!.songs.length >= index + 1) {
-            return this.playlist!.songs[index].thumbnail_url;
-        }
-    }
 }
 </script>
 

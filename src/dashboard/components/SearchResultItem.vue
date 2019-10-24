@@ -18,6 +18,7 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { Song } from '@/store/modules/music';
 import { mdiPlay } from '@mdi/js';
+import { DiscordState } from '@/store';
 
 @Component
 export default class SearchResultItem extends Vue {
@@ -26,7 +27,15 @@ export default class SearchResultItem extends Vue {
     @Prop() readonly youtubeResult: Song | undefined;
 
     @Emit('play')
-    emitPlay() {}
+    emitPlay() {
+        this.$socket.client.emit('command', {
+            name: 'play',
+            args: [this.youtubeResult!.url],
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
+    }
 
     msTimeToDisplayString(ms: number) {
         const t = new Date('0');

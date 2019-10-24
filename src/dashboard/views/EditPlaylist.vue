@@ -2,50 +2,49 @@
     <div>
         <v-container>
             <h1 class="mb-5">{{ name }}</h1>
-            <v-list subheader>
-                <v-list-item class="controls-row">
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on }">
-                            <v-checkbox
-                                v-on="on"
-                                :value="totalSelected === songs.length"
-                                @change="toggleAllSelect($event)"
-                                class="mt-5 ml-1"
-                            ></v-checkbox>
-                        </template>
-                        <span>Select all</span>
-                    </v-tooltip>
+            <v-list-item class="controls-row">
+                <v-tooltip top>
+                    <template v-slot:activator="{ on }">
+                        <v-checkbox
+                            v-on="on"
+                            :value="totalSelected === songs.length"
+                            @change="toggleAllSelect($event)"
+                            class="mt-5 ml-1"
+                        ></v-checkbox>
+                    </template>
+                    <span>Select all</span>
+                </v-tooltip>
 
-                    <v-tooltip top v-if="totalSelected !== 0">
-                        <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" text icon class="mx-3" @click="removeSelected()">
-                                <v-icon>{{ deleteIcon }}</v-icon>
-                            </v-btn>
-                        </template>
-                        <span>Remove selected</span>
-                    </v-tooltip>
+                <v-tooltip top v-if="totalSelected !== 0">
+                    <template v-slot:activator="{ on }">
+                        <v-btn v-on="on" text icon class="mx-3" @click="removeSelected()">
+                            <v-icon>{{ deleteIcon }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Remove selected</span>
+                </v-tooltip>
 
-                    <v-menu offset-x right>
-                        <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" text>More</v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item @click="renamePlaylist(s)">
-                                <v-list-item-title>Rename Playlist</v-list-item-title>
-                            </v-list-item>
-                            <v-list-item @click="deletePlaylist(s)">
-                                <v-list-item-title>Delete Playlist</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
+                <v-menu offset-x right>
+                    <template v-slot:activator="{ on }">
+                        <v-btn v-on="on" text>More</v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item @click="renamePlaylist(s)">
+                            <v-list-item-title>Rename Playlist</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="deletePlaylist(s)">
+                            <v-list-item-title>Delete Playlist</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
 
-                    <div class="flex-spacer"></div>
-                    <div class="counter mr-4" :class="{ 'counter-on-zero': totalSelected === 0 }">
-                        {{ totalSelected }} / {{ songs.length }}
-                    </div>
-                </v-list-item>
-
-                <v-list-item v-for="(s, index) in songs" :key="index" @click="">
+                <div class="flex-spacer"></div>
+                <div class="counter mr-4" :class="{ 'counter-on-zero': totalSelected === 0 }">
+                    {{ totalSelected }} / {{ songs.length }}
+                </div>
+            </v-list-item>
+            <v-list subheader class="playlist-list">
+                <v-list-item v-for="(s, index) in songs" :key="index">
                     <v-list-item-avatar>
                         <v-checkbox v-if="s.isSelected" v-model="songs[index].isSelected" class="mt-5 ml-5 mr-3"></v-checkbox>
                         <v-img v-else :src="s.song.thumbnail_url" @click="s.isSelected = true"> </v-img>
@@ -223,42 +222,6 @@ export default class EditPlaylist extends Vue {
             },
             isSelected: false,
         },
-        {
-            song: {
-                url: 'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                title: 'Song1',
-                thumbnail_url:
-                    'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                requested_by: 'You',
-                current_time_ms: 0,
-                max_time_ms: 0,
-            },
-            isSelected: false,
-        },
-        {
-            song: {
-                url: 'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                title: 'Song1',
-                thumbnail_url:
-                    'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                requested_by: 'You',
-                current_time_ms: 0,
-                max_time_ms: 0,
-            },
-            isSelected: false,
-        },
-        {
-            song: {
-                url: 'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                title: 'Song1',
-                thumbnail_url:
-                    'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                requested_by: 'You',
-                current_time_ms: 0,
-                max_time_ms: 0,
-            },
-            isSelected: false,
-        },
     ];
 }
 
@@ -269,6 +232,10 @@ interface SelectableSong {
 </script>
 
 <style lang="scss" scoped>
+.playlist-list {
+    max-height: 67vh;
+    overflow-y: scroll;
+}
 .controls-row {
     display: flex;
 }
@@ -282,5 +249,25 @@ interface SelectableSong {
         opacity: 0.6;
         transform: scale(0.8);
     }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 </style>
