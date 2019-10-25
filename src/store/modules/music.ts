@@ -51,6 +51,10 @@ export class Music extends VuexModule implements IMusicState {
         return msTimeToDisplayString(duration_ms);
     }
 
+    get currentSongJSON(): string {
+        return JSON.stringify(this.currentSong);
+    }
+
     get currentSongTimeSeconds(): number | null {
         return this.currentSong ? this.currentSong.current_time_ms / 1000 : null;
     }

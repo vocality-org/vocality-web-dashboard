@@ -10,10 +10,11 @@
             </div>
             <div v-if="currentSong && $vuetify.breakpoint.mdAndUp" class="current-song song-container">
                 <img class="song-img" :src="currentSong.thumbnail_url" height="32" width="32" />
-                <span class="song-title">{{ currentSong.title }}</span>
+                <span :title="currentSong.title" class="song-title">{{ currentSong.title }}</span>
                 <span class="subtitle" style="margin-bottom: 1px;">requested by {{ currentSong.requested_by }}</span>
+                <v-icon class="song-controls ico-btn" @click="openAddToPlaylistSheet()">{{ addToPlaylistIcon }}</v-icon>
             </div>
-            <div v-if="!currentSong && $vuetify.breakpoint.mdAndUp">
+            <div v-if="!currentSong && $vuetify.breakpoint.mdAndUp" style="width: 320px">
                 <div class="song-placeholder" style="margin-left: 38px"></div>
             </div>
 
@@ -52,10 +53,11 @@
             <div v-if="nextUpSong && $vuetify.breakpoint.mdAndUp" class="next-song song-container" @click="openQueueDrawer()">
                 <img class="song-img" :src="nextUpSong.thumbnail_url" height="32" width="32" />
                 <span class="subtitle" style="margin-top: 1px;">Up Next</span>
-                <span class="song-title">{{ nextUpSong.title }}</span>
+                <span :title="nextUpSong.title" class="song-title">{{ nextUpSong.title }}</span>
+                <v-icon class="song-controls ico-btn" @click="openAddToPlaylistSheet()">{{ addToPlaylistIcon }}</v-icon>
             </div>
-            <div v-if="!nextUpSong && $vuetify.breakpoint.mdAndUp">
-                <div style="left: -205px" class="song-placeholder"></div>
+            <div v-if="!nextUpSong && $vuetify.breakpoint.mdAndUp" style="width: 320px">
+                <div class="song-placeholder" style="left: 82px"></div>
             </div>
         </div>
     </v-bottom-navigation>
@@ -64,7 +66,16 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { mdiPlay, mdiSkipNext, mdiSkipPrevious, mdiVolumeHigh, mdiVolumeOff, mdiReplay, mdiPause } from '@mdi/js';
+import {
+    mdiPlay,
+    mdiSkipNext,
+    mdiSkipPrevious,
+    mdiVolumeHigh,
+    mdiVolumeOff,
+    mdiReplay,
+    mdiPause,
+    mdiPlaylistPlus,
+} from '@mdi/js';
 import { mapState, mapGetters } from 'vuex';
 import { MusicState, AppState } from '@/store';
 
@@ -90,6 +101,7 @@ export default class MusicBar extends Vue {
     previousIcon = mdiSkipPrevious;
     volumeIcon = mdiVolumeHigh;
     mutedIcon = mdiVolumeOff;
+    addToPlaylistIcon = mdiPlaylistPlus;
     progress = 0.0;
 
     get currentSong() {
@@ -116,6 +128,10 @@ export default class MusicBar extends Vue {
         AppState.queueDrawer.open();
     }
 
+    openAddToPlaylistSheet() {
+        AppState.playlistSelectSheet.open();
+    }
+
     formatTime(s: number): string {
         const t = new Date('0');
         t.setSeconds(s);
@@ -123,9 +139,9 @@ export default class MusicBar extends Vue {
             t.getHours() > 0 ? t.getHours() : '',
             t.getHours() ? ':' : '',
             t.getHours() && t.getMinutes() < 10 ? '0' : '',
-            t.getMinutes() > 0 ? t.getMinutes() : '',
-            t.getMinutes() ? ':' : '',
-            t.getMinutes() && t.getSeconds() < 10 ? '0' : '',
+            t.getMinutes(),
+            ':',
+            t.getSeconds() < 10 ? '0' : '',
             t.getSeconds(),
         ].join('');
     }
@@ -167,11 +183,12 @@ export default class MusicBar extends Vue {
     display: grid;
     height: 32px;
     column-gap: 8px;
-    grid-template-columns: 32px minmax(100px, 250px);
+    grid-template-columns: 32px minmax(100px, 250px) 32px;
     position: relative;
     border-radius: 4px;
     white-space: nowrap;
     transition: background-color 100ms ease;
+    overflow: hidden;
 
     &:hover {
         background-color: rgba(255, 255, 255, 0.13);
@@ -208,18 +225,22 @@ export default class MusicBar extends Vue {
         font-weight: 300;
         opacity: 0.7;
     }
+
+    .song-controls {
+        grid-area: ctrl;
+    }
 }
 
 .current-song {
     grid-template-areas:
-        'img title'
-        'img subtitle';
+        'img title ctrl'
+        'img subtitle ctrl';
 }
 
 .next-song {
     grid-template-areas:
-        'img subtitle'
-        'img title';
+        'img subtitle ctrl'
+        'img title ctrl';
 }
 
 .ico-btn {

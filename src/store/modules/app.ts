@@ -24,12 +24,15 @@ class PlayUrlModalState extends ToggleableState {}
 
 class CreatePlaylistModalState extends ToggleableState {}
 
+class PlaylistSelectSheetState extends ToggleableState {}
+
 export interface IAppState {
     appDrawer: AppDrawerState;
     guildDrawer: GuildDrawerState;
     queueDrawer: QueueDrawerState;
     playUrlModal: PlayUrlModalState;
     createPlaylistModal: CreatePlaylistModalState;
+    playlistSelectSheet: PlaylistSelectSheetState;
     isYoutubeSearchActive: boolean;
     isSoundcloudSearchActive: boolean;
 }
@@ -44,6 +47,7 @@ export class App extends VuexModule implements IAppState {
     queueDrawer = new QueueDrawerState();
     playUrlModal = new PlayUrlModalState();
     createPlaylistModal = new CreatePlaylistModalState();
+    playlistSelectSheet = new PlaylistSelectSheetState();
 
     isYoutubeSearchActive = true;
     isSoundcloudSearchActive = true;

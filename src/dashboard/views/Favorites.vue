@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div>just create a playlist :)</div>
 </template>
 
 <script lang="ts">

@@ -14,6 +14,8 @@
             <router-view></router-view>
         </v-content>
 
+        <PlaylistSelectSheet />
+
         <MusicBar />
     </v-app>
 </template>
@@ -33,6 +35,7 @@ import QueueDrawer from './components/QueueDrawer.vue';
 import QueueDrawerHandle from './components/QueueDrawerHandle.vue';
 import MusicBar from './components/MusicBar.vue';
 import PlayUrlModal from './components/PlayUrlModal.vue';
+import PlaylistSelectSheet from './components/PlaylistSelectSheet.vue';
 
 Component.registerHooks(['beforeRouteUpdate']);
 
@@ -69,6 +72,7 @@ Component.registerHooks(['beforeRouteUpdate']);
         QueueDrawerHandle,
         MusicBar,
         PlayUrlModal,
+        PlaylistSelectSheet,
     },
 })
 export default class Dashboard extends Vue {

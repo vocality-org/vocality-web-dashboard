@@ -2,7 +2,7 @@
     <div :style="{ minWidth: cardWidth + 'px' }">
         <div v-if="!isAdd" class="playlist">
             <v-hover v-slot:default="{ hover }">
-                <v-card :width="cardWidth" :height="cardWidth" class="image-grid">
+                <v-card :width="cardWidth" :height="cardWidth" class="image-grid" @click="emitSelected()">
                     <img
                         v-for="(song, index) in playlist.songs.slice(0, 4)"
                         :key="index"
@@ -20,7 +20,7 @@
                     >
                         <span>?</span>
                     </div>
-                    <transition name="fade">
+                    <transition name="fade" v-if="!isSelect">
                         <div v-if="hover" class="popover">
                             <v-tooltip left>
                                 <template v-slot:activator="{ on }">
@@ -45,7 +45,7 @@
             <h3 class="playlist-name mt-2">{{ playlist.name }}</h3>
             <h5 class="song-count">{{ playlist.songs.length }} Songs</h5>
         </div>
-        <div v-else>
+        <div v-if="isAdd">
             <v-card class="new-card" :width="cardWidth" :height="cardWidth">
                 <v-btn text icon x-large class="mx-1" @click="emitNewPlaylist()">
                     <v-icon>{{ createIcon }}</v-icon>
@@ -59,7 +59,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { Playlist } from '@/store/modules/persistent-user-data';
-import { mdiPlaylistPlay, mdiPlaylistEdit, mdiPlaylistPlus } from '@mdi/js';
+import { mdiPlaylistPlay, mdiPlaylistEdit, mdiViewGridPlus } from '@mdi/js';
 
 @Component({
     computed: {
@@ -71,10 +71,11 @@ import { mdiPlaylistPlay, mdiPlaylistEdit, mdiPlaylistPlus } from '@mdi/js';
 export default class PlaylistItem extends Vue {
     playIcon = mdiPlaylistPlay;
     editIcon = mdiPlaylistEdit;
-    createIcon = mdiPlaylistPlus;
+    createIcon = mdiViewGridPlus;
 
     @Prop() readonly playlist: Playlist | undefined;
     @Prop() readonly isAdd: boolean | undefined;
+    @Prop() readonly isSelect: boolean | undefined;
 
     @Emit('play')
     emitPlay() {}
@@ -84,6 +85,9 @@ export default class PlaylistItem extends Vue {
 
     @Emit('new')
     emitNewPlaylist() {}
+
+    @Emit('selected')
+    emitSelected() {}
 }
 </script>
 

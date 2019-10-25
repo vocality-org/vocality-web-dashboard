@@ -28,7 +28,7 @@ export class PersistentUserData extends VuexModule implements IPersistentUserDat
 
     @Mutation
     createNewPlaylist(playlist: Playlist) {
-        if (this.playlists.length > 1) {
+        if (this.playlists.length >= 1) {
             playlist.id = this.playlists[this.playlists.length - 1].id++;
         } else {
             playlist.id = 0;
@@ -37,9 +37,11 @@ export class PersistentUserData extends VuexModule implements IPersistentUserDat
     }
 
     @Mutation
-    addSongToPlaylist(id: number, song: Song) {
-        if (this.playlists.find(p => p.id === id)) {
-            this.playlists.find(p => p.id === id)!.songs.push(song);
+    addSongToPlaylist(data: { id: number; song: Song }) {
+        if (data.song) {
+            if (this.playlists.find(p => p.id === data.id)) {
+                this.playlists.find(p => p.id === data.id)!.songs.push(data.song);
+            }
         }
     }
 

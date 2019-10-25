@@ -9,6 +9,7 @@
                     :counter="32"
                     label="Playlist name"
                     required
+                    @keydown="onEnter($event)"
                 ></v-text-field>
             </v-form>
             <v-card-actions class="mt-5">
@@ -69,6 +70,14 @@ export default class CreatePlaylistModal extends Vue {
             return true;
         }
         return false;
+    }
+
+    onEnter(event: KeyboardEvent) {
+        if (event.key === 'Enter' && event.code === 'Enter') {
+            event.preventDefault();
+            this.submitForm();
+            AppState.createPlaylistModal.close();
+        }
     }
 }
 </script>
