@@ -1,7 +1,12 @@
 <template>
     <div>
         <v-container>
-            <h1 class="mb-5">{{ name }}</h1>
+            <h1 class="mb-5">
+                <v-btn v-on="on" text icon x-large class="mr-2 mb-1" @click="navigateBack()">
+                    <v-icon>{{ backIcon }}</v-icon>
+                </v-btn>
+                {{ name }}
+            </h1>
             <v-list-item class="controls-row">
                 <v-tooltip top>
                     <template v-slot:activator="{ on }">
@@ -9,7 +14,7 @@
                             v-on="on"
                             :value="totalSelected === songs.length"
                             @change="toggleAllSelect($event)"
-                            class="mt-5 ml-1"
+                            class="mt-5 ml-2"
                         ></v-checkbox>
                     </template>
                     <span>Select all</span>
@@ -97,7 +102,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Route } from 'vue-router/types/router';
 import { PersistentUserDataState } from '@/store';
-import { mdiDelete, mdiDotsVertical, mdiPlaylistPlus } from '@mdi/js';
+import { mdiDelete, mdiDotsVertical, mdiPlaylistPlus, mdiArrowLeft } from '@mdi/js';
 import { Song } from '@/store/modules/music';
 
 Component.registerHooks(['beforeRouteEnter']);
@@ -111,6 +116,7 @@ export default class EditPlaylist extends Vue {
     deleteIcon = mdiDelete;
     menuIcon = mdiDotsVertical;
     playlistAddIcon = mdiPlaylistPlus;
+    backIcon = mdiArrowLeft;
 
     get totalSelected() {
         return this.songs.reduce((acc, cur) => {
@@ -145,6 +151,10 @@ export default class EditPlaylist extends Vue {
     removeFromPlaylist(s: SelectableSong) {
         this.songs.splice(this.songs.indexOf(s), 1);
         PersistentUserDataState.removeSongFromPlaylist(this.id, s.song);
+    }
+
+    navigateBack() {
+        this.$router.back();
     }
 
     beforeRouteEnter(to: Route, from: Route, next: any) {
