@@ -11,6 +11,7 @@
             <GlobalAlert :message="alertMessage" @close="alertMessage = ''" />
             <PlayUrlModal />
             <CreatePlaylistModal />
+            <RenamePlaylistModal />
             <router-view></router-view>
         </v-content>
 
@@ -29,6 +30,7 @@ import { AuthState, DiscordState, YouTubeState } from '@/store';
 import AppBar from './components/AppBar.vue';
 import AppDrawer from './components/AppDrawer.vue';
 import CreatePlaylistModal from './components/CreatePlaylistModal.vue';
+import RenamePlaylistModal from './components/RenamePlaylistModal.vue';
 import GlobalAlert from './components/GlobalAlert.vue';
 import GuildDrawer from './components/GuildDrawer.vue';
 import QueueDrawer from './components/QueueDrawer.vue';
@@ -66,6 +68,7 @@ Component.registerHooks(['beforeRouteUpdate']);
         AppBar,
         AppDrawer,
         CreatePlaylistModal,
+        RenamePlaylistModal,
         GlobalAlert,
         GuildDrawer,
         QueueDrawer,

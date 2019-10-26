@@ -129,6 +129,7 @@ export default class MusicBar extends Vue {
     }
 
     openAddToPlaylistSheet() {
+        MusicState.pendingPlaylistAdd = MusicState.currentSong;
         AppState.playlistSelectSheet.open();
     }
 

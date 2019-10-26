@@ -7,6 +7,7 @@ export interface IMusicState {
     lastSong: Song | null;
     currentSong: Song | null;
     queue: Song[];
+    pendingPlaylistAdd: Song | null;
 }
 
 export interface Song {
@@ -30,6 +31,7 @@ export class Music extends VuexModule implements IMusicState {
     lastSong: Song | null = null;
     currentSong: Song | null = null;
     queue: Song[] = [];
+    pendingPlaylistAdd: Song | null = null;
 
     get isMuted() {
         return this.volume === 0;
@@ -49,10 +51,6 @@ export class Music extends VuexModule implements IMusicState {
             this.queue.forEach(s => (duration_ms += s.max_time_ms));
         }
         return msTimeToDisplayString(duration_ms);
-    }
-
-    get currentSongJSON(): string {
-        return JSON.stringify(this.currentSong);
     }
 
     get currentSongTimeSeconds(): number | null {
@@ -133,6 +131,11 @@ export class Music extends VuexModule implements IMusicState {
     @Mutation
     addToQueue(song: Song) {
         this.queue.push(song);
+    }
+
+    @Mutation
+    setPendingPlaylistAdd(song: Song) {
+        this.pendingPlaylistAdd = song;
     }
 }
 

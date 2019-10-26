@@ -19,6 +19,7 @@ export interface IPersistentUserData {
 export class PersistentUserData extends VuexModule implements IPersistentUserData {
     playlists: Playlist[] = [];
     favourites: Song[] = [];
+    idTracker: number = 0;
 
     get getPlaylistById() {
         return (id: number) => {
@@ -28,13 +29,18 @@ export class PersistentUserData extends VuexModule implements IPersistentUserDat
 
     @Mutation
     createNewPlaylist(playlist: Playlist) {
-        if (this.playlists.length >= 1) {
-            playlist.id = this.playlists[this.playlists.length - 1].id++;
-        } else {
-            playlist.id = 0;
-        }
+        this.idTracker++;
+        playlist.id = this.idTracker;
         this.playlists.push(playlist);
     }
+
+    @Mutation
+    deletePlaylist(id: number) {
+        this.playlists.splice(this.playlists.findIndex(p => p.id === id), 1);
+    }
+
+    @Mutation
+    renamePlaylist(newName: string) {}
 
     @Mutation
     addSongToPlaylist(data: { id: number; song: Song }) {

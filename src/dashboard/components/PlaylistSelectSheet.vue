@@ -39,7 +39,8 @@ import PlaylistItem from './PlaylistItem.vue';
 })
 export default class PlaylistSelectSheet extends Vue {
     addToPlaylist(playlistId: number) {
-        PersistentUserDataState.addSongToPlaylist({ id: playlistId, song: MusicState.currentSong! });
+        PersistentUserDataState.addSongToPlaylist({ id: playlistId, song: MusicState.pendingPlaylistAdd! });
+        MusicState.pendingPlaylistAdd = null;
     }
 
     createPlaylist() {

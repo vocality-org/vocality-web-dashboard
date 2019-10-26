@@ -34,10 +34,10 @@
                         <v-btn v-on="on" text>More</v-btn>
                     </template>
                     <v-list>
-                        <v-list-item @click="renamePlaylist(s)">
+                        <v-list-item @click="renamePlaylist()">
                             <v-list-item-title>Rename Playlist</v-list-item-title>
                         </v-list-item>
-                        <v-list-item @click="deletePlaylist(s)">
+                        <v-list-item @click="deletePlaylist()">
                             <v-list-item-title>Delete Playlist</v-list-item-title>
                         </v-list-item>
                     </v-list>
@@ -78,10 +78,10 @@
                     </v-list-item-icon>
                 </v-list-item>
                 <div v-if="songs.length === 0">
-                    <v-row justify="center" class="my-2">
+                    <v-row justify="center" class="my-2" style="width: 100%">
                         This playlist is empty, add songs with
                     </v-row>
-                    <v-row justify="center" class="my-2">
+                    <v-row justify="center" class="my-2" style="width: 100%">
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
                                 <v-btn v-on="on" text icon>
@@ -101,7 +101,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Route } from 'vue-router/types/router';
-import { PersistentUserDataState } from '@/store';
+import { PersistentUserDataState, AppState } from '@/store';
 import { mdiDelete, mdiDotsVertical, mdiPlaylistPlus, mdiArrowLeft } from '@mdi/js';
 import { Song } from '@/store/modules/music';
 
@@ -111,7 +111,7 @@ Component.registerHooks(['beforeRouteEnter']);
 export default class EditPlaylist extends Vue {
     id: number = 0;
     name: string = '';
-    __songs: SelectableSong[] = [];
+    songs: SelectableSong[] = [];
 
     deleteIcon = mdiDelete;
     menuIcon = mdiDotsVertical;
@@ -132,9 +132,14 @@ export default class EditPlaylist extends Vue {
         }
     }
 
-    deletePlaylist() {}
+    deletePlaylist() {
+        PersistentUserDataState.deletePlaylist(this.id);
+        this.$router.back();
+    }
 
-    renamePlaylist() {}
+    renamePlaylist() {
+        AppState.renamePlaylistModal.open();
+    }
 
     favoriteSelected() {
         this.songs.filter(s => s.isSelected).forEach(s => this.addToFavorites(s));
@@ -166,7 +171,7 @@ export default class EditPlaylist extends Vue {
             next((vm: any) => {
                 vm.$data.id = id;
                 vm.$data.name = name;
-                vm.$data.__songs = playlist.songs.map(s => {
+                vm.$data.songs = playlist.songs.map(s => {
                     return {
                         song: s,
                         selected: false,
@@ -182,57 +187,6 @@ export default class EditPlaylist extends Vue {
             });
         }
     }
-
-    songs = [
-        {
-            song: {
-                url: 'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                title: 'Song1',
-                thumbnail_url:
-                    'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                requested_by: 'You',
-                current_time_ms: 0,
-                max_time_ms: 0,
-            },
-            isSelected: false,
-        },
-        {
-            song: {
-                url: 'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                title: 'Song1',
-                thumbnail_url:
-                    'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                requested_by: 'You',
-                current_time_ms: 0,
-                max_time_ms: 0,
-            },
-            isSelected: false,
-        },
-        {
-            song: {
-                url: 'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                title: 'Song1',
-                thumbnail_url:
-                    'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                requested_by: 'You',
-                current_time_ms: 0,
-                max_time_ms: 0,
-            },
-            isSelected: false,
-        },
-        {
-            song: {
-                url: 'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                title: 'Song1',
-                thumbnail_url:
-                    'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                requested_by: 'You',
-                current_time_ms: 0,
-                max_time_ms: 0,
-            },
-            isSelected: false,
-        },
-    ];
 }
 
 interface SelectableSong {

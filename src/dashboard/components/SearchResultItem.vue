@@ -1,15 +1,20 @@
 <template>
     <div>
         <div v-if="youtubeResult">
-            <v-card class="card" @click="emitPlay()">
-                <div class="card__image" :style="{ backgroundImage: `url(${youtubeResult.thumbnail_url})` }">
-                    <v-icon class="play-icon" large>{{ playIcon }}</v-icon>
-                </div>
-                <h3 class="card__title ml-4">
-                    <span class="title-text" v-html="youtubeResult.title"></span>
-                </h3>
-                <span class="card__duration mr-4">{{ msTimeToDisplayString(youtubeResult.max_time_ms) }}</span>
-            </v-card>
+            <v-hover v-slot:default="{ hover }">
+                <v-card class="card">
+                    <div class="card__image" :style="{ backgroundImage: `url(${youtubeResult.thumbnail_url})` }">
+                        <v-icon @click="emitPlay()" class="play-icon" large>{{ playIcon }}</v-icon>
+                    </div>
+                    <h3 class="card__title ml-4">
+                        <span class="title-text" v-html="youtubeResult.title"></span>
+                    </h3>
+                    <div v-if="hover" class="card__image" style="background: transparent">
+                        <v-icon @click="openPlaylistSelect()" class="play-icon" large>{{ addToPlaylistIcon }}</v-icon>
+                    </div>
+                    <span v-else class="card__duration mr-4">{{ msTimeToDisplayString(youtubeResult.max_time_ms) }}</span>
+                </v-card>
+            </v-hover>
         </div>
     </div>
 </template>
@@ -17,12 +22,13 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { Song } from '@/store/modules/music';
-import { mdiPlay } from '@mdi/js';
-import { DiscordState } from '@/store';
+import { DiscordState, AppState, MusicState } from '@/store';
+import { mdiPlay, mdiPlaylistPlus } from '@mdi/js';
 
 @Component
 export default class SearchResultItem extends Vue {
     playIcon = mdiPlay;
+    addToPlaylistIcon = mdiPlaylistPlus;
 
     @Prop() readonly youtubeResult: Song | undefined;
 
@@ -35,6 +41,11 @@ export default class SearchResultItem extends Vue {
                 guildId: DiscordState.currentGuildId,
             },
         });
+    }
+
+    openPlaylistSelect() {
+        MusicState.setPendingPlaylistAdd(this.youtubeResult!);
+        AppState.playlistSelectSheet.open();
     }
 
     msTimeToDisplayString(ms: number) {
@@ -74,7 +85,6 @@ export default class SearchResultItem extends Vue {
 
     &__image {
         height: $height;
-        background-image: url(https://images.unsplash.com/photo-1508138221679-760a23a2285b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80);
         background-size: auto $height;
         background-repeat: no-repeat;
         background-position: center;
