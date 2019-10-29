@@ -33,15 +33,7 @@ export default class SearchResultItem extends Vue {
     @Prop() readonly youtubeResult: Song | undefined;
 
     @Emit('play')
-    emitPlay() {
-        this.$socket.client.emit('command', {
-            name: 'play',
-            args: [this.youtubeResult!.url],
-            messageData: {
-                guildId: DiscordState.currentGuildId,
-            },
-        });
-    }
+    emitPlay() {}
 
     openPlaylistSelect() {
         MusicState.setPendingPlaylistAdd(this.youtubeResult!);

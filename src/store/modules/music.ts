@@ -17,6 +17,13 @@ export interface Song {
     requested_by: string;
     max_time_ms: number;
     current_time_ms: number;
+    length_ms?: number;
+    length?: string;
+    author?: {
+        avatarURL: string;
+        channelUrl: string;
+        name: string;
+    };
 }
 
 @Module({

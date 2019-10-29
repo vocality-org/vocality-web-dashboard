@@ -24,13 +24,27 @@ export class BotSocket extends VuexModule implements IBotSocketState {
     @Action
     socket_currentSong(message: any) {
         console.log('socket event: currentSong', message);
-        MusicState.setCurrentSong(message);
+        MusicState.setCurrentSong(toSong(message));
     }
 }
 
-function toSongArray(message: any): Song[] {
+function toSong(currentSong: any): Song {
+    return {
+        title: currentSong.song.title,
+        current_time_ms: currentSong.current_time_ms,
+        max_time_ms: currentSong.song.length_ms,
+        requested_by: currentSong.song.requested_by,
+        thumbnail_url: currentSong.song.thumbnail_url,
+        url: currentSong.song.url,
+        length_ms: currentSong.song.length_ms,
+        length: currentSong.song.length,
+        author: currentSong.song.author,
+    };
+}
+
+function toSongArray(currentQueue: any): Song[] {
     const songs = new Array<Song>();
-    message.forEach((s: any) => {
+    currentQueue.forEach((s: any) => {
         songs.push({
             url: s.url,
             title: s.title,
@@ -38,6 +52,9 @@ function toSongArray(message: any): Song[] {
             requested_by: s.requested_by,
             current_time_ms: 0,
             max_time_ms: s.length_ms,
+            length: s.length,
+            length_ms: s.length_ms,
+            author: s.author,
         });
     });
     return songs;

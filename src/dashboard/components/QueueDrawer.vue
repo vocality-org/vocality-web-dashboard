@@ -41,7 +41,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AppState, MusicState } from '@/store';
+import { AppState, MusicState, DiscordState } from '@/store';
 import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic } from '@mdi/js';
 import { mapState } from 'vuex';
 
@@ -73,6 +73,13 @@ export default class QueueDrawer extends Vue {
 
     removeSong(index: number) {
         MusicState.removeFromQueueAt(index);
+        this.$socket.client.emit('command', {
+            name: 'remove',
+            args: [index],
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
     }
 
     formatTime(s: number): string {

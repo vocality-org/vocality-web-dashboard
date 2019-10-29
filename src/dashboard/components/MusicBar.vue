@@ -27,7 +27,7 @@
                 <v-icon class="mx-2 ico-btn">{{ previousIcon }}</v-icon>
                 <v-icon v-if="isPlaying" class="mx-2 ico-btn" @click="setPlaying(false)">{{ pauseIcon }}</v-icon>
                 <v-icon v-else class="mx-2 ico-btn" @click="setPlaying(true)">{{ playIcon }}</v-icon>
-                <v-icon class="mx-2 ico-btn">{{ skipIcon }}</v-icon>
+                <v-icon class="mx-2 ico-btn" @click="skipSong()">{{ skipIcon }}</v-icon>
                 <v-menu
                     top
                     offset-y
@@ -77,7 +77,7 @@ import {
     mdiPlaylistPlus,
 } from '@mdi/js';
 import { mapState, mapGetters } from 'vuex';
-import { MusicState, AppState } from '@/store';
+import { MusicState, AppState, DiscordState } from '@/store';
 
 @Component({
     computed: {
@@ -109,10 +109,34 @@ export default class MusicBar extends Vue {
     }
 
     setPlaying(state: boolean) {
+        this.$socket.client.emit('command', {
+            name: state ? 'resume' : 'stop',
+            args: [],
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
         state ? MusicState.play() : MusicState.pause();
     }
 
+    skipSong() {
+        this.$socket.client.emit('command', {
+            name: 'skip',
+            args: [],
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
+    }
+
     switchLooping() {
+        this.$socket.client.emit('command', {
+            name: 'loop',
+            args: [],
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
         MusicState.switchLooping();
     }
 

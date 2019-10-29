@@ -32,7 +32,7 @@ import { mapState } from 'vuex';
 })
 export default class Playlists extends Vue {
     startPlaylist(playlist: Playlist) {
-        // for each? Pepega
+        this.$socket.client.emit('playDashboardPlaylist', playlist);
     }
 
     editPlaylist(playlist: Playlist) {
