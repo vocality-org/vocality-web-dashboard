@@ -23,7 +23,7 @@
                     <v-list-item-avatar v-else class="name-icon">
                         <span>{{ guild.nameIcon }}</span>
                     </v-list-item-avatar>
-                    <v-list-item-content>{{ guild.name }}</v-list-item-content>
+                    <v-list-item-content style="width: 100%; text-align: center;">{{ guild.name }}</v-list-item-content>
                 </v-list-item>
             </v-list>
 

@@ -8,10 +8,11 @@
                     </v-avatar>
                 </v-btn>
             </template>
-            <v-list>
+            <v-list dense>
+                <v-subheader class="ml-2">{{ username }}</v-subheader>
                 <v-list-item @click="settings()">
                     <v-list-item-icon>
-                        <v-icon class="mr-2">{{ mdiSettings }}</v-icon>
+                        <v-icon class="mr-1">{{ mdiSettings }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Settings</v-list-item-title>
@@ -19,7 +20,7 @@
                 </v-list-item>
                 <v-list-item @click="logout()">
                     <v-list-item-icon>
-                        <v-icon class="mr-2">{{ mdiLogout }}</v-icon>
+                        <v-icon class="mr-1">{{ mdiLogout }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title>Logout</v-list-item-title>
@@ -35,6 +36,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AuthState, DiscordState } from '@/store';
 import { mdiMenuDown, mdiSettings, mdiLogoutVariant } from '@mdi/js';
+import { mapState } from 'vuex';
 
 @Component({
     computed: {
@@ -42,7 +44,7 @@ import { mdiMenuDown, mdiSettings, mdiLogoutVariant } from '@mdi/js';
             return DiscordState.avatar;
         },
         username() {
-            return DiscordState.username;
+            return DiscordState.usernameWithDiscriminator;
         },
     },
 })

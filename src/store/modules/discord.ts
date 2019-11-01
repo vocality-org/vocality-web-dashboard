@@ -29,6 +29,10 @@ export class Discord extends VuexModule implements IDiscordState {
         return this.account ? this.account.username : null;
     }
 
+    get usernameWithDiscriminator() {
+        return `${this.username}#${this.account ? this.account.discriminator : ''}`;
+    }
+
     get userId() {
         return this.account ? this.account.id : null;
     }
