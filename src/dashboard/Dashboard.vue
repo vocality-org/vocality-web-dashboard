@@ -93,8 +93,9 @@ export default class Dashboard extends Vue {
     }
 
     getBotGuilds() {
-        DiscordState.fetchUserGuilds();
-        this.$socket.client.emit('userGuilds', DiscordState.userGuilds.map(g => g.id));
+        DiscordState.fetchUserGuilds().then(() => {
+            this.$socket.client.emit('userGuilds', DiscordState.userGuilds.map(g => g.id));
+        });
     }
 
     async initYoutube() {
