@@ -5,6 +5,24 @@
                 <div class="header">
                     <h1 class="title">In Queue</h1>
 
+                    <div class="flex-spacer"></div>
+
+                    <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                            <v-btn
+                                v-on="on"
+                                fab
+                                small
+                                color="transparent"
+                                class="elevation-0 shuffle-btn"
+                                @click="shuffleQueue()"
+                            >
+                                <v-icon>{{ shuffleIcon }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Shuffle the queue</span>
+                    </v-tooltip>
+
                     <v-btn fab small color="transparent" class="elevation-0 back-btn" @click="closeDrawer()">
                         <v-icon>{{ arrowRight }}</v-icon>
                     </v-btn>
@@ -30,7 +48,7 @@
 
                 <div v-else class="no-queue mt-4 pt-3">
                     <span class="body-2">There is nohing in queue</span>
-                    <v-btn color="primary" class="mt-3" @click="$router.push({ name: 'search' })">Add a song</v-btn>
+                    <v-btn color="primary" class="mt-3" @click="searchSong()">Search a song</v-btn>
                     <div class="placeholder-container"><div v-for="i in 5" :key="i" class="song-placeholder"></div></div>
                 </div>
             </div>
@@ -41,9 +59,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AppState, MusicState, DiscordState } from '@/store';
-import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic } from '@mdi/js';
 import { mapState } from 'vuex';
+import { AppState, MusicState, DiscordState } from '@/store';
+import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic, mdiShuffle } from '@mdi/js';
 
 @Component({
     computed: {
@@ -65,6 +83,7 @@ export default class QueueDrawer extends Vue {
     arrowRight = mdiArrowRight;
     remove = mdiPlaylistRemove;
     queueIcon = mdiPlaylistMusic;
+    shuffleIcon = mdiShuffle;
     hoverIndex = -1;
 
     closeDrawer() {
@@ -80,6 +99,20 @@ export default class QueueDrawer extends Vue {
                 guildId: DiscordState.currentGuildId,
             },
         });
+    }
+
+    shuffleQueue() {
+        this.$socket.client.emit('command', {
+            name: 'shuffle',
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
+    }
+
+    searchSong() {
+        this.$router.push({ name: 'search' });
+        AppState.queueDrawer.close();
     }
 
     formatTime(s: number): string {
@@ -103,13 +136,15 @@ export default class QueueDrawer extends Vue {
     .header {
         padding: 8px 16px;
         display: flex;
-        justify-content: space-between;
         .title {
             font-weight: normal;
             margin-top: 4px;
         }
         .back-btn {
             margin-top: -2px;
+        }
+        .flex-spacer {
+            flex: 1 1 auto;
         }
     }
     .list-item {
