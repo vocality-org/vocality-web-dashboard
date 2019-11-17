@@ -13,14 +13,14 @@
                                 v-on="on"
                                 fab
                                 small
-                                color="transparent"
+                                :color="isRandom ? 'cyan' : 'transparent'"
                                 class="elevation-0 shuffle-btn"
                                 @click="shuffleQueue()"
                             >
                                 <v-icon>{{ shuffleIcon }}</v-icon>
                             </v-btn>
                         </template>
-                        <span>Shuffle the queue</span>
+                        <span>Play in random order</span>
                     </v-tooltip>
 
                     <v-btn fab small color="transparent" class="elevation-0 back-btn" @click="closeDrawer()">
@@ -76,7 +76,7 @@ import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic, mdiShuffle } from '
         width() {
             return this.$vuetify.breakpoint.mdAndUp ? 300 : 200;
         },
-        ...mapState('music', ['queue']),
+        ...mapState('music', ['queue', 'isRandom']),
     },
 })
 export default class QueueDrawer extends Vue {
@@ -108,6 +108,7 @@ export default class QueueDrawer extends Vue {
                 guildId: DiscordState.currentGuildId,
             },
         });
+        MusicState.switchRandom();
     }
 
     searchSong() {

@@ -4,6 +4,7 @@ export interface IMusicState {
     isPlaying: boolean;
     volume: number;
     isLooping: boolean;
+    isRandom: boolean;
     lastSong: Song | null;
     currentSong: Song | null;
     queue: Song[];
@@ -35,6 +36,7 @@ export class Music extends VuexModule implements IMusicState {
     volume = 0;
     isPlaying = false;
     isLooping = false;
+    isRandom = false;
     lastSong: Song | null = null;
     currentSong: Song | null = null;
     queue: Song[] = [];
@@ -110,6 +112,11 @@ export class Music extends VuexModule implements IMusicState {
     @Mutation
     switchLooping() {
         this.isLooping = !this.isLooping;
+    }
+
+    @Mutation
+    switchRandom() {
+        this.isRandom = !this.isRandom;
     }
 
     @Mutation
