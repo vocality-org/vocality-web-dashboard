@@ -26,6 +26,14 @@ export class BotSocket extends VuexModule implements IBotSocketState {
         console.log('socket event: currentSong', message);
         MusicState.setCurrentSong(toSong(message));
     }
+
+    @Action
+    socket_currentState(message: any) {
+        console.log('socket event: currentState', message);
+        MusicState.isAutoplaying = message.autoplay;
+        MusicState.isLooping = message.loop;
+        MusicState.isRandom = message.shuffle;
+    }
 }
 
 function toSong(currentSong: any): Song {

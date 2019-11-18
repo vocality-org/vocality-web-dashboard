@@ -3,6 +3,7 @@ import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-modul
 export interface IMusicState {
     isPlaying: boolean;
     volume: number;
+    isAutoplaying: boolean;
     isLooping: boolean;
     isRandom: boolean;
     lastSong: Song | null;
@@ -35,6 +36,7 @@ export class Music extends VuexModule implements IMusicState {
     private lastVolume = 0;
     volume = 0;
     isPlaying = false;
+    isAutoplaying = false;
     isLooping = false;
     isRandom = false;
     lastSong: Song | null = null;
@@ -107,6 +109,11 @@ export class Music extends VuexModule implements IMusicState {
         }
         this.volume = volume;
         this.lastVolume = volume;
+    }
+
+    @Mutation
+    switchAutoplaying() {
+        this.isAutoplaying = !this.isAutoplaying;
     }
 
     @Mutation

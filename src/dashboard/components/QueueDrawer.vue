@@ -13,14 +13,30 @@
                                 v-on="on"
                                 fab
                                 small
-                                :color="isRandom ? 'cyan' : 'transparent'"
+                                color="transparent"
                                 class="elevation-0 shuffle-btn"
                                 @click="shuffleQueue()"
                             >
-                                <v-icon>{{ shuffleIcon }}</v-icon>
+                                <v-icon :color="isAutoplaying ? 'cyan' : 'grey'">{{ autoplayIcon }}</v-icon>
                             </v-btn>
                         </template>
-                        <span>Play in random order</span>
+                        <span>Autoplay</span>
+                    </v-tooltip>
+
+                    <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                            <v-btn
+                                v-on="on"
+                                fab
+                                small
+                                color="transparent"
+                                class="elevation-0 shuffle-btn"
+                                @click="shuffleQueue()"
+                            >
+                                <v-icon :color="isRandom ? 'cyan' : 'grey'">{{ shuffleIcon }}</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Shuffle</span>
                     </v-tooltip>
 
                     <v-btn fab small color="transparent" class="elevation-0 back-btn" @click="closeDrawer()">
@@ -61,7 +77,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { mapState } from 'vuex';
 import { AppState, MusicState, DiscordState } from '@/store';
-import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic, mdiShuffle } from '@mdi/js';
+import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic, mdiShuffle, mdiAnimationPlay } from '@mdi/js';
 
 @Component({
     computed: {
@@ -76,7 +92,7 @@ import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic, mdiShuffle } from '
         width() {
             return this.$vuetify.breakpoint.mdAndUp ? 300 : 200;
         },
-        ...mapState('music', ['queue', 'isRandom']),
+        ...mapState('music', ['queue', 'isRandom', 'isAutoplaying']),
     },
 })
 export default class QueueDrawer extends Vue {
@@ -84,6 +100,7 @@ export default class QueueDrawer extends Vue {
     remove = mdiPlaylistRemove;
     queueIcon = mdiPlaylistMusic;
     shuffleIcon = mdiShuffle;
+    autoplayIcon = mdiAnimationPlay;
     hoverIndex = -1;
 
     closeDrawer() {
@@ -140,9 +157,6 @@ export default class QueueDrawer extends Vue {
         .title {
             font-weight: normal;
             margin-top: 4px;
-        }
-        .back-btn {
-            margin-top: -2px;
         }
         .flex-spacer {
             flex: 1 1 auto;
