@@ -9,14 +9,7 @@
 
                     <v-tooltip left>
                         <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-on="on"
-                                fab
-                                small
-                                color="transparent"
-                                class="elevation-0 shuffle-btn"
-                                @click="shuffleQueue()"
-                            >
+                            <v-btn v-on="on" fab small color="transparent" class="elevation-0 shuffle-btn" @click="autoplay()">
                                 <v-icon :color="isAutoplaying ? 'cyan' : 'grey'">{{ autoplayIcon }}</v-icon>
                             </v-btn>
                         </template>
@@ -126,6 +119,15 @@ export default class QueueDrawer extends Vue {
             },
         });
         MusicState.switchRandom();
+    }
+
+    autoplay() {
+        this.$socket.client.emit('command', {
+            name: 'autoplay',
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
     }
 
     searchSong() {
