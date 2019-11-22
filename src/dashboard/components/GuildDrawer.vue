@@ -1,6 +1,13 @@
 <template>
     <div class="guild-bar">
-        <v-navigation-drawer v-model="isOpen" floating mini-variant mini-variant-width="64" app temporary>
+        <v-navigation-drawer
+            v-model="isOpen"
+            floating
+            mini-variant
+            mini-variant-width="64"
+            app
+            temporary
+        >
             <v-list-item>
                 <v-list-item-avatar>
                     <v-img src="@/assets/icons/discord.svg"></v-img>
@@ -17,21 +24,43 @@
                     @click="setActiveGuildId(guild.id)"
                     link
                 >
-                    <v-list-item-avatar v-if="guild.iconUrl">
-                        <v-img :src="guild.iconUrl"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-avatar v-else class="name-icon">
-                        <span style="width: 100%; text-align: center;">{{ guild.nameIcon }}</span>
-                    </v-list-item-avatar>
+                    <v-tooltip right>
+                        <template v-slot:activator="{ on }">
+                            <v-list-item-avatar v-on="on" v-if="guild.iconUrl">
+                                <v-img :src="guild.iconUrl"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-avatar
+                                v-on="on"
+                                v-else
+                                class="name-icon"
+                            >
+                                <span
+                                    style="width: 100%; text-align: center;"
+                                    >{{ guild.nameIcon }}</span
+                                >
+                            </v-list-item-avatar>
+                        </template>
+                        <span>{{ guild.name }}</span>
+                    </v-tooltip>
+
                     <v-list-item-content>{{ guild.name }}</v-list-item-content>
                 </v-list-item>
             </v-list>
 
-            <div v-if="!guilds.length && loading" class="loading-container mt-4">
-                <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            <div
+                v-if="!guilds.length && loading"
+                class="loading-container mt-4"
+            >
+                <v-progress-circular
+                    indeterminate
+                    color="primary"
+                ></v-progress-circular>
             </div>
 
-            <div v-if="!guilds.length && !loading" class="timeout-container mt-2">
+            <div
+                v-if="!guilds.length && !loading"
+                class="timeout-container mt-2"
+            >
                 <v-tooltip right>
                     <template v-slot:activator="{ on }">
                         <v-btn
@@ -66,7 +95,9 @@ import { mdiCommentPlusOutline } from '@mdi/js';
                 return AppState.guildDrawer.isOpen;
             },
             set(state) {
-                state ? AppState.guildDrawer.open() : AppState.guildDrawer.close();
+                state
+                    ? AppState.guildDrawer.open()
+                    : AppState.guildDrawer.close();
             },
         },
         ...mapState('discord', ['guilds']),
@@ -93,7 +124,10 @@ export default class GuildDrawer extends Vue {
 
     created() {
         if (DiscordState.currentGuildId) {
-            this.$socket.client.emit('currentGuild', DiscordState.currentGuildId);
+            this.$socket.client.emit(
+                'currentGuild',
+                DiscordState.currentGuildId
+            );
         }
     }
 }
