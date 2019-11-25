@@ -3,31 +3,71 @@
         <div class="music-bar">
             <div class="playback-bar">
                 <v-progress-linear
-                    :value="(currentSongTimeSeconds / currentSongMaxTimeSeconds) * 100"
+                    :value="
+                        (currentSongTimeSeconds / currentSongMaxTimeSeconds) *
+                            100
+                    "
                     height="2"
                     background-color="#595959"
                 ></v-progress-linear>
             </div>
-            <div v-if="currentSong && $vuetify.breakpoint.mdAndUp" class="current-song song-container">
-                <img class="song-img" :src="currentSong.thumbnail_url" height="32" width="32" />
-                <span :title="currentSong.title" class="song-title">{{ currentSong.title }}</span>
-                <span class="subtitle" style="margin-bottom: 1px;">requested by {{ currentSong.requested_by }}</span>
-                <v-icon class="song-controls ico-btn" @click="openAddToPlaylistSheet()">{{ addToPlaylistIcon }}</v-icon>
+            <div
+                v-if="currentSong && $vuetify.breakpoint.mdAndUp"
+                class="current-song song-container"
+            >
+                <img
+                    class="song-img"
+                    :src="currentSong.thumbnail_url"
+                    height="32"
+                    width="32"
+                />
+                <span :title="currentSong.title" class="song-title">{{
+                    currentSong.title
+                }}</span>
+                <span class="subtitle" style="margin-bottom: 1px;"
+                    >requested by {{ currentSong.requested_by }}</span
+                >
+                <v-icon
+                    class="song-controls ico-btn"
+                    @click="openAddToPlaylistSheet()"
+                    >{{ addToPlaylistIcon }}</v-icon
+                >
             </div>
-            <div v-if="!currentSong && $vuetify.breakpoint.mdAndUp" style="width: 320px">
+            <div
+                v-if="!currentSong && $vuetify.breakpoint.mdAndUp"
+                style="width: 320px"
+            >
                 <div class="song-placeholder" style="margin-left: 38px"></div>
             </div>
 
-            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{ formatTime(currentSongTimeSeconds) }}</span>
+            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{
+                formatTime(currentSongTimeSeconds)
+            }}</span>
 
-            <div class="controls" :class="{ 'center-on-sm': $vuetify.breakpoint.smAndDown }">
-                <v-icon class="mx-2 ico-btn" :class="{ 'ico-btn-active': isLooping }" @click="switchLooping()">
+            <div
+                class="controls"
+                :class="{ 'center-on-sm': $vuetify.breakpoint.smAndDown }"
+            >
+                <v-icon
+                    class="mx-2 ico-btn"
+                    :class="{ 'ico-btn-active': isLooping }"
+                    @click="switchLooping()"
+                >
                     {{ loopIcon }}
                 </v-icon>
                 <v-icon class="mx-2 ico-btn">{{ previousIcon }}</v-icon>
-                <v-icon v-if="isPlaying" class="mx-2 ico-btn" @click="setPlaying(false)">{{ pauseIcon }}</v-icon>
-                <v-icon v-else class="mx-2 ico-btn" @click="setPlaying(true)">{{ playIcon }}</v-icon>
-                <v-icon class="mx-2 ico-btn" @click="skipSong()">{{ skipIcon }}</v-icon>
+                <v-icon
+                    v-if="isPlaying"
+                    class="mx-2 ico-btn"
+                    @click="setPlaying(false)"
+                    >{{ pauseIcon }}</v-icon
+                >
+                <v-icon v-else class="mx-2 ico-btn" @click="setPlaying(true)">{{
+                    playIcon
+                }}</v-icon>
+                <v-icon class="mx-2 ico-btn" @click="skipSong()">{{
+                    skipIcon
+                }}</v-icon>
                 <v-menu
                     top
                     offset-y
@@ -38,25 +78,69 @@
                 >
                     <template v-slot:activator="{ on }">
                         <div v-on="on" class="volume">
-                            <v-icon v-if="isMuted" class="mx-2 ico-btn" @click="unmute()">{{ mutedIcon }}</v-icon>
-                            <v-icon v-else class="mx-2 ico-btn" @click="mute()">{{ volumeIcon }}</v-icon>
+                            <v-icon
+                                v-if="isMuted"
+                                class="mx-2 ico-btn"
+                                @click="
+                                    unmute();
+                                    debounceMuteUnmute(false);
+                                "
+                                >{{ mutedIcon }}</v-icon
+                            >
+                            <v-icon
+                                v-else
+                                class="mx-2 ico-btn"
+                                @click="
+                                    mute();
+                                    debounceMuteUnmute(true);
+                                "
+                                >{{ volumeIcon }}</v-icon
+                            >
                         </div>
                     </template>
                     <v-card class="volume-slider">
-                        <v-slider class="my-2" v-model="volume" vertical></v-slider>
+                        <v-slider
+                            class="my-2"
+                            v-model="volume"
+                            min="0"
+                            max="100"
+                            tick-size="1"
+                            vertical
+                            @change="debounceVolumeSlider($event)"
+                        ></v-slider>
                     </v-card>
                 </v-menu>
             </div>
 
-            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{ formatTime(currentSongMaxTimeSeconds) }}</span>
+            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{
+                formatTime(currentSongMaxTimeSeconds)
+            }}</span>
 
-            <div v-if="nextUpSong && $vuetify.breakpoint.mdAndUp" class="next-song song-container" @click="openQueueDrawer()">
-                <img class="song-img" :src="nextUpSong.thumbnail_url" height="32" width="32" />
+            <div
+                v-if="nextUpSong && $vuetify.breakpoint.mdAndUp"
+                class="next-song song-container"
+                @click="openQueueDrawer()"
+            >
+                <img
+                    class="song-img"
+                    :src="nextUpSong.thumbnail_url"
+                    height="32"
+                    width="32"
+                />
                 <span class="subtitle" style="margin-top: 1px;">Up Next</span>
-                <span :title="nextUpSong.title" class="song-title">{{ nextUpSong.title }}</span>
-                <v-icon class="song-controls ico-btn" @click="openAddToPlaylistSheet()">{{ addToPlaylistIcon }}</v-icon>
+                <span :title="nextUpSong.title" class="song-title">{{
+                    nextUpSong.title
+                }}</span>
+                <v-icon
+                    class="song-controls ico-btn"
+                    @click="openAddToPlaylistSheet()"
+                    >{{ addToPlaylistIcon }}</v-icon
+                >
             </div>
-            <div v-if="!nextUpSong && $vuetify.breakpoint.mdAndUp" style="width: 320px">
+            <div
+                v-if="!nextUpSong && $vuetify.breakpoint.mdAndUp"
+                style="width: 320px"
+            >
                 <div class="song-placeholder" style="left: 82px"></div>
             </div>
         </div>
@@ -79,6 +163,8 @@ import {
 import { mapState, mapGetters } from 'vuex';
 import { MusicState, AppState, DiscordState } from '@/store';
 
+import { debounce } from 'debounce';
+
 @Component({
     computed: {
         volume: {
@@ -89,7 +175,12 @@ import { MusicState, AppState, DiscordState } from '@/store';
                 MusicState.setVolume(value);
             },
         },
-        ...mapGetters('music', ['isMuted', 'nextUpSong', 'currentSongTimeSeconds', 'currentSongMaxTimeSeconds']),
+        ...mapGetters('music', [
+            'isMuted',
+            'nextUpSong',
+            'currentSongTimeSeconds',
+            'currentSongMaxTimeSeconds',
+        ]),
         ...mapState('music', ['isPlaying', 'isLooping']),
     },
 })
@@ -140,12 +231,42 @@ export default class MusicBar extends Vue {
         MusicState.switchLooping();
     }
 
+    // emit if no slider change for 400ms
+    debounceVolumeSlider = debounce((event: number) => {
+        if (event) {
+            MusicState.setVolume(event);
+            this.emitVolume(event);
+        }
+    }, 400);
+
+    // to switch icons we change state but only emit after debounce
     mute() {
         MusicState.mute();
     }
-
     unmute() {
         MusicState.unmute();
+    }
+
+    // emit after btn not clicked for 400ms
+    debounceMuteUnmute = debounce((isMute: boolean) => {
+        if (isMute) {
+            this.emitVolume(0);
+        } else {
+            this.emitVolume(MusicState.volume);
+        }
+    }, 400);
+
+    // emitting a volume command
+    emitVolume(volume: number) {
+        console.log('emit volume', volume);
+
+        this.$socket.client.emit('command', {
+            name: 'volume',
+            args: [`${volume}`],
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
     }
 
     openQueueDrawer() {
@@ -172,7 +293,10 @@ export default class MusicBar extends Vue {
     }
 
     updateProgress() {
-        if (this.currentSong && this.currentSong.current_time_ms < this.currentSong.max_time_ms) {
+        if (
+            this.currentSong &&
+            this.currentSong.current_time_ms < this.currentSong.max_time_ms
+        ) {
             MusicState.increaseCurrentSongTime(1);
         }
     }
@@ -229,7 +353,11 @@ export default class MusicBar extends Vue {
         right: 0;
         width: 16px;
         height: 100%;
-        background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(66, 66, 66, 1) 100%);
+        background: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(66, 66, 66, 1) 100%
+        );
     }
 
     .song-img {
