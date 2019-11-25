@@ -1,16 +1,33 @@
 <template>
     <div>
-        <v-navigation-drawer v-model="isOpen" right app floating :width="width" stateless>
+        <v-navigation-drawer
+            v-model="isOpen"
+            right
+            app
+            floating
+            :width="width"
+            stateless
+        >
             <div class="list-container">
                 <div class="header">
-                    <h1 class="title">In Queue</h1>
+                    <h1 class="title">Queue</h1>
 
                     <div class="flex-spacer"></div>
 
                     <v-tooltip left>
                         <template v-slot:activator="{ on }">
-                            <v-btn v-on="on" fab small color="transparent" class="elevation-0 shuffle-btn" @click="autoplay()">
-                                <v-icon :color="isAutoplaying ? 'cyan' : 'grey'">{{ autoplayIcon }}</v-icon>
+                            <v-btn
+                                v-on="on"
+                                fab
+                                small
+                                color="transparent"
+                                class="elevation-0 shuffle-btn"
+                                @click="autoplay()"
+                            >
+                                <v-icon
+                                    :color="isAutoplaying ? 'cyan' : 'grey'"
+                                    >{{ autoplayIcon }}</v-icon
+                                >
                             </v-btn>
                         </template>
                         <span>Autoplay</span>
@@ -26,13 +43,21 @@
                                 class="elevation-0 shuffle-btn"
                                 @click="shuffleQueue()"
                             >
-                                <v-icon :color="isRandom ? 'cyan' : 'grey'">{{ shuffleIcon }}</v-icon>
+                                <v-icon :color="isRandom ? 'cyan' : 'grey'">{{
+                                    shuffleIcon
+                                }}</v-icon>
                             </v-btn>
                         </template>
                         <span>Shuffle</span>
                     </v-tooltip>
 
-                    <v-btn fab small color="transparent" class="elevation-0 back-btn" @click="closeDrawer()">
+                    <v-btn
+                        fab
+                        small
+                        color="transparent"
+                        class="elevation-0 back-btn"
+                        @click="closeDrawer()"
+                    >
                         <v-icon>{{ arrowRight }}</v-icon>
                     </v-btn>
                 </div>
@@ -40,12 +65,29 @@
                 <v-divider></v-divider>
 
                 <v-list v-if="queue.length">
-                    <v-list-item v-for="(song, index) in queue" :key="index" class="list-item">
+                    <v-list-item
+                        v-for="(song, index) in queue"
+                        :key="index"
+                        class="list-item"
+                    >
                         <div class="song-container" @hover="hoverIndex = index">
-                            <img class="song-img" :src="song.thumbnail_url" height="32" width="32" />
+                            <img
+                                class="song-img"
+                                :src="song.thumbnail_url"
+                                height="32"
+                                width="32"
+                            />
                             <span class="song-title">{{ song.title }}</span>
-                            <span class="subtitle" style="margin-bottom: 1px;">requested by {{ song.requested_by }}</span>
-                            <v-btn fab small color="transparent" class="elevation-0 remove-ico" @click="removeSong(index)">
+                            <span class="subtitle" style="margin-bottom: 1px;"
+                                >requested by {{ song.requested_by }}</span
+                            >
+                            <v-btn
+                                fab
+                                small
+                                color="transparent"
+                                class="elevation-0 remove-ico"
+                                @click="removeSong(index)"
+                            >
                                 <v-icon>{{ remove }}</v-icon>
                             </v-btn>
                             <div class="time-container">
@@ -57,10 +99,133 @@
 
                 <div v-else class="no-queue mt-4 pt-3">
                     <span class="body-2">There is nohing in queue</span>
-                    <v-btn color="primary" class="mt-3" @click="searchSong()">Search a song</v-btn>
-                    <div class="placeholder-container"><div v-for="i in 5" :key="i" class="song-placeholder"></div></div>
+                    <v-btn color="primary" class="mt-3" @click="searchSong()"
+                        >Search a song</v-btn
+                    >
+                    <div class="placeholder-container">
+                        <div
+                            v-for="i in 5"
+                            :key="i"
+                            class="song-placeholder"
+                        ></div>
+                    </div>
                 </div>
             </div>
+            <template v-slot:append v-if="isAutoplaying">
+                <div class="autoplaying-footer py-4">
+                    <svg
+                        x="0px"
+                        y="0px"
+                        width="24px"
+                        height="30px"
+                        viewBox="0 0 24 30"
+                        xml:space="preserve"
+                        class="mr-4"
+                    >
+                        <rect
+                            x="0"
+                            y="10"
+                            width="4"
+                            height="10"
+                            fill="#333"
+                            opacity="0.2"
+                        >
+                            <animate
+                                attributeName="opacity"
+                                attributeType="XML"
+                                values="0.2; 1; .2"
+                                begin="0s"
+                                dur="0.6s"
+                                repeatCount="indefinite"
+                            />
+                            <animate
+                                attributeName="height"
+                                attributeType="XML"
+                                values="10; 20; 10"
+                                begin="0s"
+                                dur="0.6s"
+                                repeatCount="indefinite"
+                            />
+                            <animate
+                                attributeName="y"
+                                attributeType="XML"
+                                values="10; 5; 10"
+                                begin="0s"
+                                dur="0.6s"
+                                repeatCount="indefinite"
+                            />
+                        </rect>
+                        <rect
+                            x="8"
+                            y="10"
+                            width="4"
+                            height="10"
+                            fill="#333"
+                            opacity="0.2"
+                        >
+                            <animate
+                                attributeName="opacity"
+                                attributeType="XML"
+                                values="0.2; 1; .2"
+                                begin="0.15s"
+                                dur="0.6s"
+                                repeatCount="indefinite"
+                            />
+                            <animate
+                                attributeName="height"
+                                attributeType="XML"
+                                values="10; 20; 10"
+                                begin="0.15s"
+                                dur="0.6s"
+                                repeatCount="indefinite"
+                            />
+                            <animate
+                                attributeName="y"
+                                attributeType="XML"
+                                values="10; 5; 10"
+                                begin="0.15s"
+                                dur="0.6s"
+                                repeatCount="indefinite"
+                            />
+                        </rect>
+                        <rect
+                            x="16"
+                            y="10"
+                            width="4"
+                            height="10"
+                            fill="#333"
+                            opacity="0.2"
+                        >
+                            <animate
+                                attributeName="opacity"
+                                attributeType="XML"
+                                values="0.2; 1; .2"
+                                begin="0.3s"
+                                dur="0.6s"
+                                repeatCount="indefinite"
+                            />
+                            <animate
+                                attributeName="height"
+                                attributeType="XML"
+                                values="10; 20; 10"
+                                begin="0.3s"
+                                dur="0.6s"
+                                repeatCount="indefinite"
+                            />
+                            <animate
+                                attributeName="y"
+                                attributeType="XML"
+                                values="10; 5; 10"
+                                begin="0.3s"
+                                dur="0.6s"
+                                repeatCount="indefinite"
+                            />
+                        </rect>
+                    </svg>
+
+                    <span>Autoplaying similar songs</span>
+                </div>
+            </template>
         </v-navigation-drawer>
     </div>
 </template>
@@ -70,7 +235,13 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { mapState } from 'vuex';
 import { AppState, MusicState, DiscordState } from '@/store';
-import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic, mdiShuffle, mdiAnimationPlay } from '@mdi/js';
+import {
+    mdiArrowRight,
+    mdiPlaylistRemove,
+    mdiPlaylistMusic,
+    mdiShuffle,
+    mdiAnimationPlay,
+} from '@mdi/js';
 
 @Component({
     computed: {
@@ -79,7 +250,9 @@ import { mdiArrowRight, mdiPlaylistRemove, mdiPlaylistMusic, mdiShuffle, mdiAnim
                 return AppState.queueDrawer.isOpen;
             },
             set(state) {
-                state ? AppState.queueDrawer.open() : AppState.queueDrawer.close();
+                state
+                    ? AppState.queueDrawer.open()
+                    : AppState.queueDrawer.close();
             },
         },
         width() {
@@ -128,6 +301,7 @@ export default class QueueDrawer extends Vue {
                 guildId: DiscordState.currentGuildId,
             },
         });
+        MusicState.switchAutoplaying();
     }
 
     searchSong() {
@@ -210,7 +384,11 @@ export default class QueueDrawer extends Vue {
             right: 0;
             width: 16px;
             height: 100%;
-            background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(66, 66, 66, 1) 100%);
+            background: linear-gradient(
+                90deg,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(66, 66, 66, 1) 100%
+            );
         }
     }
 
@@ -227,7 +405,11 @@ export default class QueueDrawer extends Vue {
             right: 0;
             width: 16px;
             height: 100%;
-            background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(66, 66, 66, 1) 100%);
+            background: linear-gradient(
+                90deg,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(66, 66, 66, 1) 100%
+            );
         }
     }
 
@@ -294,5 +476,15 @@ export default class QueueDrawer extends Vue {
             top: -3px;
         }
     }
+}
+.autoplaying-footer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+}
+svg path,
+svg rect {
+    fill: clr(brand, cyan);
 }
 </style>
