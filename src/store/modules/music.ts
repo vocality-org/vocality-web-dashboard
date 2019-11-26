@@ -1,4 +1,10 @@
-import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
+import {
+    Module,
+    VuexModule,
+    MutationAction,
+    Action,
+    Mutation,
+} from 'vuex-module-decorators';
 
 export interface IMusicState {
     isPlaying: boolean;
@@ -13,6 +19,7 @@ export interface IMusicState {
 }
 
 export interface Song {
+    _id?: string;
     title: string;
     url: string;
     thumbnail_url: string;
@@ -65,7 +72,9 @@ export class Music extends VuexModule implements IMusicState {
     }
 
     get currentSongTimeSeconds(): number | null {
-        return this.currentSong ? this.currentSong.current_time_ms / 1000 : null;
+        return this.currentSong
+            ? this.currentSong.current_time_ms / 1000
+            : null;
     }
 
     get currentSongMaxTimeSeconds(): number | null {
@@ -127,12 +136,32 @@ export class Music extends VuexModule implements IMusicState {
     }
 
     @Mutation
+    setState(state: {
+        autoplaying: boolean;
+        looping: boolean;
+        shuffling: boolean;
+    }) {
+        this.isAutoplaying = state.autoplaying;
+        this.isLooping = state.looping;
+        this.isRandom = state.shuffling;
+    }
+
+    @Mutation
     setCurrentSong(song: Song) {
         this.currentSong = song;
     }
 
     @Mutation
     setQueue(queue: Song[]) {
+        queue.forEach(s => {
+            if (!s._id) {
+                s._id =
+                    '_' +
+                    Math.random()
+                        .toString(36)
+                        .substr(2, 9);
+            }
+        });
         this.queue = queue;
     }
 

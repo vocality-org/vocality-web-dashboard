@@ -31,7 +31,9 @@ import { mapState, mapGetters } from 'vuex';
             if (AppState.queueDrawer.isOpen) {
                 return {
                     'padding-right': '4px',
-                    transform: `translateX(-${this.$vuetify.breakpoint.mdAndUp ? 300 : 200}px)`,
+                    transform: `translateX(-${
+                        this.$vuetify.breakpoint.mdAndUp ? 300 : 240
+                    }px)`,
                 };
             }
         },
@@ -46,7 +48,9 @@ export default class QeueDrawerHandle extends Vue {
     closeIcon = mdiChevronRight;
 
     toggleQueueDrawer() {
-        AppState.queueDrawer.isOpen ? AppState.queueDrawer.close() : AppState.queueDrawer.open();
+        AppState.queueDrawer.isOpen
+            ? AppState.queueDrawer.close()
+            : AppState.queueDrawer.open();
     }
 }
 </script>
@@ -63,11 +67,11 @@ export default class QeueDrawerHandle extends Vue {
     font-size: 14px;
     font-weight: 700;
     background-color: clr(brand, cyan);
-    border-top-left-radius: 24px;
     border-bottom-left-radius: 24px;
     transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
     @include mq(sm) {
         top: 54px + 32px;
+        border-top-left-radius: 24px;
     }
 }
 </style>

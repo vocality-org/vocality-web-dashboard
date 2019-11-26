@@ -1,4 +1,10 @@
-import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
+import {
+    Module,
+    VuexModule,
+    MutationAction,
+    Action,
+    Mutation,
+} from 'vuex-module-decorators';
 import { DiscordState, MusicState } from '@/store';
 import { Song } from './music';
 
@@ -30,9 +36,11 @@ export class BotSocket extends VuexModule implements IBotSocketState {
     @Action
     socket_currentState(message: any) {
         console.log('socket event: currentState', message);
-        MusicState.isAutoplaying = message.autoplay;
-        MusicState.isLooping = message.loop;
-        MusicState.isRandom = message.shuffle;
+        MusicState.setState({
+            autoplaying: message.autplay,
+            looping: message.loop,
+            shuffling: message.shuffle,
+        });
     }
 }
 

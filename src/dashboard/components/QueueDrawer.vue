@@ -65,36 +65,81 @@
                 <v-divider></v-divider>
 
                 <v-list v-if="queue.length">
-                    <v-list-item
-                        v-for="(song, index) in queue"
-                        :key="index"
-                        class="list-item"
+                    <draggable
+                        v-model="queue"
+                        v-bind="dragOptions"
+                        tag="div"
+                        @start="dragging = true"
+                        @end="dragging = false"
                     >
-                        <div class="song-container" @hover="hoverIndex = index">
-                            <img
-                                class="song-img"
-                                :src="song.thumbnail_url"
-                                height="32"
-                                width="32"
-                            />
-                            <span class="song-title">{{ song.title }}</span>
-                            <span class="subtitle" style="margin-bottom: 1px;"
-                                >requested by {{ song.requested_by }}</span
+                        <transition-group
+                            type="transition"
+                            :name="
+                                dragging
+                                    ? 'drag-transition'
+                                    : 'queue-list-transition'
+                            "
+                        >
+                            <v-list-item
+                                v-for="(song, index) in queue"
+                                :key="song._id"
+                                class="list-item"
                             >
-                            <v-btn
-                                fab
-                                small
-                                color="transparent"
-                                class="elevation-0 remove-ico"
-                                @click="removeSong(index)"
-                            >
-                                <v-icon>{{ remove }}</v-icon>
-                            </v-btn>
-                            <div class="time-container">
-                                <span>{{ formatTime(song.max_time_ms) }}</span>
-                            </div>
-                        </div>
-                    </v-list-item>
+                                <v-hover v-slot:default="{ hover }">
+                                    <div
+                                        class="song-container-wrapper"
+                                        :class="
+                                            hover && !dragging
+                                                ? 'list-item-hover'
+                                                : ''
+                                        "
+                                    >
+                                        <div class="song-container">
+                                            <img
+                                                class="song-img"
+                                                :src="song.thumbnail_url"
+                                                height="32"
+                                                width="32"
+                                            />
+                                            <v-btn
+                                                fab
+                                                small
+                                                color="transparent"
+                                                class="elevation-0 play-ico"
+                                                @click="skipTo(index)"
+                                            >
+                                                <v-icon>{{ playIcon }}</v-icon>
+                                            </v-btn>
+
+                                            <span class="song-title">{{
+                                                song.title
+                                            }}</span>
+                                            <span
+                                                class="subtitle"
+                                                style="margin-bottom: 1px;"
+                                                >requested by
+                                                {{ song.requested_by }}
+                                            </span>
+                                            <v-btn
+                                                fab
+                                                small
+                                                color="transparent"
+                                                class="elevation-0 remove-ico"
+                                                @click="removeSong(index)"
+                                            >
+                                                <v-icon>{{ remove }}</v-icon>
+                                            </v-btn>
+                                            <div class="time-container">
+                                                <span>{{
+                                                    formatTime(song.max_time_ms)
+                                                }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </v-hover>
+                            </v-list-item>
+                        </transition-group>
+                    </draggable>
                 </v-list>
 
                 <div v-else class="no-queue mt-4 pt-3">
@@ -241,10 +286,21 @@ import {
     mdiPlaylistMusic,
     mdiShuffle,
     mdiAnimationPlay,
+    mdiPlay,
 } from '@mdi/js';
+
+import draggable from 'vuedraggable';
 
 @Component({
     computed: {
+        queue: {
+            get() {
+                return MusicState.queue;
+            },
+            set(newQueue) {
+                MusicState.setQueue(newQueue);
+            },
+        },
         isOpen: {
             get() {
                 return AppState.queueDrawer.isOpen;
@@ -256,9 +312,12 @@ import {
             },
         },
         width() {
-            return this.$vuetify.breakpoint.mdAndUp ? 300 : 200;
+            return this.$vuetify.breakpoint.mdAndUp ? 300 : 240;
         },
-        ...mapState('music', ['queue', 'isRandom', 'isAutoplaying']),
+        ...mapState('music', ['isRandom', 'isAutoplaying']),
+    },
+    components: {
+        draggable,
     },
 })
 export default class QueueDrawer extends Vue {
@@ -267,16 +326,110 @@ export default class QueueDrawer extends Vue {
     queueIcon = mdiPlaylistMusic;
     shuffleIcon = mdiShuffle;
     autoplayIcon = mdiAnimationPlay;
-    hoverIndex = -1;
+    playIcon = mdiPlay;
+    dragging = false;
+
+    dragOptions = {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost',
+    };
 
     closeDrawer() {
         AppState.queueDrawer.close();
+        MusicState.addToQueue({
+            _id:
+                '_' +
+                Math.random()
+                    .toString(36)
+                    .substr(2, 9),
+            title: 'Lister - Show Me 0',
+            url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            thumbnail_url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            requested_by: 'boolean',
+            max_time_ms: 320000,
+            current_time_ms: 0,
+        });
+        MusicState.addToQueue({
+            _id:
+                '_' +
+                Math.random()
+                    .toString(36)
+                    .substr(2, 9),
+            title: 'Lister - Show Me 1',
+            url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            thumbnail_url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            requested_by: 'boolean',
+            max_time_ms: 320000,
+            current_time_ms: 0,
+        });
+        MusicState.addToQueue({
+            _id:
+                '_' +
+                Math.random()
+                    .toString(36)
+                    .substr(2, 9),
+            title: 'Lister - Show Me 2',
+            url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            thumbnail_url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            requested_by: 'boolean',
+            max_time_ms: 320000,
+            current_time_ms: 0,
+        });
+        MusicState.addToQueue({
+            _id:
+                '_' +
+                Math.random()
+                    .toString(36)
+                    .substr(2, 9),
+            title: 'Lister - Show Me 3',
+            url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            thumbnail_url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            requested_by: 'boolean',
+            max_time_ms: 320000,
+            current_time_ms: 0,
+        });
+        MusicState.addToQueue({
+            _id:
+                '_' +
+                Math.random()
+                    .toString(36)
+                    .substr(2, 9),
+            title: 'Lister - Show Me 4',
+            url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            thumbnail_url:
+                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
+            requested_by: 'boolean',
+            max_time_ms: 320000,
+            current_time_ms: 0,
+        });
     }
 
     removeSong(index: number) {
         MusicState.removeFromQueueAt(index);
         this.$socket.client.emit('command', {
             name: 'remove',
+            args: [index],
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
+    }
+
+    skipTo(index: number) {
+        MusicState.setQueue(MusicState.queue.filter((s, i) => i >= index));
+        this.$socket.client.emit('command', {
+            name: 'skip',
             args: [index],
             messageData: {
                 guildId: DiscordState.currentGuildId,
@@ -339,21 +492,35 @@ export default class QueueDrawer extends Vue {
         }
     }
     .list-item {
+        cursor: grab;
         padding: 0;
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            .song-title::after,
-            .subtitle::after {
-                display: none;
-            }
-            .remove-ico {
-                display: initial;
-            }
-            .time-container {
-                display: none;
-            }
+    }
+    .list-item-hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        .song-title::after,
+        .subtitle::after {
+            display: none;
+        }
+        .song-img {
+            filter: brightness(0.7);
+        }
+        .play-ico {
+            display: initial;
+        }
+        .remove-ico {
+            display: initial;
+        }
+        .time-container {
+            display: none;
         }
     }
+}
+.song-container-wrapper {
+    height: 48px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 .song-container {
     display: grid;
@@ -368,6 +535,13 @@ export default class QueueDrawer extends Vue {
     .song-img {
         grid-row: span 2;
         border-radius: 4px;
+    }
+
+    .play-ico {
+        position: absolute;
+        top: -4px;
+        left: 12px;
+        display: none;
     }
 
     .song-title {
@@ -486,5 +660,18 @@ export default class QueueDrawer extends Vue {
 svg path,
 svg rect {
     fill: clr(brand, cyan);
+}
+
+.queue-list-transition-enter-active,
+.queue-list-transition-leave-active {
+    transition: all 200ms;
+}
+.queue-list-transition-enter,
+.queue-list-transition-leave-to {
+    opacity: 0;
+    transform: translateX(300px);
+}
+.drag-transition-move {
+    transition: transform 0.5s;
 }
 </style>

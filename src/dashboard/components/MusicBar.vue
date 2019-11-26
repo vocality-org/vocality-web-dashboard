@@ -29,7 +29,7 @@
                 >
                 <v-icon
                     class="song-controls ico-btn"
-                    @click="openAddToPlaylistSheet()"
+                    @click="openAddToPlaylistSheet('current')"
                     >{{ addToPlaylistIcon }}</v-icon
                 >
             </div>
@@ -133,7 +133,7 @@
                 }}</span>
                 <v-icon
                     class="song-controls ico-btn"
-                    @click="openAddToPlaylistSheet()"
+                    @click="openAddToPlaylistSheet('next')"
                     >{{ addToPlaylistIcon }}</v-icon
                 >
             </div>
@@ -273,8 +273,13 @@ export default class MusicBar extends Vue {
         AppState.queueDrawer.open();
     }
 
-    openAddToPlaylistSheet() {
-        MusicState.pendingPlaylistAdd = MusicState.currentSong;
+    openAddToPlaylistSheet(whichSong: string) {
+        if (whichSong === 'current') {
+            MusicState.setPendingPlaylistAdd(MusicState.currentSong!);
+        }
+        if (whichSong === 'next') {
+            MusicState.setPendingPlaylistAdd(MusicState.nextUpSong!);
+        }
         AppState.playlistSelectSheet.open();
     }
 
