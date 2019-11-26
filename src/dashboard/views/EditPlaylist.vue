@@ -2,7 +2,14 @@
     <div>
         <v-container>
             <h1 class="mb-5">
-                <v-btn v-on="on" text icon x-large class="mr-2 mb-1" @click="navigateBack()">
+                <v-btn
+                    v-on="on"
+                    text
+                    icon
+                    x-large
+                    class="mr-2 mb-1"
+                    @click="navigateBack()"
+                >
                     <v-icon>{{ backIcon }}</v-icon>
                 </v-btn>
                 {{ name }}
@@ -22,7 +29,13 @@
 
                 <v-tooltip top v-if="totalSelected !== 0">
                     <template v-slot:activator="{ on }">
-                        <v-btn v-on="on" text icon class="mx-3" @click="removeSelected()">
+                        <v-btn
+                            v-on="on"
+                            text
+                            icon
+                            class="mx-3"
+                            @click="removeSelected()"
+                        >
                             <v-icon>{{ deleteIcon }}</v-icon>
                         </v-btn>
                     </template>
@@ -35,24 +48,40 @@
                     </template>
                     <v-list>
                         <v-list-item @click="renamePlaylist()">
-                            <v-list-item-title>Rename Playlist</v-list-item-title>
+                            <v-list-item-title
+                                >Rename Playlist</v-list-item-title
+                            >
                         </v-list-item>
                         <v-list-item @click="deletePlaylist()">
-                            <v-list-item-title>Delete Playlist</v-list-item-title>
+                            <v-list-item-title
+                                >Delete Playlist</v-list-item-title
+                            >
                         </v-list-item>
                     </v-list>
                 </v-menu>
 
                 <div class="flex-spacer"></div>
-                <div class="counter mr-4" :class="{ 'counter-on-zero': totalSelected === 0 }">
+                <div
+                    class="counter mr-4"
+                    :class="{ 'counter-on-zero': totalSelected === 0 }"
+                >
                     {{ totalSelected }} / {{ songs.length }}
                 </div>
             </v-list-item>
             <v-list subheader class="playlist-list">
                 <v-list-item v-for="(s, index) in songs" :key="index">
                     <v-list-item-avatar>
-                        <v-checkbox v-if="s.isSelected" v-model="songs[index].isSelected" class="mt-5 ml-5 mr-3"></v-checkbox>
-                        <v-img v-else :src="s.song.thumbnail_url" @click="s.isSelected = true"> </v-img>
+                        <v-checkbox
+                            v-if="s.isSelected"
+                            v-model="songs[index].isSelected"
+                            class="mt-5 ml-5 mr-3"
+                        ></v-checkbox>
+                        <v-img
+                            v-else
+                            :src="s.song.thumbnail_url"
+                            @click="s.isSelected = true"
+                        >
+                        </v-img>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
@@ -67,11 +96,10 @@
                                 </v-btn>
                             </template>
                             <v-list>
-                                <v-list-item @click="addToFavorites(s)">
-                                    <v-list-item-title>Add to Favorites</v-list-item-title>
-                                </v-list-item>
                                 <v-list-item @click="removeFromPlaylist(s)">
-                                    <v-list-item-title>Remove from Playlist</v-list-item-title>
+                                    <v-list-item-title
+                                        >Remove from Playlist</v-list-item-title
+                                    >
                                 </v-list-item>
                             </v-list>
                         </v-menu>
@@ -102,7 +130,12 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Route } from 'vue-router/types/router';
 import { PersistentUserDataState, AppState } from '@/store';
-import { mdiDelete, mdiDotsVertical, mdiPlaylistPlus, mdiArrowLeft } from '@mdi/js';
+import {
+    mdiDelete,
+    mdiDotsVertical,
+    mdiPlaylistPlus,
+    mdiArrowLeft,
+} from '@mdi/js';
 import { Song } from '@/store/modules/music';
 
 Component.registerHooks(['beforeRouteEnter']);
@@ -141,16 +174,10 @@ export default class EditPlaylist extends Vue {
         AppState.renamePlaylistModal.open();
     }
 
-    favoriteSelected() {
-        this.songs.filter(s => s.isSelected).forEach(s => this.addToFavorites(s));
-    }
-
-    addToFavorites(s: SelectableSong) {
-        PersistentUserDataState.addFavourite(s.song);
-    }
-
     removeSelected() {
-        this.songs.filter(s => s.isSelected).forEach(s => this.removeFromPlaylist(s));
+        this.songs
+            .filter(s => s.isSelected)
+            .forEach(s => this.removeFromPlaylist(s));
     }
 
     removeFromPlaylist(s: SelectableSong) {
@@ -164,7 +191,9 @@ export default class EditPlaylist extends Vue {
 
     beforeRouteEnter(to: Route, from: Route, next: any) {
         const id = to.params.id_name.split('_')[0];
-        const playlist = PersistentUserDataState.getPlaylistById(parseInt(id, 10));
+        const playlist = PersistentUserDataState.getPlaylistById(
+            parseInt(id, 10)
+        );
 
         if (playlist) {
             const name = playlist.name;

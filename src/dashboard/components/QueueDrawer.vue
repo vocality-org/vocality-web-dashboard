@@ -288,7 +288,6 @@ import {
     mdiAnimationPlay,
     mdiPlay,
 } from '@mdi/js';
-
 import draggable from 'vuedraggable';
 
 @Component({
