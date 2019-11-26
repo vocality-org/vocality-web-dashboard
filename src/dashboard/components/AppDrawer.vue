@@ -1,10 +1,18 @@
 <template>
     <div>
-        <v-navigation-drawer app v-model="isOpen" :expand-on-hover="$vuetify.breakpoint.lgAndUp" mini-variant-width="64">
+        <v-navigation-drawer
+            app
+            v-model="isOpen"
+            :expand-on-hover="$vuetify.breakpoint.lgAndUp"
+            mini-variant-width="64"
+        >
             <v-list nav dense>
                 <v-list-item class="logo-item">
                     <v-list-item-avatar @click="navigateTo('search')">
-                        <v-img class="logo" src="@/assets/vocality/logo.svg"></v-img>
+                        <v-img
+                            class="logo"
+                            src="@/assets/vocality/logo.svg"
+                        ></v-img>
                     </v-list-item-avatar>
                 </v-list-item>
                 <v-list-item link @click="navigateTo('search')">
@@ -12,6 +20,12 @@
                         <v-icon>{{ searchIcon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>Search</v-list-item-title>
+                </v-list-item>
+                <v-list-item link @click="navigateTo('history')">
+                    <v-list-item-icon>
+                        <v-icon>{{ historyIcon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>History</v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="openUrlModal()">
                     <v-list-item-icon>
@@ -25,12 +39,6 @@
                     </v-list-item-icon>
                     <v-list-item-title>Music Queue</v-list-item-title>
                 </v-list-item>
-                <v-list-item link @click="navigateTo('favorites')">
-                    <v-list-item-icon>
-                        <v-icon>{{ favoriteIcon }}</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>Favorites</v-list-item-title>
-                </v-list-item>
                 <v-list-item link @click="navigateTo('playlists')">
                     <v-list-item-icon>
                         <v-icon>{{ playlistIcon }}</v-icon>
@@ -39,7 +47,10 @@
                 </v-list-item>
                 <v-list-item link @click="openGuildsBar()">
                     <v-list-item-icon>
-                        <v-img src="@/assets/icons/discord.svg" width="28"></v-img>
+                        <v-img
+                            src="@/assets/icons/discord.svg"
+                            width="28"
+                        ></v-img>
                     </v-list-item-icon>
                     <v-list-item-title>Change Server</v-list-item-title>
                 </v-list-item>
@@ -52,7 +63,13 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { AppState } from '@/store';
-import { mdiMagnify, mdiCodeTags, mdiStar, mdiPlaylistMusic, mdiPlaylistPlay } from '@mdi/js';
+import {
+    mdiMagnify,
+    mdiCodeTags,
+    mdiHistory,
+    mdiPlaylistMusic,
+    mdiPlaylistPlay,
+} from '@mdi/js';
 
 @Component({
     computed: {
@@ -72,7 +89,7 @@ import { mdiMagnify, mdiCodeTags, mdiStar, mdiPlaylistMusic, mdiPlaylistPlay } f
 export default class AppDrawer extends Vue {
     searchIcon = mdiMagnify;
     urlIcon = mdiCodeTags;
-    favoriteIcon = mdiStar;
+    historyIcon = mdiHistory;
     playlistIcon = mdiPlaylistPlay;
     queueIcon = mdiPlaylistMusic;
 

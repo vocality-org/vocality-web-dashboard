@@ -5,6 +5,7 @@ import {
     Action,
     Mutation,
 } from 'vuex-module-decorators';
+import { PersistentUserDataState } from '..';
 
 export interface IMusicState {
     isPlaying: boolean;
@@ -149,6 +150,7 @@ export class Music extends VuexModule implements IMusicState {
     @Mutation
     setCurrentSong(song: Song) {
         this.currentSong = song;
+        PersistentUserDataState.addToHistory(song);
     }
 
     @Mutation

@@ -1,4 +1,10 @@
-import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
+import {
+    Module,
+    VuexModule,
+    MutationAction,
+    Action,
+    Mutation,
+} from 'vuex-module-decorators';
 import { Song } from './music';
 
 export interface Playlist {
@@ -7,23 +13,39 @@ export interface Playlist {
     songs: Song[];
 }
 
+export interface HistoryEntry {
+    dateTime: Date;
+    song: Song;
+}
+
 export interface IPersistentUserData {
     playlists: Playlist[];
-    favourites: Song[];
+    history: HistoryEntry[];
 }
 
 @Module({
     name: 'persistentUserData',
     namespaced: true,
 })
-export class PersistentUserData extends VuexModule implements IPersistentUserData {
+export class PersistentUserData extends VuexModule
+    implements IPersistentUserData {
     playlists: Playlist[] = [];
-    favourites: Song[] = [];
     idTracker: number = 0;
+    history: HistoryEntry[] = [];
 
     get getPlaylistById() {
         return (id: number) => {
             return this.playlists.find(p => p.id === id);
+        };
+    }
+
+    get historyLength() {
+        return this.history.length;
+    }
+
+    get getHistoryEntryByIndex() {
+        return (index: number) => {
+            return this.history[index];
         };
     }
 
@@ -46,25 +68,37 @@ export class PersistentUserData extends VuexModule implements IPersistentUserDat
     addSongToPlaylist(data: { id: number; song: Song }) {
         if (data.song) {
             if (this.playlists.find(p => p.id === data.id)) {
-                this.playlists.find(p => p.id === data.id)!.songs.push(data.song);
+                this.playlists
+                    .find(p => p.id === data.id)!
+                    .songs.push(data.song);
             }
         }
     }
 
     @Mutation
     removeSongFromPlaylist(id: number, song: Song) {
-        if (this.playlists.find(p => p.id === id)) {
-            this.playlists.find(p => p.id === id)!.songs.splice(this.playlists.find(p => p.id === id)!.songs.indexOf(song), 1);
+        const playlist = this.playlists.find(p => p.id === id);
+        if (playlist) {
+            playlist.songs.splice(playlist.songs.indexOf(song), 1);
         }
     }
 
     @Mutation
-    addFavourite(song: Song) {
-        this.favourites.push(song);
+    addToHistory(song: Song) {
+        if (this.history.length >= 100) {
+            this.history.shift();
+        }
+        this.history.push({
+            song: song,
+            dateTime: new Date(),
+        });
     }
 
     @Mutation
-    removeFavourite(song: Song) {
-        this.favourites.splice(this.favourites.indexOf(song), 1);
+    removeEntryFromHistory(song: Song) {
+        const entry = this.history.find(e => e.song === song);
+        if (entry) {
+            this.history.splice(this.history.indexOf(entry), 1);
+        }
     }
 }

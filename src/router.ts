@@ -36,13 +36,14 @@ export default new Router({
                 {
                     path: 'playlists/:id_name',
                     name: 'editPlaylist',
-                    component: () => import('@/dashboard/views/EditPlaylist.vue'),
+                    component: () =>
+                        import('@/dashboard/views/EditPlaylist.vue'),
                 },
                 {
-                    path: 'favorites',
-                    name: 'favorites',
-                    meta: { title: 'Favorites - Vocality Dashboard' },
-                    component: () => import('@/dashboard/views/Favorites.vue'),
+                    path: 'history',
+                    name: 'history',
+                    meta: { title: 'History - Vocality Dashboard' },
+                    component: () => import('@/dashboard/views/History.vue'),
                 },
             ],
         },
