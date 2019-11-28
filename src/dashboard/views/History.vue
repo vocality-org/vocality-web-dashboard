@@ -96,24 +96,6 @@ export default class History extends Vue {
         MusicState.setPendingPlaylistAdd(entry.song);
         AppState.playlistSelectSheet.open();
     }
-
-    created() {
-        PersistentUserDataState.addToHistory({
-            _id:
-                '_' +
-                Math.random()
-                    .toString(36)
-                    .substr(2, 9),
-            title: 'Lister - Show Me 0',
-            url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            thumbnail_url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            requested_by: 'boolean',
-            max_time_ms: 320000,
-            current_time_ms: 0,
-        });
-    }
 }
 </script>
 
