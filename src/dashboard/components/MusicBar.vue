@@ -24,14 +24,15 @@
                 <span :title="currentSong.title" class="song-title">{{
                     currentSong.title
                 }}</span>
-                <span class="subtitle" style="margin-bottom: 1px;"
-                    >requested by {{ currentSong.requested_by }}</span
-                >
+                <span class="subtitle" style="margin-bottom: 1px;">
+                    requested by {{ currentSong.requested_by }}
+                </span>
                 <v-icon
                     class="song-controls ico-btn"
                     @click="openAddToPlaylistSheet('current')"
-                    >{{ addToPlaylistIcon }}</v-icon
                 >
+                    {{ addToPlaylistIcon }}
+                </v-icon>
             </div>
             <div
                 v-if="!currentSong && $vuetify.breakpoint.mdAndUp"
@@ -40,9 +41,9 @@
                 <div class="song-placeholder" style="margin-left: 38px"></div>
             </div>
 
-            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{
-                formatTime(currentSongTimeSeconds)
-            }}</span>
+            <span v-if="currentSong" class="caption" style="margin-top: 2px">
+                {{ formatTime(currentSongTimeSeconds) }}
+            </span>
 
             <div
                 class="controls"
@@ -55,19 +56,22 @@
                 >
                     {{ loopIcon }}
                 </v-icon>
-                <v-icon class="mx-2 ico-btn">{{ previousIcon }}</v-icon>
+                <v-icon class="mx-2 ico-btn" @click="playPreviousSong()">{{
+                    previousIcon
+                }}</v-icon>
                 <v-icon
                     v-if="isPlaying"
                     class="mx-2 ico-btn"
                     @click="setPlaying(false)"
-                    >{{ pauseIcon }}</v-icon
                 >
-                <v-icon v-else class="mx-2 ico-btn" @click="setPlaying(true)">{{
-                    playIcon
-                }}</v-icon>
-                <v-icon class="mx-2 ico-btn" @click="skipSong()">{{
-                    skipIcon
-                }}</v-icon>
+                    {{ pauseIcon }}
+                </v-icon>
+                <v-icon v-else class="mx-2 ico-btn" @click="setPlaying(true)">
+                    {{ playIcon }}
+                </v-icon>
+                <v-icon class="mx-2 ico-btn" @click="skipSong()">
+                    {{ skipIcon }}
+                </v-icon>
                 <v-menu
                     top
                     offset-y
@@ -85,8 +89,9 @@
                                     unmute();
                                     debounceMuteUnmute(false);
                                 "
-                                >{{ mutedIcon }}</v-icon
                             >
+                                {{ mutedIcon }}
+                            </v-icon>
                             <v-icon
                                 v-else
                                 class="mx-2 ico-btn"
@@ -94,8 +99,9 @@
                                     mute();
                                     debounceMuteUnmute(true);
                                 "
-                                >{{ volumeIcon }}</v-icon
                             >
+                                {{ volumeIcon }}
+                            </v-icon>
                         </div>
                     </template>
                     <v-card class="volume-slider">
@@ -112,9 +118,9 @@
                 </v-menu>
             </div>
 
-            <span v-if="currentSong" class="caption" style="margin-top: 2px">{{
-                formatTime(currentSongMaxTimeSeconds)
-            }}</span>
+            <span v-if="currentSong" class="caption" style="margin-top: 2px">
+                {{ formatTime(currentSongMaxTimeSeconds) }}
+            </span>
 
             <div
                 v-if="nextUpSong && $vuetify.breakpoint.mdAndUp"
@@ -128,13 +134,14 @@
                     width="32"
                 />
                 <span class="subtitle" style="margin-top: 1px;">Up Next</span>
-                <span :title="nextUpSong.title" class="song-title">{{
-                    nextUpSong.title
-                }}</span>
+                <span :title="nextUpSong.title" class="song-title">
+                    {{ nextUpSong.title }}
+                </span>
                 <v-icon
                     class="song-controls ico-btn"
                     @click="openAddToPlaylistSheet('next')"
-                    >{{ addToPlaylistIcon }}</v-icon
+                >
+                    {{ addToPlaylistIcon }}</v-icon
                 >
             </div>
             <div
@@ -161,7 +168,12 @@ import {
     mdiPlaylistPlus,
 } from '@mdi/js';
 import { mapState, mapGetters } from 'vuex';
-import { MusicState, AppState, DiscordState } from '@/store';
+import {
+    MusicState,
+    AppState,
+    DiscordState,
+    PersistentUserDataState,
+} from '@/store';
 
 import { debounce } from 'debounce';
 
@@ -301,6 +313,19 @@ export default class MusicBar extends Vue {
             this.currentSong.current_time_ms < this.currentSong.max_time_ms
         ) {
             MusicState.increaseCurrentSongTime(1);
+        }
+    }
+
+    playPreviousSong() {
+        const lastSong = PersistentUserDataState.getHistoryEntryByIndex(0);
+        if (lastSong) {
+            this.$socket.client.emit('command', {
+                name: 'play',
+                args: [lastSong.song.url],
+                messageData: {
+                    guildId: DiscordState.currentGuildId,
+                },
+            });
         }
     }
 
