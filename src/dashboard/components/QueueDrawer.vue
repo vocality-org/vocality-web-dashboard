@@ -71,6 +71,7 @@
                         tag="div"
                         @start="dragging = true"
                         @end="dragging = false"
+                        @change="onDragMove($event)"
                     >
                         <transition-group
                             type="transition"
@@ -335,83 +336,23 @@ export default class QueueDrawer extends Vue {
         ghostClass: 'ghost',
     };
 
+    onDragMove(event: any) {
+        if (event.moved) {
+            this.$socket.client.emit('command', {
+                name: 'move',
+                args: [
+                    `${event.moved.oldIndex + 1}`,
+                    `${event.moved.newIndex + 1}`,
+                ],
+                messageData: {
+                    guildId: DiscordState.currentGuildId,
+                },
+            });
+        }
+    }
+
     closeDrawer() {
         AppState.queueDrawer.close();
-        MusicState.addToQueue({
-            _id:
-                '_' +
-                Math.random()
-                    .toString(36)
-                    .substr(2, 9),
-            title: 'Lister - Show Me 0',
-            url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            thumbnail_url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            requested_by: 'boolean',
-            max_time_ms: 320000,
-            current_time_ms: 0,
-        });
-        MusicState.addToQueue({
-            _id:
-                '_' +
-                Math.random()
-                    .toString(36)
-                    .substr(2, 9),
-            title: 'Lister - Show Me 1',
-            url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            thumbnail_url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            requested_by: 'boolean',
-            max_time_ms: 320000,
-            current_time_ms: 0,
-        });
-        MusicState.addToQueue({
-            _id:
-                '_' +
-                Math.random()
-                    .toString(36)
-                    .substr(2, 9),
-            title: 'Lister - Show Me 2',
-            url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            thumbnail_url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            requested_by: 'boolean',
-            max_time_ms: 320000,
-            current_time_ms: 0,
-        });
-        MusicState.addToQueue({
-            _id:
-                '_' +
-                Math.random()
-                    .toString(36)
-                    .substr(2, 9),
-            title: 'Lister - Show Me 3',
-            url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            thumbnail_url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            requested_by: 'boolean',
-            max_time_ms: 320000,
-            current_time_ms: 0,
-        });
-        MusicState.addToQueue({
-            _id:
-                '_' +
-                Math.random()
-                    .toString(36)
-                    .substr(2, 9),
-            title: 'Lister - Show Me 4',
-            url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            thumbnail_url:
-                'https://i1.sndcdn.com/artworks-000544332270-1udbxe-t500x500.jpg',
-            requested_by: 'boolean',
-            max_time_ms: 320000,
-            current_time_ms: 0,
-        });
     }
 
     removeSong(index: number) {
