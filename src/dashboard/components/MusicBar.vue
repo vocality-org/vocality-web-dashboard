@@ -258,8 +258,6 @@ export default class MusicBar extends Vue {
 
     // emitting a volume command
     emitVolume(volume: number) {
-        console.log('emit volume', volume);
-
         this.$socket.client.emit('command', {
             name: 'volume',
             args: [`${volume}`],

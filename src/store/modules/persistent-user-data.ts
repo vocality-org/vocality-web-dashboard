@@ -1,11 +1,9 @@
-import {
-    Module,
-    VuexModule,
-    MutationAction,
-    Action,
-    Mutation,
-} from 'vuex-module-decorators';
+import { Module, VuexModule, Mutation } from 'vuex-module-decorators';
 import { Song } from './music';
+
+// maybe make these adjustable in settings
+const HISTORY_LENGTH = 100;
+const LOCALE = 'en-US';
 
 export interface Playlist {
     id: number;
@@ -14,7 +12,7 @@ export interface Playlist {
 }
 
 export interface HistoryEntry {
-    dateTime: Date;
+    dateTime: string;
     song: Song;
 }
 
@@ -85,20 +83,28 @@ export class PersistentUserData extends VuexModule
 
     @Mutation
     addToHistory(song: Song) {
-        if (this.history.length >= 100) {
+        if (this.history.length >= HISTORY_LENGTH) {
             this.history.shift();
         }
-        this.history.push({
+
+        const now = new Date();
+        const newEntry = {
             song: song,
-            dateTime: new Date(),
-        });
+            dateTime: `${now.toLocaleDateString(
+                LOCALE
+            )}  ${now.toLocaleTimeString(LOCALE)}`,
+        };
+
+        this.history = [newEntry, ...this.history];
     }
 
     @Mutation
-    removeEntryFromHistory(song: Song) {
-        const entry = this.history.find(e => e.song === song);
-        if (entry) {
-            this.history.splice(this.history.indexOf(entry), 1);
-        }
+    removeEntryFromHistory(entry: HistoryEntry) {
+        this.history.splice(this.history.indexOf(entry), 1);
+    }
+
+    @Mutation
+    removeAllEntriesfromHistory() {
+        this.history = [];
     }
 }

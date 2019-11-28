@@ -13,7 +13,7 @@
                     small
                     color="transparent"
                     class="elevation-0 play-ico"
-                    @click="play()"
+                    @click="emitPlay()"
                 >
                     <v-icon>{{ playIcon }}</v-icon>
                 </v-btn>
@@ -28,9 +28,20 @@
                     small
                     color="transparent"
                     class="elevation-0"
-                    @click="play()"
+                    @click="emitPlaylist()"
                 >
                     <v-icon>{{ playlistIcon }}</v-icon>
+                </v-btn>
+            </div>
+            <div class="playlist">
+                <v-btn
+                    fab
+                    small
+                    color="transparent"
+                    class="elevation-0"
+                    @click="emitDelete()"
+                >
+                    <v-icon>{{ deleteIcon }}</v-icon>
                 </v-btn>
             </div>
         </div>
@@ -39,17 +50,27 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Emit } from 'vue-property-decorator';
 import { Song } from '@/store/modules/music';
-import { mdiPlay, mdiPlaylistPlus } from '@mdi/js';
+import { mdiPlay, mdiPlaylistPlus, mdiDelete } from '@mdi/js';
 
 @Component
-export default class HistoryEntry extends Vue {
+export default class HistoryEntryItem extends Vue {
     playIcon = mdiPlay;
     playlistIcon = mdiPlaylistPlus;
+    deleteIcon = mdiDelete;
 
     @Prop() readonly song: Song | undefined;
-    @Prop() readonly dateTime: Date | undefined;
+    @Prop() readonly dateTime: string | undefined;
+
+    @Emit('play')
+    emitPlay() {}
+
+    @Emit('delete')
+    emitDelete() {}
+
+    @Emit('addPlaylist')
+    emitPlaylist() {}
 }
 </script>
 
@@ -66,7 +87,7 @@ export default class HistoryEntry extends Vue {
 }
 .grid {
     display: grid;
-    grid-template-columns: 54px auto 54px;
+    grid-template-columns: 54px auto 54px 54px;
     height: 54px;
     margin-left: 10px;
     .image {
