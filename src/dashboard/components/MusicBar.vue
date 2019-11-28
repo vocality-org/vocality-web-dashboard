@@ -8,7 +8,7 @@
                             100
                     "
                     height="2"
-                    background-color="#595959"
+                    :background-color="themeSecondary"
                 ></v-progress-linear>
             </div>
             <div
@@ -187,6 +187,11 @@ import { debounce } from 'debounce';
                 MusicState.setVolume(value);
             },
         },
+        themeSecondary() {
+            return this.$vuetify.theme.dark
+                ? this.$vuetify.theme.themes.dark.secondary
+                : this.$vuetify.theme.themes.light.secondary;
+        },
         ...mapGetters('music', [
             'isMuted',
             'nextUpSong',
@@ -205,7 +210,6 @@ export default class MusicBar extends Vue {
     volumeIcon = mdiVolumeHigh;
     mutedIcon = mdiVolumeOff;
     addToPlaylistIcon = mdiPlaylistPlus;
-    progress = 0.0;
 
     get currentSong() {
         return MusicState.currentSong;
@@ -431,10 +435,10 @@ export default class MusicBar extends Vue {
     border-radius: 50%;
     cursor: pointer;
     &:hover {
-        background-color: rgba(255, 255, 255, 0.13);
+        background-color: var(--v-secondary-base);
     }
     &-active {
-        fill: clr(brand, cyan);
+        fill: var(--v-primary-base);
     }
 }
 
@@ -455,13 +459,13 @@ export default class MusicBar extends Vue {
     }
 
     .progress {
-        background-color: clr(brand, cyan);
+        background-color: var(--v-primary-base);
         width: 50%;
     }
 }
 
 .song-placeholder {
-    $color: rgba(255, 255, 255, 0.164);
+    $color: var(--v-secondary-base);
     left: -42px;
     height: 32px;
     width: 32px;

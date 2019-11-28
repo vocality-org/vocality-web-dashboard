@@ -9,7 +9,11 @@
                 isSelect="true"
                 @selected="addToPlaylist(p.id)"
             />
-            <PlaylistItem isAdd="true" class="grid-item mx-5" @new="createPlaylist()" />
+            <PlaylistItem
+                isAdd="true"
+                class="grid-item mx-5"
+                @new="createPlaylist()"
+            />
         </v-sheet>
     </v-bottom-sheet>
 </template>
@@ -28,7 +32,9 @@ import PlaylistItem from './PlaylistItem.vue';
                 return AppState.playlistSelectSheet.isOpen;
             },
             set(state: boolean) {
-                state ? AppState.playlistSelectSheet.open() : AppState.playlistSelectSheet.close();
+                state
+                    ? AppState.playlistSelectSheet.open()
+                    : AppState.playlistSelectSheet.close();
             },
         },
         ...mapState('persistentUserData', ['playlists']),
@@ -39,8 +45,11 @@ import PlaylistItem from './PlaylistItem.vue';
 })
 export default class PlaylistSelectSheet extends Vue {
     addToPlaylist(playlistId: number) {
-        PersistentUserDataState.addSongToPlaylist({ id: playlistId, song: MusicState.pendingPlaylistAdd! });
-        MusicState.pendingPlaylistAdd = null;
+        PersistentUserDataState.addSongToPlaylist({
+            id: playlistId,
+            song: MusicState.pendingPlaylistAdd!,
+        });
+        MusicState.setPendingPlaylistAdd(null);
     }
 
     createPlaylist() {

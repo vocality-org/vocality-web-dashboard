@@ -186,7 +186,7 @@ export class Music extends VuexModule implements IMusicState {
     }
 
     @Mutation
-    setPendingPlaylistAdd(song: Song) {
+    setPendingPlaylistAdd(song: Song | null) {
         this.pendingPlaylistAdd = song;
     }
 }

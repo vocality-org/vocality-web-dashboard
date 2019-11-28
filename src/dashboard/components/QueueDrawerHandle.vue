@@ -66,7 +66,7 @@ export default class QeueDrawerHandle extends Vue {
     padding: 4px 16px 4px 4px;
     font-size: 14px;
     font-weight: 700;
-    background-color: clr(brand, cyan);
+    background-color: var(--v-primary-base);
     border-bottom-left-radius: 24px;
     transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
     @include mq(sm) {

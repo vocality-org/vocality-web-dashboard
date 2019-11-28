@@ -25,9 +25,10 @@
                                 @click="autoplay()"
                             >
                                 <v-icon
-                                    :color="isAutoplaying ? 'cyan' : 'grey'"
-                                    >{{ autoplayIcon }}</v-icon
+                                    :color="isAutoplaying ? 'primary' : 'grey'"
                                 >
+                                    {{ autoplayIcon }}
+                                </v-icon>
                             </v-btn>
                         </template>
                         <span>Autoplay</span>
@@ -43,9 +44,9 @@
                                 class="elevation-0 shuffle-btn"
                                 @click="shuffleQueue()"
                             >
-                                <v-icon :color="isRandom ? 'cyan' : 'grey'">{{
-                                    shuffleIcon
-                                }}</v-icon>
+                                <v-icon :color="isRandom ? 'primary' : 'grey'">
+                                    {{ shuffleIcon }}
+                                </v-icon>
                             </v-btn>
                         </template>
                         <span>Shuffle</span>
@@ -144,7 +145,7 @@
                 </v-list>
 
                 <div v-else class="no-queue mt-4 pt-3">
-                    <span class="body-2">There is nohing in queue</span>
+                    <span class="body-2">There is nothing in queue</span>
                     <v-btn color="primary" class="mt-3" @click="searchSong()"
                         >Search a song</v-btn
                     >
@@ -436,7 +437,7 @@ export default class QueueDrawer extends Vue {
         padding: 0;
     }
     .list-item-hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: var(--v-secondary-base);
         .song-title::after,
         .subtitle::after {
             display: none;
@@ -561,7 +562,7 @@ export default class QueueDrawer extends Vue {
         z-index: -1;
     }
     .song-placeholder {
-        $color: rgba(255, 255, 255, 0.13);
+        $color: var(--v-secondary-base);
         height: 11px;
         width: calc(100% - 72px);
         border-radius: 4px;
@@ -599,7 +600,7 @@ export default class QueueDrawer extends Vue {
 }
 svg path,
 svg rect {
-    fill: clr(brand, cyan);
+    fill: var(--v-primary-base);
 }
 
 .queue-list-transition-enter-active,

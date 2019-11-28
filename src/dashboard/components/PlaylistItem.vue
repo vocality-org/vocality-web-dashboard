@@ -2,7 +2,12 @@
     <div :style="{ minWidth: cardWidth + 'px' }">
         <div v-if="!isAdd" class="playlist">
             <v-hover v-slot:default="{ hover }">
-                <v-card :width="cardWidth" :height="cardWidth" class="image-grid" @click="emitSelected()">
+                <v-card
+                    :width="cardWidth"
+                    :height="cardWidth"
+                    class="image-grid"
+                    @click="emitSelected()"
+                >
                     <img
                         v-for="(song, index) in playlist.songs.slice(0, 4)"
                         :key="index"
@@ -18,22 +23,40 @@
                         class="image-placeholder"
                         :class="`image-placeholder__${n}`"
                     >
-                        <span>?</span>
+                        <span style="color: #fff">?</span>
                     </div>
                     <transition name="fade" v-if="!isSelect">
                         <div v-if="hover" class="popover">
                             <v-tooltip left>
                                 <template v-slot:activator="{ on }">
-                                    <v-btn v-on="on" text icon x-large class="mx-1" @click="emitPlay()">
-                                        <v-icon>{{ playIcon }}</v-icon>
+                                    <v-btn
+                                        v-on="on"
+                                        text
+                                        icon
+                                        x-large
+                                        class="mx-1"
+                                        @click="emitPlay()"
+                                    >
+                                        <v-icon color="white">
+                                            {{ playIcon }}
+                                        </v-icon>
                                     </v-btn>
                                 </template>
                                 <span>Add to queue</span>
                             </v-tooltip>
                             <v-tooltip right>
                                 <template v-slot:activator="{ on }">
-                                    <v-btn v-on="on" text icon x-large class="mx-1" @click="emitEdit()">
-                                        <v-icon>{{ editIcon }}</v-icon>
+                                    <v-btn
+                                        v-on="on"
+                                        text
+                                        icon
+                                        x-large
+                                        class="mx-1"
+                                        @click="emitEdit()"
+                                    >
+                                        <v-icon color="white">
+                                            {{ editIcon }}
+                                        </v-icon>
                                     </v-btn>
                                 </template>
                                 <span>Edit Playlist</span>
@@ -47,8 +70,14 @@
         </div>
         <div v-if="isAdd">
             <v-card class="new-card" :width="cardWidth" :height="cardWidth">
-                <v-btn text icon x-large class="mx-1" @click="emitNewPlaylist()">
-                    <v-icon>{{ createIcon }}</v-icon>
+                <v-btn
+                    text
+                    icon
+                    x-large
+                    class="mx-1"
+                    @click="emitNewPlaylist()"
+                >
+                    <v-icon color="white">{{ createIcon }}</v-icon>
                 </v-btn>
             </v-card>
             <h3 class="playlist-name mt-2">Create Playlist</h3>
@@ -109,17 +138,18 @@ export default class PlaylistItem extends Vue {
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 0 !important;
         &__1 {
-            background-color: #252525;
+            background-color: var(--v-secondary-darken2);
         }
         &__2 {
-            background-color: #505050;
+            background-color: var(--v-secondary-darken1);
         }
         &__3 {
-            background-color: #505050;
+            background-color: var(--v-secondary-base);
         }
         &__4 {
-            background-color: #313131;
+            background-color: var(--v-secondary-darken2);
         }
     }
 }
@@ -143,7 +173,7 @@ export default class PlaylistItem extends Vue {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: hsla(350, 67%, 52%, 0.5);
+    background-color: var(--v-primary-base);
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -158,6 +188,6 @@ export default class PlaylistItem extends Vue {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: hsla(350, 67%, 52%, 0.7);
+    background-color: var(--v-primary-base);
 }
 </style>

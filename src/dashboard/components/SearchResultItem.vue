@@ -3,16 +3,41 @@
         <div v-if="youtubeResult">
             <v-hover v-slot:default="{ hover }">
                 <v-card class="card">
-                    <div class="card__image" :style="{ backgroundImage: `url(${youtubeResult.thumbnail_url})` }">
-                        <v-icon @click="emitPlay()" class="play-icon" large>{{ playIcon }}</v-icon>
+                    <div
+                        class="card__image"
+                        :style="{
+                            backgroundImage: `url(${youtubeResult.thumbnail_url})`,
+                        }"
+                    >
+                        <v-icon
+                            @click="emitPlay()"
+                            class="play-icon"
+                            large
+                            color="white"
+                            >{{ playIcon }}</v-icon
+                        >
                     </div>
                     <h3 class="card__title ml-4">
-                        <span class="title-text" v-html="youtubeResult.title"></span>
+                        <span
+                            class="title-text"
+                            v-html="youtubeResult.title"
+                        ></span>
                     </h3>
-                    <div v-if="hover" class="card__image" style="background: transparent">
-                        <v-icon @click="openPlaylistSelect()" class="play-icon" large>{{ addToPlaylistIcon }}</v-icon>
+                    <div
+                        v-if="hover"
+                        class="card__image"
+                        style="background: transparent"
+                    >
+                        <v-icon
+                            @click="openPlaylistSelect()"
+                            class="play-icon"
+                            large
+                            >{{ addToPlaylistIcon }}</v-icon
+                        >
                     </div>
-                    <span v-else class="card__duration mr-4">{{ msTimeToDisplayString(youtubeResult.max_time_ms) }}</span>
+                    <span v-else class="card__duration mr-4">{{
+                        msTimeToDisplayString(youtubeResult.max_time_ms)
+                    }}</span>
                 </v-card>
             </v-hover>
         </div>
@@ -65,7 +90,7 @@ export default class SearchResultItem extends Vue {
     overflow: hidden;
 
     &:hover {
-        background-color: rgb(88, 88, 88);
+        background-color: var(--v-secondary-base);
         .card__image {
             background-color: #30303094;
             background-blend-mode: overlay;

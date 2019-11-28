@@ -9,7 +9,11 @@
                 @edit="editPlaylist(p)"
                 class="grid-item py-5 px-2"
             />
-            <PlaylistItem isAdd="true" class="grid-item py-5 px-2" @new="createPlaylist()" />
+            <PlaylistItem
+                isAdd="true"
+                class="grid-item py-5 px-2"
+                @new="createPlaylist()"
+            />
         </v-container>
     </div>
 </template>
@@ -36,7 +40,11 @@ export default class Playlists extends Vue {
     }
 
     editPlaylist(playlist: Playlist) {
-        this.$router.push({ path: `playlists/${playlist.id}_${playlist.name.split(' ').join('-')}` });
+        this.$router.push({
+            path: `playlists/${playlist.id}_${playlist.name
+                .split(' ')
+                .join('-')}`,
+        });
     }
 
     createPlaylist() {

@@ -3,7 +3,6 @@
         <v-container>
             <h1 class="mb-5">
                 <v-btn
-                    v-on="on"
                     text
                     icon
                     x-large
@@ -22,6 +21,7 @@
                             :value="totalSelected === songs.length"
                             @change="toggleAllSelect($event)"
                             class="mt-5 ml-2"
+                            color="primary"
                         ></v-checkbox>
                     </template>
                     <span>Select all</span>
@@ -40,6 +40,15 @@
                         </v-btn>
                     </template>
                     <span>Remove selected</span>
+                </v-tooltip>
+
+                <v-tooltip top v-if="totalSelected !== 0">
+                    <template v-slot:activator="{ on }">
+                        <v-btn v-on="on" text icon @click="playSelected()">
+                            <v-icon>{{ playIcon }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Add selected to Queue</span>
                 </v-tooltip>
 
                 <v-menu offset-x right>
@@ -75,17 +84,21 @@
                             v-if="s.isSelected"
                             v-model="songs[index].isSelected"
                             class="mt-5 ml-5 mr-3"
+                            color="primary"
                         ></v-checkbox>
                         <v-img
                             v-else
                             :src="s.song.thumbnail_url"
                             @click="s.isSelected = true"
+                            class="song-thumbnail"
                         >
                         </v-img>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
-                        <v-list-item-title>Song name</v-list-item-title>
+                        <v-list-item-title>{{
+                            s.song.title
+                        }}</v-list-item-title>
                     </v-list-item-content>
 
                     <v-list-item-icon>
@@ -97,9 +110,14 @@
                             </template>
                             <v-list>
                                 <v-list-item @click="removeFromPlaylist(s)">
-                                    <v-list-item-title
-                                        >Remove from Playlist</v-list-item-title
-                                    >
+                                    <v-list-item-title>
+                                        Remove from Playlist
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-list-item @click="playSingle(s)">
+                                    <v-list-item-title>
+                                        Add to Queue
+                                    </v-list-item-title>
                                 </v-list-item>
                             </v-list>
                         </v-menu>
@@ -129,12 +147,13 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Route } from 'vue-router/types/router';
-import { PersistentUserDataState, AppState } from '@/store';
+import { PersistentUserDataState, AppState, DiscordState } from '@/store';
 import {
     mdiDelete,
     mdiDotsVertical,
     mdiPlaylistPlus,
     mdiArrowLeft,
+    mdiPlay,
 } from '@mdi/js';
 import { Song } from '@/store/modules/music';
 
@@ -150,6 +169,7 @@ export default class EditPlaylist extends Vue {
     menuIcon = mdiDotsVertical;
     playlistAddIcon = mdiPlaylistPlus;
     backIcon = mdiArrowLeft;
+    playIcon = mdiPlay;
 
     get totalSelected() {
         return this.songs.reduce((acc, cur) => {
@@ -174,6 +194,14 @@ export default class EditPlaylist extends Vue {
         AppState.renamePlaylistModal.open();
     }
 
+    playSelected() {
+        const songs = this.songs.filter(s => s.isSelected).map(s => s.song);
+        this.$socket.client.emit('playDashboardPlaylist', {
+            songs: songs,
+            guildId: DiscordState.currentGuildId,
+        });
+    }
+
     removeSelected() {
         this.songs
             .filter(s => s.isSelected)
@@ -183,6 +211,16 @@ export default class EditPlaylist extends Vue {
     removeFromPlaylist(s: SelectableSong) {
         this.songs.splice(this.songs.indexOf(s), 1);
         PersistentUserDataState.removeSongFromPlaylist(this.id, s.song);
+    }
+
+    playSingle(s: SelectableSong) {
+        this.$socket.client.emit('command', {
+            name: 'play',
+            args: [s.song.url],
+            messageData: {
+                guildId: DiscordState.currentGuildId,
+            },
+        });
     }
 
     navigateBack() {
@@ -203,7 +241,7 @@ export default class EditPlaylist extends Vue {
                 vm.$data.songs = playlist.songs.map(s => {
                     return {
                         song: s,
-                        selected: false,
+                        isSelected: false,
                     };
                 });
             });
@@ -243,7 +281,9 @@ interface SelectableSong {
         transform: scale(0.8);
     }
 }
-
+.song-thumbnail {
+    cursor: pointer;
+}
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
