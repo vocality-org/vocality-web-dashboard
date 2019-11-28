@@ -21,6 +21,9 @@
                     </v-tooltip>
                 </div>
             </div>
+            <div v-if="history.length === 0">
+                Recently played songs will appear here.
+            </div>
             <virtual-list :size="70" :remain="10">
                 <HistoryEntryItem
                     v-for="entry in history"
