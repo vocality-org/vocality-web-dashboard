@@ -1,4 +1,10 @@
-import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
+import {
+    Module,
+    VuexModule,
+    MutationAction,
+    Action,
+    Mutation,
+} from 'vuex-module-decorators';
 
 class ToggleableState {
     isOpen = false;
@@ -38,6 +44,7 @@ export interface IAppState {
     playlistSelectSheet: PlaylistSelectSheetState;
     isYoutubeSearchActive: boolean;
     isSoundcloudSearchActive: boolean;
+    isDarkmodeActive: boolean;
 }
 
 @Module({
@@ -54,7 +61,8 @@ export class App extends VuexModule implements IAppState {
     playlistSelectSheet = new PlaylistSelectSheetState();
 
     isYoutubeSearchActive = true;
-    isSoundcloudSearchActive = true;
+    isSoundcloudSearchActive = false;
+    isDarkmodeActive = true;
 
     @Mutation
     changeYoutubeSearchState(state: boolean) {
@@ -64,5 +72,10 @@ export class App extends VuexModule implements IAppState {
     @Mutation
     changeSoundcloudSearchState(state: boolean) {
         this.isSoundcloudSearchActive = state;
+    }
+
+    @Mutation
+    changeDarkmodeActive(state: boolean) {
+        this.isDarkmodeActive = state;
     }
 }

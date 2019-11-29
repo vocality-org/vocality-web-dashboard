@@ -1,4 +1,10 @@
-import { Module, VuexModule, MutationAction, Action, Mutation } from 'vuex-module-decorators';
+import {
+    Module,
+    VuexModule,
+    MutationAction,
+    Action,
+    Mutation,
+} from 'vuex-module-decorators';
 import axios from 'axios';
 
 const baseUrl = 'https://discordapp.com/api';
@@ -29,8 +35,14 @@ export class Discord extends VuexModule implements IDiscordState {
         return this.account ? this.account.username : null;
     }
 
+    get discriminator() {
+        return this.account ? this.account.discriminator : null;
+    }
+
     get usernameWithDiscriminator() {
-        return `${this.username}#${this.account ? this.account.discriminator : ''}`;
+        return `${this.username}#${
+            this.account ? this.account.discriminator : ''
+        }`;
     }
 
     get userId() {
@@ -42,13 +54,16 @@ export class Discord extends VuexModule implements IDiscordState {
         let type = 'png';
         // get default avatar
         if (!this.account!.avatar) {
-            return `${baseResourceUrl}/embed/avatars/${this.account!.discriminator % 5}.${type}`;
+            return `${baseResourceUrl}/embed/avatars/${this.account!
+                .discriminator % 5}.${type}`;
         }
         // get gif avatar
         if (this.account!.avatar.startsWith('_a')) {
             type = 'gif';
         }
-        return `${baseResourceUrl}/avatars/${this.account!.id}/${this.account!.avatar}.${type}`;
+        return `${baseResourceUrl}/avatars/${this.account!.id}/${
+            this.account!.avatar
+        }.${type}`;
     }
 
     @Mutation

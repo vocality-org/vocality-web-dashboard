@@ -17,7 +17,14 @@
                             >{{ playIcon }}</v-icon
                         >
                     </div>
-                    <h3 class="card__title ml-4">
+                    <h3
+                        class="card__title ml-4"
+                        :class="
+                            isDarkMode
+                                ? 'title-dark-gradient'
+                                : 'title-light-gradient'
+                        "
+                    >
                         <span
                             class="title-text"
                             v-html="youtubeResult.title"
@@ -60,6 +67,10 @@ export default class SearchResultItem extends Vue {
     @Emit('play')
     emitPlay() {}
 
+    get isDarkMode() {
+        return this.$vuetify.theme.dark;
+    }
+
     openPlaylistSelect() {
         MusicState.setPendingPlaylistAdd(this.youtubeResult!);
         AppState.playlistSelectSheet.open();
@@ -98,6 +109,9 @@ export default class SearchResultItem extends Vue {
         .play-icon {
             display: initial;
         }
+        ::after {
+            background: none;
+        }
     }
 
     &__image {
@@ -119,11 +133,34 @@ export default class SearchResultItem extends Vue {
         line-height: $height;
         overflow: hidden;
         white-space: nowrap;
+        position: relative;
+        &::after {
+            content: '';
+            z-index: 1;
+            position: absolute;
+            right: 0;
+            width: 30px;
+            height: 100%;
+        }
     }
 
     &__duration {
         line-height: $height;
         text-align: right;
+    }
+}
+.title-light-gradient {
+    &::after {
+        background: linear-gradient(
+            90deg,
+            #ffffff88,
+            var(--v-secondary-lighten2)
+        );
+    }
+}
+.title-dark-gradient {
+    &::after {
+        background: linear-gradient(90deg, #424242cc, #424242);
     }
 }
 </style>

@@ -56,11 +56,6 @@
                         <v-btn v-on="on" text>More</v-btn>
                     </template>
                     <v-list>
-                        <v-list-item @click="renamePlaylist()">
-                            <v-list-item-title
-                                >Rename Playlist</v-list-item-title
-                            >
-                        </v-list-item>
                         <v-list-item @click="deletePlaylist()">
                             <v-list-item-title
                                 >Delete Playlist</v-list-item-title
