@@ -118,7 +118,9 @@ export default class UserArea extends Vue {
     mdiArrowRight = mdiChevronRight;
     showThemeSelector = false;
 
-    settings() {}
+    settings() {
+        this.$router.push('settings');
+    }
 
     logout() {
         AuthState.logout();

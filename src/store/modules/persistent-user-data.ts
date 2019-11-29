@@ -19,6 +19,7 @@ export interface HistoryEntry {
 export interface IPersistentUserData {
     playlists: Playlist[];
     history: HistoryEntry[];
+    historyLength: number;
 }
 
 @Module({
@@ -30,15 +31,12 @@ export class PersistentUserData extends VuexModule
     playlists: Playlist[] = [];
     idTracker: number = 0;
     history: HistoryEntry[] = [];
+    historyLength: number = HISTORY_LENGTH;
 
     get getPlaylistById() {
         return (id: number) => {
             return this.playlists.find(p => p.id === id);
         };
-    }
-
-    get historyLength() {
-        return this.history.length;
     }
 
     get getHistoryEntryByIndex() {
@@ -106,5 +104,12 @@ export class PersistentUserData extends VuexModule
     @Mutation
     removeAllEntriesfromHistory() {
         this.history = [];
+    }
+
+    @Mutation
+    setHistoryLength(size: number) {
+        if (size >= 10 && size <= 10000) {
+            this.historyLength = size;
+        }
     }
 }

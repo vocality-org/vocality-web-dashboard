@@ -45,6 +45,12 @@ export default new Router({
                     meta: { title: 'History - Vocality Dashboard' },
                     component: () => import('@/dashboard/views/History.vue'),
                 },
+                {
+                    path: 'settings',
+                    name: 'settings',
+                    meta: { title: 'Settings - Vocality Dashboard' },
+                    component: () => import('@/dashboard/views/Settings.vue'),
+                },
             ],
         },
     ],
