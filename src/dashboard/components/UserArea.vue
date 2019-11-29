@@ -119,7 +119,7 @@ export default class UserArea extends Vue {
     showThemeSelector = false;
 
     settings() {
-        this.$router.push('settings');
+        this.$router.push({ name: 'settings' });
     }
 
     logout() {
