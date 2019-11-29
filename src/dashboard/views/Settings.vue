@@ -8,8 +8,7 @@
                 <p>
                     Dark theme turns the light surfaces of the page dark,
                     creating an experience ideal for night. Try it out! Your
-                    Dark theme setting will apply to your account / to all of
-                    your browsers.
+                    Dark theme setting will only apply to this browser.
                 </p>
                 <div class="current-theme"></div>
                 <div class="theme-switch">
