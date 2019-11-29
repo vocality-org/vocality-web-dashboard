@@ -44,7 +44,6 @@ export interface IAppState {
     playlistSelectSheet: PlaylistSelectSheetState;
     isYoutubeSearchActive: boolean;
     isSoundcloudSearchActive: boolean;
-    isDarkmodeActive: boolean;
 }
 
 @Module({
@@ -62,7 +61,6 @@ export class App extends VuexModule implements IAppState {
 
     isYoutubeSearchActive = true;
     isSoundcloudSearchActive = false;
-    isDarkmodeActive = true;
 
     @Mutation
     changeYoutubeSearchState(state: boolean) {
@@ -72,10 +70,5 @@ export class App extends VuexModule implements IAppState {
     @Mutation
     changeSoundcloudSearchState(state: boolean) {
         this.isSoundcloudSearchActive = state;
-    }
-
-    @Mutation
-    changeDarkmodeActive(state: boolean) {
-        this.isDarkmodeActive = state;
     }
 }

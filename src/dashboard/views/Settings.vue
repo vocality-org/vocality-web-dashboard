@@ -80,14 +80,14 @@ import { AppState, PersistentUserDataState } from '../../store';
                 PersistentUserDataState.setHistoryLength(size);
             },
         },
-        ...mapState('app', ['isDarkmodeActive']),
+        ...mapState('persistentUserData', ['isDarkmodeActive']),
     },
 })
 export default class Settings extends Vue {
     setDarkTheme(state: boolean) {
         if (state !== this.$vuetify.theme.dark) {
             this.$vuetify.theme.dark = state;
-            AppState.changeDarkmodeActive(state);
+            PersistentUserDataState.changeDarkmodeActive(state);
         }
     }
 }

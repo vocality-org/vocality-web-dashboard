@@ -2,7 +2,6 @@ import {
     Module,
     VuexModule,
     MutationAction,
-    Action,
     Mutation,
 } from 'vuex-module-decorators';
 import axios from 'axios';

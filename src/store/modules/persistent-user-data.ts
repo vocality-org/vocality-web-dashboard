@@ -20,6 +20,7 @@ export interface IPersistentUserData {
     playlists: Playlist[];
     history: HistoryEntry[];
     historyLength: number;
+    isDarkmodeActive: boolean;
 }
 
 @Module({
@@ -32,6 +33,7 @@ export class PersistentUserData extends VuexModule
     idTracker: number = 0;
     history: HistoryEntry[] = [];
     historyLength: number = HISTORY_LENGTH;
+    isDarkmodeActive = true;
 
     get getPlaylistById() {
         return (id: number) => {
@@ -111,5 +113,10 @@ export class PersistentUserData extends VuexModule
         if (size >= 10 && size <= 10000) {
             this.historyLength = size;
         }
+    }
+
+    @Mutation
+    changeDarkmodeActive(state: boolean) {
+        this.isDarkmodeActive = state;
     }
 }

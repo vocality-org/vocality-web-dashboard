@@ -1,10 +1,4 @@
-import {
-    Module,
-    VuexModule,
-    MutationAction,
-    Action,
-    Mutation,
-} from 'vuex-module-decorators';
+import { Module, VuexModule, Action } from 'vuex-module-decorators';
 import { DiscordState, MusicState } from '@/store';
 import { Song } from './music';
 

@@ -81,7 +81,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AuthState, DiscordState, AppState } from '@/store';
+import {
+    AuthState,
+    DiscordState,
+    AppState,
+    PersistentUserDataState,
+} from '@/store';
 import { mapState, mapGetters } from 'vuex';
 import {
     mdiMenuDown,
@@ -98,16 +103,16 @@ import {
         },
         darkmodeSwitch: {
             get() {
-                return AppState.isDarkmodeActive;
+                return PersistentUserDataState.isDarkmodeActive;
             },
 
             set(state: boolean) {
                 this.$vuetify.theme.dark = state;
-                AppState.changeDarkmodeActive(state);
+                PersistentUserDataState.changeDarkmodeActive(state);
             },
         },
         ...mapGetters('discord', ['username', 'discriminator']),
-        ...mapState('app', ['isDarkmodeActive']),
+        ...mapState('persistentUserData', ['isDarkmodeActive']),
     },
 })
 export default class UserArea extends Vue {
