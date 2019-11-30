@@ -107,7 +107,7 @@ export default class Settings extends Vue {
     }
 
     changeUserLocale(event: any) {
-        this.$i18n.locale = event;
+        this.$root.$i18n.locale = event;
         PersistentUserDataState.changeUserLocale(event as string);
     }
 }
