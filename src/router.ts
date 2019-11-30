@@ -53,5 +53,11 @@ export default new Router({
                 },
             ],
         },
+        {
+            path: '*',
+            name: '404',
+            meta: { title: '404 - Vocality Dashboard' },
+            component: () => import('@/views/PageNotFound.vue'),
+        },
     ],
 });
