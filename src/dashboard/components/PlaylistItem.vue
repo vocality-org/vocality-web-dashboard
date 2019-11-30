@@ -42,7 +42,7 @@
                                         </v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Add to queue</span>
+                                <span>{{ $t('add') }}</span>
                             </v-tooltip>
                             <v-tooltip right>
                                 <template v-slot:activator="{ on }">
@@ -59,7 +59,7 @@
                                         </v-icon>
                                     </v-btn>
                                 </template>
-                                <span>Edit Playlist</span>
+                                <span>{{ $t('edit') }}</span>
                             </v-tooltip>
                         </div>
                     </transition>
@@ -80,7 +80,7 @@
                     <v-icon color="white">{{ createIcon }}</v-icon>
                 </v-btn>
             </v-card>
-            <h3 class="playlist-name mt-2">Create Playlist</h3>
+            <h3 class="playlist-name mt-2">{{ $t('create') }}</h3>
         </div>
     </div>
 </template>
@@ -191,3 +191,18 @@ export default class PlaylistItem extends Vue {
     background-color: var(--v-primary-base);
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "add": "Add to queue",
+    "edit": "Edit Playlist",
+    "create": "Create new Playlist"
+  },
+  "de": {
+    "add": "Playlist in Warteschlange",
+    "edit": "Playlist bearbeiten",
+    "create": "Neue Playlist erstellen"
+  }
+}
+</i18n>

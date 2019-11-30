@@ -10,7 +10,7 @@
         >
             <div class="list-container">
                 <div class="header">
-                    <h1 class="title">Queue</h1>
+                    <h1 class="title">{{ $t('title') }}</h1>
 
                     <div class="flex-spacer"></div>
 
@@ -145,10 +145,10 @@
                 </v-list>
 
                 <div v-else class="no-queue mt-4 pt-3">
-                    <span class="body-2">There is nothing in queue</span>
-                    <v-btn color="primary" class="mt-3" @click="searchSong()"
-                        >Search a song</v-btn
-                    >
+                    <span class="body-2">{{ $t('empty') }}</span>
+                    <v-btn color="primary" class="mt-3" @click="searchSong()">
+                        {{ $t('search') }}
+                    </v-btn>
                     <div class="placeholder-container">
                         <div
                             v-for="i in 5"
@@ -270,7 +270,7 @@
                         </rect>
                     </svg>
 
-                    <span>Autoplaying similar songs</span>
+                    <span>{{ $t('autoplay') }}</span>
                 </div>
             </template>
         </v-navigation-drawer>
@@ -616,3 +616,20 @@ svg rect {
     transition: transform 0.5s;
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "title": "Queue",
+    "empty": "There is nothing in Queue",
+    "search": "Search a Song",
+    "autoplay": "Autoplaying similar songs"
+  },
+  "de": {
+    "title": "Warteschlange",
+    "empty": "Warteschlange ist leer",
+    "search": "Nach Song suchen",
+    "autoplay": "Spielt ähnliche songs"
+  }
+}
+</i18n>

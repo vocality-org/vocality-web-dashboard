@@ -5,6 +5,11 @@ import io from 'socket.io-client';
 
 const socketUrl = process.env.VUE_APP_SOCKET_URL;
 
-const socket = io(socketUrl, { autoConnect: false, reconnectionAttempts: 10 });
+if (socketUrl) {
+    const socket = io(socketUrl, {
+        autoConnect: false,
+        reconnectionAttempts: 10,
+    });
 
-Vue.use(VueSocketIOExt, socket, { store });
+    Vue.use(VueSocketIOExt, socket, { store });
+}

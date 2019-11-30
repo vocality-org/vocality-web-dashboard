@@ -1,9 +1,18 @@
 <template>
-    <v-dialog v-model="dialogState" max-width="500" @keydown="submitOnEnter($event)">
+    <v-dialog
+        v-model="dialogState"
+        max-width="500"
+        @keydown="submitOnEnter($event)"
+    >
         <v-card class="pa-4">
-            <v-card-title>Play per URL</v-card-title>
+            <v-card-title>{{ $t('title') }}</v-card-title>
             <v-card-text>
-                <v-text-field autofocus label="Enter Url" v-model="inputValue" :error-messages="inputErrors">
+                <v-text-field
+                    autofocus
+                    label="Enter Url"
+                    v-model="inputValue"
+                    :error-messages="inputErrors"
+                >
                     <template v-slot:append>
                         <v-tooltip top>
                             <template v-slot:activator="{ on }">
@@ -19,14 +28,14 @@
                                     <v-icon>{{ pasteIcon }}</v-icon>
                                 </v-btn>
                             </template>
-                            <span>Paste from Clipboard</span>
+                            <span>{{ $t('clip_hint') }}</span>
                         </v-tooltip>
                     </template>
                 </v-text-field>
             </v-card-text>
             <v-card-actions>
                 <div class="flex-grow-1"></div>
-                <v-btn text @click="submitUrl()">Play</v-btn>
+                <v-btn text @click="submitUrl()">{{ $t('play') }}</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -45,7 +54,9 @@ import { mdiContentPaste } from '@mdi/js';
                 return AppState.playUrlModal.isOpen;
             },
             set(state: boolean) {
-                state ? AppState.playUrlModal.open() : AppState.playUrlModal.close();
+                state
+                    ? AppState.playUrlModal.open()
+                    : AppState.playUrlModal.close();
             },
         },
     },
@@ -90,3 +101,18 @@ export default class PlayUrlModal extends Vue {
     }
 }
 </script>
+
+<i18n>
+{
+  "en": {
+    "title": "Play per URL",
+    "clip_hint": "Paste from clipboard",
+    "play": "Play"
+  },
+  "de": {
+    "title": "Mit URL Abspielen",
+    "clip_hint": "Aus Zwischenablage einfügen",
+    "play": "Abspielen"
+  }
+}
+</i18n>

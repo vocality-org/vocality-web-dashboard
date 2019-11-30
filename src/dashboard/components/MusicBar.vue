@@ -25,7 +25,7 @@
                     currentSong.title
                 }}</span>
                 <span class="subtitle" style="margin-bottom: 1px;">
-                    requested by {{ currentSong.requested_by }}
+                    {{ $t('requested_by') }} {{ currentSong.requested_by }}
                 </span>
                 <v-icon
                     class="song-controls ico-btn"
@@ -133,7 +133,9 @@
                     height="32"
                     width="32"
                 />
-                <span class="subtitle" style="margin-top: 1px;">Up Next</span>
+                <span class="subtitle" style="margin-top: 1px;">{{
+                    $t('up_next')
+                }}</span>
                 <span :title="nextUpSong.title" class="song-title">
                     {{ nextUpSong.title }}
                 </span>
@@ -508,3 +510,16 @@ export default class MusicBar extends Vue {
     }
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "requested_by": "requested by",
+    "up_next": "Up Next"
+  },
+  "de": {
+    "requested_by": "von",
+    "up_next": "Als Nächstes"
+  }
+}
+</i18n>

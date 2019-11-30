@@ -19,31 +19,31 @@
                     <v-list-item-icon>
                         <v-icon>{{ searchIcon }}</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>Search</v-list-item-title>
+                    <v-list-item-title>{{ $t('search') }}</v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="navigateTo('history')">
                     <v-list-item-icon>
                         <v-icon>{{ historyIcon }}</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>History</v-list-item-title>
+                    <v-list-item-title>{{ $t('history') }}</v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="openUrlModal()">
                     <v-list-item-icon>
                         <v-icon>{{ urlIcon }}</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>Play URL</v-list-item-title>
+                    <v-list-item-title>{{ $t('url') }}</v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="toggleQueueDrawer()">
                     <v-list-item-icon>
                         <v-icon>{{ queueIcon }}</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>Music Queue</v-list-item-title>
+                    <v-list-item-title>{{ $t('queue') }}</v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="navigateTo('playlists')">
                     <v-list-item-icon>
                         <v-icon>{{ playlistIcon }}</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>Playlists</v-list-item-title>
+                    <v-list-item-title>{{ $t('playlist') }}</v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="openGuildsBar()">
                     <v-list-item-icon>
@@ -61,7 +61,7 @@
                             />
                         </svg>
                     </v-list-item-icon>
-                    <v-list-item-title>Change Server</v-list-item-title>
+                    <v-list-item-title>{{ $t('guild') }}</v-list-item-title>
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
@@ -149,3 +149,24 @@ export default class AppDrawer extends Vue {
     fill: rgba(0, 0, 0, 0.54);
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "search": "Search",
+    "history": "History",
+    "url": "Play URL",
+    "queue": "Music Queue",
+    "playlist": "Playlists",
+    "guild": "Change Server"
+  },
+  "de": {
+    "search": "Suchen",
+    "history": "Verlauf",
+    "url": "URL Abspielen",
+    "queue": "Musikwarteschlange",
+    "playlist": "Playlisten",
+    "guild": "Server wechseln"
+  }
+}
+</i18n>

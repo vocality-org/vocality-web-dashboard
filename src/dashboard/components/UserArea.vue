@@ -26,7 +26,9 @@
                         <v-icon>{{ mdiSettings }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                        <v-list-item-title>Settings</v-list-item-title>
+                        <v-list-item-title>{{
+                            $t('settings')
+                        }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
 
@@ -44,7 +46,9 @@
                             "
                         >
                             Darkmode:
-                            {{ isDarkmodeActive ? 'on' : 'off' }}
+                            <span v-if="isDarkmodeActive">{{ $t('on') }}</span>
+                            <span v-else>{{ $t('off') }}</span>
+
                             <div
                                 v-if="showThemeSelector"
                                 class="switch-container"
@@ -70,7 +74,9 @@
                         <v-icon>{{ mdiLogout }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                        <v-list-item-title>Logout</v-list-item-title>
+                        <v-list-item-title>
+                            {{ $t('logout') }}
+                        </v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -162,3 +168,26 @@ export default class UserArea extends Vue {
     z-index: 2;
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "settings": "Settings",
+    "empty": "There is nothing in Queue",
+    "search": "Search a Song",
+    "autoplay": "Autoplaying similar songs",
+    "on": "on",
+    "off": "off",
+    "logout": "Logout"
+  },
+  "de": {
+    "settings": "Einstellungen",
+    "clip_hint": "Warteschlange ist leer",
+    "search": "Nach Song suchen",
+    "autoplay": "Spielt ähnliche songs",   
+    "on": "An",
+    "off": "Aus",
+    "logout": "Abmelden"
+  }
+}
+</i18n>

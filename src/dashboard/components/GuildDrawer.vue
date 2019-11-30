@@ -81,7 +81,7 @@
                             <v-icon>{{ commentAdd }}</v-icon>
                         </v-btn>
                     </template>
-                    <span>Add Vocality to your Discord Server</span>
+                    <span>{{ $t('dcadd') }}</span>
                 </v-tooltip>
             </div>
         </v-navigation-drawer>
@@ -206,3 +206,14 @@ export default class GuildDrawer extends Vue {
     fill: rgba(0, 0, 0, 0.54);
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "dcadd": "Add Vocality to your Discord Server"
+  },
+  "de": {
+    "dcadd": "Füge Vocality zu deinem Discord Server hinzu"
+  }
+}
+</i18n>

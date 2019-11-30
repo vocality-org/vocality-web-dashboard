@@ -21,6 +21,7 @@ export interface IPersistentUserData {
     history: HistoryEntry[];
     historyLength: number;
     isDarkmodeActive: boolean;
+    userLocale: string;
 }
 
 @Module({
@@ -34,6 +35,7 @@ export class PersistentUserData extends VuexModule
     history: HistoryEntry[] = [];
     historyLength: number = HISTORY_LENGTH;
     isDarkmodeActive = true;
+    userLocale = 'en';
 
     get getPlaylistById() {
         return (id: number) => {
@@ -118,5 +120,13 @@ export class PersistentUserData extends VuexModule
     @Mutation
     changeDarkmodeActive(state: boolean) {
         this.isDarkmodeActive = state;
+    }
+
+    @Mutation
+    changeUserLocale(locale: string) {
+        if (locale === 'en' || locale === 'de') {
+            console.log(locale);
+            this.userLocale = locale;
+        }
     }
 }

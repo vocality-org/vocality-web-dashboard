@@ -1,14 +1,12 @@
 <template>
     <div>
         <div class="container">
-            <h1 class="mb-5">Settings</h1>
+            <h1 class="mb-5">{{ $t('h1') }}</h1>
             <v-divider></v-divider>
-            <h2 class="mt-2">Theme</h2>
+            <h2 class="mt-2">{{ $t('theme') }}</h2>
             <section class="section">
                 <p>
-                    Dark theme turns the light surfaces of the page dark,
-                    creating an experience ideal for night. Try it out! Your
-                    Dark theme setting will only apply to this browser.
+                    {{ $t('theme_txt') }}
                 </p>
                 <div class="current-theme"></div>
                 <div class="theme-switch">
@@ -37,28 +35,34 @@
                     />
                 </div>
                 <h5 class="mb-5 mt-1">
-                    Current theme: {{ isDarkmodeActive ? 'dark' : 'light' }}
+                    {{ $t('curr_theme') }}:
+                    {{ isDarkmodeActive ? 'dark' : 'light' }}
                 </h5>
             </section>
 
             <v-divider></v-divider>
-            <h2 class="mt-2">History</h2>
+            <h2 class="mt-2">{{ $t('history') }}</h2>
             <section class="section">
                 <v-slider
                     v-model="cacheSize"
                     color="primary"
-                    :label="`Cache size: ${cacheSize}`"
+                    :label="`Cache: ${cacheSize}`"
                     min="10"
-                    thumb-label="true"
+                    :thumb-label="true"
                     step="5"
                     max="1000"
                 ></v-slider>
             </section>
 
             <v-divider></v-divider>
-            <h2 class="mt-2">Language</h2>
+            <h2 class="mt-2">{{ $t('language') }}</h2>
             <section class="section">
-                maybe german soon
+                <v-select
+                    :items="locales"
+                    label="Outlined style"
+                    :value="userLocale"
+                    @change="changeUserLocale($event)"
+                ></v-select>
             </section>
         </div>
     </div>
@@ -68,7 +72,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { mapState } from 'vuex';
-import { AppState, PersistentUserDataState } from '../../store';
+import { PersistentUserDataState } from '@/store';
 
 @Component({
     computed: {
@@ -80,15 +84,31 @@ import { AppState, PersistentUserDataState } from '../../store';
                 PersistentUserDataState.setHistoryLength(size);
             },
         },
-        ...mapState('persistentUserData', ['isDarkmodeActive']),
+        ...mapState('persistentUserData', ['isDarkmodeActive', 'userLocale']),
     },
 })
 export default class Settings extends Vue {
+    locales = [
+        {
+            value: 'en',
+            text: 'English',
+        },
+        {
+            value: 'de',
+            text: 'Deutsch',
+        },
+    ];
+
     setDarkTheme(state: boolean) {
         if (state !== this.$vuetify.theme.dark) {
             this.$vuetify.theme.dark = state;
             PersistentUserDataState.changeDarkmodeActive(state);
         }
+    }
+
+    changeUserLocale(event: any) {
+        this.$i18n.locale = event;
+        PersistentUserDataState.changeUserLocale(event as string);
     }
 }
 </script>
@@ -141,3 +161,24 @@ export default class Settings extends Vue {
     background: #555;
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "h1": "Settings",
+    "theme": "Theme",
+    "theme_txt": "Dark theme turns the light surfaces of the page dark, creating an experience ideal for night. Try it out! Your Dark theme setting will only apply to this browser.",
+    "curr_theme": "Current theme",
+    "history": "History",
+    "language": "Language"
+  },
+  "de": {
+    "h1": "Einstellungen",
+    "theme": "Farbschema",
+    "theme_txt": "Ein dunkles Farbschema ersetzt die hellen Oberflächen mit dunkleren und ist somit gut für dunkle Räume geeignet. Diese Einstellung wird nur in diesem Browser auf diesem Gerät gespeichert.",
+    "curr_theme": "Ausgewähltes Farbschema",
+    "history": "Verlauf",
+    "language": "Sprache"
+  }
+}
+</i18n>

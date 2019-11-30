@@ -1,7 +1,9 @@
 <template>
     <v-dialog v-model="dialogState" max-width="400" persistent>
         <v-card class="pa-10">
-            <v-card-title class="headline" style="padding-left: 0">Create a new Playlist!</v-card-title>
+            <v-card-title class="headline" style="padding-left: 0">
+                {{ $t('title') }}
+            </v-card-title>
             <v-form v-model="isFormValid" ref="form" lazy-validation>
                 <v-text-field
                     v-model="playlistName"
@@ -21,9 +23,16 @@
                         resetForm();
                         dialogState = false;
                     "
-                    >Cancel</v-btn
                 >
-                <v-btn color="green" text @click="submitForm() ? (dialogState = false) : {}">Create</v-btn>
+                    {{ $t('cancel') }}
+                </v-btn>
+                <v-btn
+                    color="green"
+                    text
+                    @click="submitForm() ? (dialogState = false) : {}"
+                >
+                    {{ $t('create') }}
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -41,7 +50,9 @@ import { AppState, PersistentUserDataState } from '@/store';
                 return AppState.createPlaylistModal.isOpen;
             },
             set(state: boolean) {
-                state ? AppState.createPlaylistModal.open() : AppState.createPlaylistModal.close();
+                state
+                    ? AppState.createPlaylistModal.open()
+                    : AppState.createPlaylistModal.close();
             },
         },
     },
@@ -51,7 +62,8 @@ export default class CreatePlaylistModal extends Vue {
     playlistName = '';
     nameRules = [
         (v: any) => !!v || 'Name is required',
-        (v: any) => (v && v.length <= 32) || 'Name can have a maximum of 32 characters',
+        (v: any) =>
+            (v && v.length <= 32) || 'Name can have a maximum of 32 characters',
     ];
 
     resetForm() {
@@ -83,3 +95,18 @@ export default class CreatePlaylistModal extends Vue {
 </script>
 
 <style lang="scss" scoped></style>
+
+<i18n>
+{
+  "en": {
+    "title": "Create a new Playlist!",
+    "cancel": "Cancel",
+    "create": "Create"
+  },
+  "de": {
+    "title": "Neue Playlist erstellen!",
+    "cancel": "Abbrechen",
+    "create": "Erstellen"
+  }
+}
+</i18n>
