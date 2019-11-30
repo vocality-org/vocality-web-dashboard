@@ -58,7 +58,7 @@
             <v-divider></v-divider>
             <h2 class="mt-2">Language</h2>
             <section class="section">
-                coming soong
+                maybe german soon
             </section>
         </div>
     </div>
