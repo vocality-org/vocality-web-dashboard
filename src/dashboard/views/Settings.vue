@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container">
+        <div class="containerr">
             <h1 class="mb-5">{{ $t('h1') }}</h1>
             <v-divider></v-divider>
             <h2 class="mt-2">{{ $t('theme') }}</h2>
@@ -58,8 +58,8 @@
             <h2 class="mt-2">{{ $t('language') }}</h2>
             <section class="section">
                 <v-select
+                    class="mt-1"
                     :items="locales"
-                    label="Outlined style"
                     :value="userLocale"
                     @change="changeUserLocale($event)"
                 ></v-select>
@@ -114,9 +114,12 @@ export default class Settings extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.containerr {
     max-width: 720px;
-    padding: 32px, 64px;
+    padding: 32px 64px;
+    margin: 0 auto;
+    height: calc(100vh - 300px);
+
     .line {
         display: flex;
         justify-content: space-between;

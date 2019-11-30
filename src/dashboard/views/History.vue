@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container">
+        <div class="containerr">
             <div class="line">
                 <h1 class="my-5 pt-5">History</h1>
                 <div v-if="history.length >= 1">
@@ -103,9 +103,11 @@ export default class History extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.containerr {
     max-width: 720px;
-    padding: 32px, 64px;
+    padding: 32px 64px;
+    margin: 0 auto;
+    height: calc(100vh - 300px);
     .line {
         display: flex;
         justify-content: space-between;

@@ -29,13 +29,30 @@
                 </div>
             </div>
             <div class="results">
-                <v-row v-if="resultsAsSong.length === 0 && searchInputValue" justify="center" class="pt-5">
-                    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                <v-row
+                    v-if="resultsAsSong.length === 0 && searchInputValue"
+                    justify="center"
+                    class="pt-5"
+                >
+                    <v-progress-circular
+                        indeterminate
+                        color="primary"
+                    ></v-progress-circular>
                 </v-row>
-                <div v-if="resultsAsSong.length > 0" class="scroll-container mt-5">
+                <div
+                    v-if="resultsAsSong.length > 0"
+                    class="scroll-container mt-5"
+                >
                     <div v-if="ytState">
-                        <div v-for="yt in resultsAsSong" :key="yt.id" class="my-3">
-                            <SearchResultItem :youtubeResult="yt" @play="onPlaySong(yt)" />
+                        <div
+                            v-for="yt in resultsAsSong"
+                            :key="yt.id"
+                            class="my-3"
+                        >
+                            <SearchResultItem
+                                :youtubeResult="yt"
+                                @play="onPlaySong(yt)"
+                            />
                         </div>
                     </div>
                     <v-row justify="center">
@@ -122,7 +139,8 @@ export default class Search extends Vue {
 <style lang="scss" scoped>
 .container {
     max-width: 720px;
-    padding: 32px, 64px;
+    padding: 32px 64px;
+    margin: 0 auto;
 }
 
 .api-select {
