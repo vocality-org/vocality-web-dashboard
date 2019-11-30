@@ -1,12 +1,13 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 import colors from 'vuetify/lib/util/colors';
+import { PersistentUserDataState } from '@/store';
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
     theme: {
-        dark: true,
+        dark: PersistentUserDataState.isDarkmodeActive,
         themes: {
             dark: {
                 primary: '#29abe2',
