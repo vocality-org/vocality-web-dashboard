@@ -173,7 +173,7 @@ export default class PlaylistItem extends Vue {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: var(--v-primary-base);
+    background-color: var(--v-primary-base) !important;
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -188,7 +188,7 @@ export default class PlaylistItem extends Vue {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--v-primary-base);
+    background-color: var(--v-primary-base) !important;
 }
 </style>
 
