@@ -24,7 +24,7 @@
                             color="primary"
                         ></v-checkbox>
                     </template>
-                    <span>Select all</span>
+                    <span>{{ $t('selectAll') }}</span>
                 </v-tooltip>
 
                 <v-tooltip top v-if="totalSelected !== 0">
@@ -39,7 +39,7 @@
                             <v-icon>{{ deleteIcon }}</v-icon>
                         </v-btn>
                     </template>
-                    <span>Remove selected</span>
+                    <span>{{ $t('removeSelected') }}</span>
                 </v-tooltip>
 
                 <v-tooltip top v-if="totalSelected !== 0">
@@ -48,18 +48,18 @@
                             <v-icon>{{ playIcon }}</v-icon>
                         </v-btn>
                     </template>
-                    <span>Add selected to Queue</span>
+                    <span>{{ $t('addSelectedQueue') }}</span>
                 </v-tooltip>
 
                 <v-menu offset-x right>
                     <template v-slot:activator="{ on }">
-                        <v-btn v-on="on" text>More</v-btn>
+                        <v-btn v-on="on" text>{{ $t('more') }}</v-btn>
                     </template>
                     <v-list>
                         <v-list-item @click="deletePlaylist()">
-                            <v-list-item-title
-                                >Delete Playlist</v-list-item-title
-                            >
+                            <v-list-item-title>
+                                {{ $t('deletePlaylist') }}
+                            </v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -91,9 +91,9 @@
                     </v-list-item-avatar>
 
                     <v-list-item-content>
-                        <v-list-item-title>{{
-                            s.song.title
-                        }}</v-list-item-title>
+                        <v-list-item-title>
+                            {{ s.song.title }}
+                        </v-list-item-title>
                     </v-list-item-content>
 
                     <v-list-item-icon>
@@ -106,12 +106,12 @@
                             <v-list>
                                 <v-list-item @click="removeFromPlaylist(s)">
                                     <v-list-item-title>
-                                        Remove from Playlist
+                                        {{ $t('removeSongPlaylist') }}
                                     </v-list-item-title>
                                 </v-list-item>
                                 <v-list-item @click="playSingle(s)">
                                     <v-list-item-title>
-                                        Add to Queue
+                                        {{ $t('addSongQueue') }}
                                     </v-list-item-title>
                                 </v-list-item>
                             </v-list>
@@ -120,7 +120,7 @@
                 </v-list-item>
                 <div v-if="songs.length === 0">
                     <v-row justify="center" class="my-2" style="width: 100%">
-                        This playlist is empty, add songs with
+                        {{ $t('hint') }}
                     </v-row>
                     <v-row justify="center" class="my-2" style="width: 100%">
                         <v-tooltip bottom>
@@ -129,7 +129,7 @@
                                     <v-icon>{{ playlistAddIcon }}</v-icon>
                                 </v-btn>
                             </template>
-                            <span>Add this Song to a Playlist</span>
+                            <span>{{ $t('hintHover') }}</span>
                         </v-tooltip>
                     </v-row>
                 </div>
@@ -299,3 +299,30 @@ interface SelectableSong {
     background: #555;
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "selectAll": "Select All",
+    "delete": "Delete Playlist",
+    "removeSelected": "Remove Selected",
+    "addSelectedQueue": "Add Selected To Queue",
+    "addSongQueue": "Add to Queue",
+    "removeSongPlaylist": "Remove from Playlist",
+    "more": "more",
+    "hint": "This playlist is empty, add songs with",
+    "hintHover": "Add this Song to a Playlist"
+  },
+  "de": {
+    "selectAll": "Alle Auswählen",
+    "delete": "Playlist Löschen",
+    "removeSelected": "Ausgewählte aus Playlist entfernen",
+    "addSelectedQueue": "Ausgewählt zu Wartschlange hinzufügen",
+    "addSongQueue": "Zur Warteliste hinzufügen",
+    "removeSongPlaylist": "Aus Playlist entfernen",
+    "more": "mehr",
+    "hint": "Diese playlist ist leer. Füge Songs hinzu mit",
+    "hintHover": "Song zu playlist hinzufügen"
+  }
+}
+</i18n>

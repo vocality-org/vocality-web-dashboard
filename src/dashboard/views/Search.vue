@@ -7,7 +7,7 @@
                     solo
                     hide-details
                     :prepend-inner-icon="searchIcon"
-                    label="Search for a song"
+                    :label="$t('label')"
                     @input="debounceInput($event)"
                 ></v-text-field>
                 <div class="row api-select">
@@ -56,7 +56,9 @@
                         </div>
                     </div>
                     <v-row justify="center">
-                        <v-btn @click="loadMore()" text small>Load more</v-btn>
+                        <v-btn @click="loadMore()" text small>{{
+                            $t('more')
+                        }}</v-btn>
                     </v-row>
                 </div>
             </div>
@@ -159,3 +161,16 @@ export default class Search extends Vue {
     }
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "label": "Search for a song",
+    "more": "Show more"
+  },
+  "de": {
+    "label": "Nach einem Song suchen",
+    "more": "Mehr Anzeigen"
+  }
+}
+</i18n>

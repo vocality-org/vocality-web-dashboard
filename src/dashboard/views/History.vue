@@ -2,7 +2,7 @@
     <div>
         <div class="containerr">
             <div class="line">
-                <h1 class="my-5 pt-5">History</h1>
+                <h1 class="my-5">{{ $t('h1') }}</h1>
                 <div v-if="history.length >= 1">
                     <v-tooltip left>
                         <template v-slot:activator="{ on }">
@@ -17,12 +17,12 @@
                                 <v-icon>{{ deleteAllIcon }}</v-icon>
                             </v-btn>
                         </template>
-                        <span>Delete all</span>
+                        <span>{{ $t('deleteA') }}</span>
                     </v-tooltip>
                 </div>
             </div>
             <div v-if="history.length === 0">
-                Recently played songs will appear here.
+                {{ $t('hint') }}
             </div>
             <virtual-list :size="70" :remain="10">
                 <HistoryEntryItem
@@ -135,3 +135,18 @@ export default class History extends Vue {
     background: #555;
 }
 </style>
+
+<i18n>
+{
+  "en": {
+    "h1": "History",
+    "deleteA": "delete all",
+    "hint": "Recently played songs will appear here."
+  },
+  "de": {
+    "h1": "Verlauf",
+    "deleteA": "leeren",
+    "hint": "Gespielte songs werden hier gelistet."
+  }
+}
+</i18n>
