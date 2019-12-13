@@ -46,6 +46,12 @@ export default new Router({
                     component: () => import('@/dashboard/views/History.vue'),
                 },
                 {
+                    path: 'lyrics',
+                    name: 'lyrics',
+                    meta: { title: 'Lyrics - Vocality Dashboard' },
+                    component: () => import('@/dashboard/views/Lyrics.vue'),
+                },
+                {
                     path: 'settings',
                     name: 'settings',
                     meta: { title: 'Settings - Vocality Dashboard' },

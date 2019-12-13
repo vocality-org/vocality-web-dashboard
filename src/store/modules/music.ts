@@ -189,6 +189,11 @@ export class Music extends VuexModule implements IMusicState {
     setPendingPlaylistAdd(song: Song | null) {
         this.pendingPlaylistAdd = song;
     }
+
+    @Action
+    fetchSongLyrics(title: string) {
+        return 'sd';
+    }
 }
 
 /**

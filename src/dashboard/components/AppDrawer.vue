@@ -21,17 +21,23 @@
                     </v-list-item-icon>
                     <v-list-item-title>{{ $t('search') }}</v-list-item-title>
                 </v-list-item>
+                <v-list-item link @click="openUrlModal()">
+                    <v-list-item-icon>
+                        <v-icon>{{ urlIcon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>{{ $t('url') }}</v-list-item-title>
+                </v-list-item>
                 <v-list-item link @click="navigateTo('history')">
                     <v-list-item-icon>
                         <v-icon>{{ historyIcon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>{{ $t('history') }}</v-list-item-title>
                 </v-list-item>
-                <v-list-item link @click="openUrlModal()">
+                <v-list-item link @click="navigateTo('lyrics')">
                     <v-list-item-icon>
-                        <v-icon>{{ urlIcon }}</v-icon>
+                        <v-icon>{{ lyricsIcon }}</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>{{ $t('url') }}</v-list-item-title>
+                    <v-list-item-title>{{ $t('lyrics') }}</v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="toggleQueueDrawer()">
                     <v-list-item-icon>
@@ -78,6 +84,7 @@ import {
     mdiHistory,
     mdiPlaylistMusic,
     mdiPlaylistPlay,
+    mdiScriptTextOutline,
 } from '@mdi/js';
 
 @Component({
@@ -106,6 +113,7 @@ export default class AppDrawer extends Vue {
     historyIcon = mdiHistory;
     playlistIcon = mdiPlaylistPlay;
     queueIcon = mdiPlaylistMusic;
+    lyricsIcon = mdiScriptTextOutline;
 
     openGuildsBar() {
         AppState.appDrawer.close();
@@ -158,6 +166,7 @@ export default class AppDrawer extends Vue {
     "url": "Play URL",
     "queue": "Music Queue",
     "playlist": "Playlists",
+    "lyrics": "Lyrics",
     "guild": "Change Server"
   },
   "de": {
@@ -166,6 +175,7 @@ export default class AppDrawer extends Vue {
     "url": "URL Abspielen",
     "queue": "Musikwarteschlange",
     "playlist": "Playlisten",
+    "lyrics": "Songtext",
     "guild": "Server wechseln"
   }
 }
