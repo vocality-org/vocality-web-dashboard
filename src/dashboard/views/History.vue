@@ -140,12 +140,12 @@ export default class History extends Vue {
 {
   "en": {
     "h1": "History",
-    "deleteA": "delete all",
+    "deleteA": "Delete All",
     "hint": "Recently played songs will appear here."
   },
   "de": {
     "h1": "Verlauf",
-    "deleteA": "leeren",
+    "deleteA": "Alle Löschen",
     "hint": "Gespielte songs werden hier gelistet."
   }
 }

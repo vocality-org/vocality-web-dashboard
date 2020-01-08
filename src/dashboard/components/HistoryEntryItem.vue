@@ -116,6 +116,10 @@ export default class HistoryEntryItem extends Vue {
         align-items: flex-start;
         flex-direction: column;
         margin-left: 18px;
+        h4 {
+            max-height: 32px;
+            overflow: hidden;
+        }
         h6 {
             margin-top: -4px;
         }
