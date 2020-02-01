@@ -1,4 +1,11 @@
-# vocality-web-dashboard
+<p align="center">
+
+<img src="media/logo.svg" width="200" />
+
+<h1 align="center">Vocality Web Dashboard</h1>
+
+</p>
+<br/>
 
 ## Development Setup
 
