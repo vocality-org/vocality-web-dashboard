@@ -7,7 +7,7 @@
             <div style="flex: 1 0 auto"></div>
             <ul>
                 <li>
-                    <a href="#">Website</a>
+                    <a href="https://vocality-landing-page.now.sh/">Website</a>
                 </li>
             </ul>
         </div>
