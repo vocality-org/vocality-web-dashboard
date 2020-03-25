@@ -27,7 +27,7 @@
         "vuex-persist": "^2.2.0"
     },
     "devDependencies": {
-        "@kazupon/vue-i18n-loader": "^0.3.0",
+        "@kazupon/vue-i18n-loader": "^0.5.0",
         "@mdi/js": "^4.9.95",
         "@types/debounce": "^1.2.0",
         "@types/gapi": "0.0.39",
