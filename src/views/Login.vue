@@ -14,10 +14,14 @@
         <div class="content">
             <h1 class="content__title">Dashboard</h1>
             <p class="content__text">
-                For you to be able to control the Vocality Bot from our Dashboard you need to login with your Discord account.
+                For you to be able to control the Vocality Bot from our
+                Dashboard you need to login with your Discord account.
             </p>
             <a class="content__discord" :href="redirectURL"
-                ><img src="@/assets/icons/discord-text.svg" alt="discord" height="48"
+                ><img
+                    src="@/assets/icons/discord-text.svg"
+                    alt="discord"
+                    height="48"
             /></a>
         </div>
 
@@ -25,14 +29,27 @@
             <div v-if="errorMessage" class="alert-container">
                 <div class="alert">
                     <div class="icon-container">
-                        <svg width="24" height="24" viewBox="0 0 24 24" class="alert__icon">
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            class="alert__icon"
+                        >
                             <path d="M0 0h24v24H0z" fill="none" />
-                            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                            <path
+                                d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"
+                            />
                         </svg>
                     </div>
                     {{ errorMessage }}
                     <div style="flex: 1 0 auto;"></div>
-                    <svg @click="errorMessage = ''" style="cursor: pointer" width="24" height="24" viewBox="0 0 24 24">
+                    <svg
+                        @click="errorMessage = ''"
+                        style="cursor: pointer"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                    >
                         <path
                             fill="#919191"
                             d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
@@ -43,8 +60,21 @@
             </div>
         </transition>
 
-        <svg viewBox="0 0 1920 1080" fill="none" class="bg" preserveAspectRatio="none">
-            <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+        <svg
+            viewBox="0 0 1920 1080"
+            fill="none"
+            class="bg"
+            preserveAspectRatio="none"
+        >
+            <mask
+                id="mask0"
+                mask-type="alpha"
+                maskUnits="userSpaceOnUse"
+                x="0"
+                y="0"
+                width="100%"
+                height="100%"
+            >
                 <rect width="100%" height="100%" fill="#fff" />
             </mask>
             <g mask="url(#mask0)">
@@ -116,11 +146,13 @@ import { AuthState } from '../store';
         if (to.query.redirectFrom) {
             if (to.query.code) {
                 next(vm => {
-                    vm.$data.errorMessage = 'There was a problem validating your authentication code';
+                    vm.$data.errorMessage =
+                        'There was a problem validating your authentication code';
                 });
             } else {
                 next(vm => {
-                    vm.$data.errorMessage = 'Please login with discord to use the dashboard';
+                    vm.$data.errorMessage =
+                        'Please login with discord to use the dashboard';
                 });
             }
         }
