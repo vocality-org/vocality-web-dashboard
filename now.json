@@ -3,7 +3,10 @@
         "env": {
             "VUE_APP_DISCORD_CLIENT_ID": "@discord-client-id",
             "VUE_APP_DISCORD_CLIENT_SECRET": "@discord-client-secret",
-            "VUE_APP_YOUTUBE_API_KEY": "@youtube-api-key"
+            "VUE_APP_YOUTUBE_API_KEY": "@youtube-api-key",
+            "VUE_APP_DISCORD_AUTH_URL": "https://discordapp.com/api/oauth2/authorize?client_id=619738847294521344&redirect_uri=https%3A%2F%2Fvocality-web-dashboard.now.sh%2Fdashboard&response_type=code&scope=identify%20guilds",
+            "VUE_APP_DISCORD_REDIRECT_URL": "https://vocality-web-dashboard.now.sh/dashboard",
+            "VUE_APP_SOCKET_URL": ""
         }
     }
 }
