@@ -28,7 +28,7 @@
     },
     "devDependencies": {
         "@kazupon/vue-i18n-loader": "^0.3.0",
-        "@mdi/js": "^4.9.95",
+        "@mdi/js": "^5.3.45",
         "@types/debounce": "^1.2.0",
         "@types/gapi": "0.0.39",
         "@types/webpack": "^4.41.8",
